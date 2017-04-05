@@ -1,0 +1,17 @@
+package:
+    type:           yii2-extension
+    name:           billing-hiapi
+    title:          API for Billing 
+    headline:       Billing HiAPI
+    keywords:       api, billing, hiapi, tariff plan
+    namespace:      hiqdev\billing\hiapi
+    description:    |
+        Billing API.
+
+        Uses:
+
+        - [php-billing]
+        - [hiapi]
+
+        [php-billing]: https://github.com/hiqdev/php-billing
+        [hiapi]: https://github.com/hiqdev/hiapi-core
