@@ -9,4 +9,11 @@
  */
 
 return [
+    'components' => [
+        'hiapi' => [
+            'commandNamespaces' => [
+                'billing' => 'hiqdev\billing\hiapi\commands',
+            ],
+        ],
+    ],
 ];
