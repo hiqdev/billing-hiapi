@@ -9,4 +9,5 @@
  */
 
 return [
+    'controllerNamespace' => 'hiqdev\\billing\\hiapi\\controllers',
 ];

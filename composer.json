@@ -58,7 +58,9 @@
     },
     "extra": {
         "config-plugin": {
-            "common": "src/config/common.php"
+            "common": "src/config/common.php",
+            "console": "src/config/console.php",
+            "web": "src/config/web.php"
         }
     },
     "minimum-stability": "dev",
