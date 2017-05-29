@@ -11,4 +11,21 @@ class Plan extends ActiveRecord
     {
         return 'tariff';
     }
+
+    public static function conversions()
+    {
+        return [
+            'id' => 'obj_id',
+        ];
+    }
+
+    public function getSeller()
+    {
+        return $this->hasOne(Customer::class, ['obj_id' => 'client_id']);
+    }
+
+    public function getEntity()
+    {
+        return new Entity($this->obj_id, $this->name, $this->seller->getEntity());
+    }
 }
