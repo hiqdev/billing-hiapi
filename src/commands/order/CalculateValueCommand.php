@@ -4,8 +4,6 @@ namespace hiqdev\billing\hiapi\commands\order;
 
 class CalculateValueCommand extends \hiapi\commands\Command
 {
-    protected static $handler = CalculateValueHandler::class;
-
     public function rules()
     {
         return [
