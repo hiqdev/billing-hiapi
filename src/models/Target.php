@@ -17,6 +17,11 @@ class Target extends ActiveRecord
         return $this->hasOne(Customer::class, ['obj_id' => 'seller_id']);
     }
 
+    public function getType()
+    {
+        return $this->hasOne(Type::class, ['obj_id' => 'class_id']);
+    }
+
     public function getEntity()
     {
         return new Entity($this->obj_id, $this->login);

@@ -13,7 +13,7 @@ return [
         'entityManager' => [
             'repositories' => [
                 \hiqdev\php\billing\Plan::class => [
-                    'class' => \hiqdev\billing\hiapi\repositories\PlanRepository::class,
+                    'class' => \hiqdev\billing\hiapi\repositories\ar\ArPlanRepository::class,
                     'recordClass' => \hiqdev\billing\hiapi\models\Plan::class,
                 ],
             ],

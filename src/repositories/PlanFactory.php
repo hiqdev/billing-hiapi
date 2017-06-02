@@ -14,4 +14,9 @@ class PlanFactory
     {
         return (new ReflectionClass($this->class))->newInstanceWithoutConstructor();
     }
+
+    public function create(PlanCreationDto $dto)
+    {
+        return new Plan($dto->id, $dto->name, $dto->seller, $dto->prices);
+    }
 }

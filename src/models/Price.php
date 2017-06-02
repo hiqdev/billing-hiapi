@@ -3,9 +3,15 @@
 namespace hiqdev\billing\hiapi\models;
 
 use hiqdev\php\billing\AbstractPrice as Entity;
+use hiqdev\php\units\Quantity;
 use Money\Money;
 use yii\db\ActiveRecord;
 
+/**
+ * Class Price
+ *
+ * @property Target target
+ */
 class Price extends ActiveRecord
 {
     public static function tableName()
@@ -28,6 +34,16 @@ class Price extends ActiveRecord
     public function getType()
     {
         return $this->hasOne(Type::class, ['obj_id' => 'type_id']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Type::class, ['obj_id' => 'unit_id']);
+    }
+
+    public function getCurrency()
+    {
+        return $this->hasOne(Type::class, ['obj_id' => 'currency_id']);
     }
 
     public function getEntity()
