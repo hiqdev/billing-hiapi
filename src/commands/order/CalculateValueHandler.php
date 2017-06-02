@@ -6,7 +6,6 @@ class CalculateValueHandler
 {
     public function handle(CalculateValueCommand $command)
     {
-        var_dump($command);
-        die(__METHOD__);
+        return $command;
     }
 }

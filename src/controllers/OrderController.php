@@ -2,6 +2,8 @@
 
 namespace hiqdev\billing\hiapi\controllers;
 
+use hiqdev\billing\hiapi\commands\order\CalculateValueCommand;
+
 class OrderController extends \hiapi\controllers\BaseController
 {
     public function commands()
@@ -10,6 +12,9 @@ class OrderController extends \hiapi\controllers\BaseController
             'ping' => [
                 'class'  => \hiapi\commands\PingCommand::class,
                 'answer' => 'order BANG',
+            ],
+            'calculate' => [
+                'class'  => CalculateValueCommand::class,
             ],
         ]);
     }

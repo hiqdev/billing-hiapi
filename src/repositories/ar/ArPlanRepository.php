@@ -2,24 +2,17 @@
 
 namespace hiqdev\billing\hiapi\repositories\ar;
 
-use hiapi\components\ConnectionInterface;
 use hiapi\query\QueryMutator;
 use hiapi\query\Specification;
 use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\billing\hiapi\models\Price;
 use hiqdev\billing\hiapi\repositories\PlanCreationDto;
 use hiqdev\billing\hiapi\repositories\PlanFactory;
-use hiqdev\billing\hiapi\repositories\PlanHydrator;
 use hiqdev\billing\hiapi\repositories\PriceCreationDto;
 use hiqdev\billing\hiapi\repositories\PriceFactory;
-use hiqdev\billing\hiapi\repositories\PriceHydrator;
 
 class ArPlanRepository extends \hiapi\repositories\BaseRepository
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $db;
     /**
      * @var PlanFactory
      */
