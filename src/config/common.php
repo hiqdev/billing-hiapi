@@ -16,6 +16,17 @@ return [
                     'class' => \hiqdev\billing\hiapi\repositories\ar\ArPlanRepository::class,
                     'recordClass' => \hiqdev\billing\hiapi\models\Plan::class,
                 ],
+                \hiqdev\php\billing\Customer::class => [
+                    'class' => \hiqdev\billing\hiapi\repositories\CustomerRepository::class,
+                    'queryClass' => \hiqdev\billing\hiapi\query\CustomerQuery::class,
+                ],
+            ],
+        ],
+    ],
+    'container' => [
+        'singletons' => [
+            \hiqdev\php\billing\CustomerFactoryInterface::class => [
+                'class' => \hiqdev\php\billing\CustomerFactory::class,
             ],
         ],
     ],
