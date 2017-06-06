@@ -15,6 +15,8 @@ class BillQuery extends \hiapi\query\Query
                 'bt.name        AS "type.name"',
                 'zc.obj_id      AS "customer.id"',
                 'zc.login       AS "customer.login"',
+                'cr.obj_id      AS "seller.id"',
+                'cr.login       AS "seller.login"',
                 'zb.object_id   AS "target.id"',
                 'oc.name        AS "target.type"',
             ])
@@ -22,6 +24,7 @@ class BillQuery extends \hiapi\query\Query
             ->leftJoin('zref        bt', 'bt.obj_id = zb.type_id')
             ->leftJoin('purse       zp', 'zp.obj_id = zb.purse_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = zp.client_id')
+            ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id')
             ->leftJoin('zref        cu', 'cu.obj_id = zp.currency_id')
             ->leftJoin('obj         zo', 'zo.obj_id = zb.object_id')
             ->leftJoin('zref        oc', 'oc.obj_id = zo.class_id')
