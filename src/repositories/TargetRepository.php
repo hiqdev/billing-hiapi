@@ -3,18 +3,18 @@
 namespace hiqdev\billing\hiapi\repositories;
 
 use hiapi\components\ConnectionInterface;
-use hiqdev\php\billing\customer\CustomerFactoryInterface;
+use hiqdev\php\billing\target\TargetFactoryInterface;
 
-class CustomerRepository extends \hiapi\repositories\BaseRepository
+class TargetRepository extends \hiapi\repositories\BaseRepository
 {
     /**
-     * @var CustomerFactoryInterface
+     * @var TargetFactoryInterface
      */
     protected $factory;
 
     public function __construct(
         ConnectionInterface $db,
-        CustomerFactoryInterface $factory,
+        TargetFactoryInterface $factory,
         array $config = []
     ) {
         parent::__construct($config);
@@ -22,5 +22,4 @@ class CustomerRepository extends \hiapi\repositories\BaseRepository
         $this->db = $db;
         $this->factory = $factory;
     }
-
 }
