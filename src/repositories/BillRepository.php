@@ -4,10 +4,10 @@ namespace hiqdev\billing\hiapi\repositories;
 
 use DateTime;
 use hiapi\components\ConnectionInterface;
-use hiqdev\php\billing\Type;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
-use hiqdev\php\billing\BillFactoryInterface;
+use hiqdev\php\billing\bill\BillFactoryInterface;
 use hiqdev\php\units\Quantity;
 use Money\Money;
 

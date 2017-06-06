@@ -2,7 +2,7 @@
 
 namespace hiqdev\billing\hiapi\controllers;
 
-use hiqdev\php\billing\Bill;
+use hiqdev\php\billing\bill\Bill;
 
 class BillController extends \hiapi\controllers\BaseController
 {

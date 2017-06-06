@@ -3,7 +3,7 @@
 namespace hiqdev\billing\hiapi\repositories;
 
 use hiapi\components\ConnectionInterface;
-use hiqdev\php\billing\TypeFactoryInterface;
+use hiqdev\php\billing\type\TypeFactoryInterface;
 
 class TypeRepository extends \hiapi\repositories\BaseRepository
 {
