@@ -7,18 +7,18 @@ class BillQuery extends \hiapi\query\Query
     public function initSelect()
     {
         return $this->select([
-                'zb.obj_id as id',
-                'zb.time',
-                'zb.quantity    AS "quantity.quantity"',
-                'zb.sum         AS "sum.amount"',
-                'cu.name        AS "sum.currency"',
-                'bt.name        AS "type.name"',
-                'zc.obj_id      AS "customer.id"',
-                'zc.login       AS "customer.login"',
-                'cr.obj_id      AS "seller.id"',
-                'cr.login       AS "seller.login"',
-                'zb.object_id   AS "target.id"',
-                'oc.name        AS "target.type"',
+                'zb.obj_id          AS id',
+                'zb.time            AS time',
+                'zb.quantity        AS "quantity-quantity"',
+                'zb.sum             AS "sum-amount"',
+                'cu.name            AS "sum-currency"',
+                'bt.name            AS "type-name"',
+                'zc.obj_id          AS "customer.id"',
+                'zc.login           AS "customer-login"',
+                'cr.obj_id          AS "customer-seller-id"',
+                'cr.login           AS "customer-seller-login"',
+                'zb.object_id       AS "target-id"',
+                'oc.name            AS "target-type"',
             ])
             ->from('zbill           zb')
             ->leftJoin('zref        bt', 'bt.obj_id = zb.type_id')

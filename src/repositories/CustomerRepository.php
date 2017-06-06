@@ -23,4 +23,14 @@ class CustomerRepository extends \hiapi\repositories\BaseRepository
         $this->factory = $factory;
     }
 
+    public function create(array $row)
+    {
+        $row = $this->splitDbRawData($row);
+        if (!empty($row['seller'])) {
+            $row['seller'] = $this->create($row['seller']);
+        }
+
+        return parent::create($row);
+    }
+
 }

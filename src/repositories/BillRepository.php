@@ -31,28 +31,14 @@ class BillRepository extends \hiapi\repositories\BaseRepository
 
     public function create(array $row)
     {
-        $row = $this->split($row);
+        $row = $this->splitDbRawData($row);
         $row['type'] = $this->createEntity(Type::class, $row['type']);
         $row['time'] = new DateTime($row['time']);
         $row['quantity'] = Quantity::create('megabyte', $row['quantity']['quantity']);
         $row['sum'] = Money::USD($row['sum.amount']);
-        $row['customer']['seller'] = $this->createEntity(Customer::class, $row['seller']);
         $row['customer'] = $this->createEntity(Customer::class, $row['customer']);
         $row['target'] = $this->createEntity(Target::class, $row['target']);
 
         return parent::create($row);
-    }
-
-    protected function split(array $row)
-    {
-        foreach ($row as $key => $value) {
-            $parts = explode('.', $key, 2);
-            if (count($parts)>1) {
-                $row[$parts[0]][$parts[1]] = $value;
-                unset($row[$key]);
-            }
-        }
-
-        return $row;
     }
 }
