@@ -2,23 +2,24 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiqdev\php\billing\Customer as Entity;
-use yii\db\ActiveRecord;
+use hiapi\query\types\IntegerAttribute;
+use hiapi\query\types\StringAttribute;
 
-class Customer extends ActiveRecord
+class Customer extends AbstractModel
 {
-    public static function tableName()
+    public function attributes()
     {
-        return 'zclient';
+        return [
+            'id' => IntegerAttribute::class,
+            'login' => StringAttribute::class,
+            'type' => StringAttribute::class
+        ];
     }
 
-    public function getSeller()
+    public function relations()
     {
-        return $this->hasOne(Customer::class, ['obj_id' => 'seller_id']);
-    }
-
-    public function getEntity()
-    {
-        return new Entity($this->obj_id, $this->login);
+        return [
+            'seller' => self::class
+        ];
     }
 }
