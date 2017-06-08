@@ -39,18 +39,4 @@ abstract class AbstractModel implements ModelInterface
         $className = $this->attributes()[$name];
         return new $className;
     }
-
-    public function getRelatedAttribute($name)
-    {
-        list($relationName, $attribute) = explode('-', $name, 2);
-
-        $className = $this->getRelation($relationName);
-        /** @var ModelInterface $relation */
-        $relation = new $className();
-        if ($relation->hasAttribute($attribute)) {
-            return $relation->getAttribute($attribute);
-        }
-
-        return $relation->getRelatedAttribute($attribute);
-    }
 }

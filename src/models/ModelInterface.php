@@ -8,11 +8,11 @@ interface ModelInterface
 
     public function hasRelation($name);
 
+    public function getRelation($name);
+
     public function relations();
 
     public function hasAttribute($name): bool;
 
     public function getAttribute($name);
-
-    public function getRelatedAttribute($name);
 }

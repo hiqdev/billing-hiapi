@@ -25,7 +25,6 @@ class CustomerRepository extends \hiapi\repositories\BaseRepository
 
     public function create(array $row)
     {
-        $row = $this->splitDbRawData($row);
         if (!empty($row['seller'])) {
             $row['seller'] = $this->create($row['seller']);
         }
