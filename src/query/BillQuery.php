@@ -6,20 +6,7 @@ class BillQuery extends \hiapi\query\Query
 {
     public function initSelect()
     {
-        return $this->select([
-                'zb.obj_id          AS id',
-                'zb.time            AS time',
-                'zb.quantity        AS "quantity-quantity"',
-                'zb.sum             AS "sum-amount"',
-                'cu.name            AS "sum-currency"',
-                'bt.name            AS "type-name"',
-                'zc.obj_id          AS "customer.id"',
-                'zc.login           AS "customer-login"',
-                'cr.obj_id          AS "customer-seller-id"',
-                'cr.login           AS "customer-seller-login"',
-                'zb.object_id       AS "target-id"',
-                'oc.name            AS "target-type"',
-            ])
+        return $this->selectByFields($this->getFields())
             ->from('zbill           zb')
             ->leftJoin('zref        bt', 'bt.obj_id = zb.type_id')
             ->leftJoin('purse       zp', 'zp.obj_id = zb.purse_id')
@@ -29,5 +16,38 @@ class BillQuery extends \hiapi\query\Query
             ->leftJoin('obj         zo', 'zo.obj_id = zb.object_id')
             ->leftJoin('zref        oc', 'oc.obj_id = zo.class_id')
         ;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function attributesMap()
+    {
+        return [
+            'id' => 'zb.obj_id',
+            'time' => 'zb.time',
+            'quantity' => [
+                'quantity' => 'zb.quantity',
+            ],
+            'sum' => [
+                'currency' => 'cu.name',
+                'amount' => 'zb.sum',
+            ],
+            'type' => [
+                'name' => 'bt.name',
+            ],
+            'customer' => [
+                'id' => 'zc.obj_id',
+                'login' => 'zc.login',
+                'seller' => [
+                    'id' => 'cr.obj_id',
+                    'login' => 'cr.login',
+                ],
+            ],
+            'target' => [
+                'id' => 'zb.object_id',
+                'type' => 'oc.name',
+            ],
+        ];
     }
 }
