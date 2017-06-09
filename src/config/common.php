@@ -49,6 +49,9 @@ return [
             \hiqdev\php\billing\customer\CustomerFactoryInterface::class => [
                 'class' => \hiqdev\php\billing\customer\CustomerFactory::class,
             ],
+            \hiqdev\php\billing\price\PriceFactoryInterface::class => function () {
+                return new \hiqdev\php\billing\price\PriceFactory($params['billing-hiapi.priceTypes']);
+            },
         ],
     ],
 ];
