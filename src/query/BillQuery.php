@@ -2,8 +2,12 @@
 
 namespace hiqdev\billing\hiapi\query;
 
+use hiqdev\billing\hiapi\models\Bill;
+
 class BillQuery extends \hiapi\query\Query
 {
+    protected $modelClass = Bill::class;
+
     public function initSelect()
     {
         return $this->selectByFields($this->getFields())

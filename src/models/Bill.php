@@ -12,6 +12,7 @@ class Bill extends AbstractModel
         return [
             'id' => IntegerAttribute::class,
             'name' => StringAttribute::class,
+            'time' => StringAttribute::class, // todo: change to time
         ];
     }
 

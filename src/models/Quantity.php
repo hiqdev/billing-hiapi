@@ -3,6 +3,8 @@
 namespace hiqdev\billing\hiapi\models;
 
 
+use hiapi\query\types\FloatAttribute;
+
 class Quantity extends AbstractModel
 {
     public function attributes()
@@ -14,6 +16,6 @@ class Quantity extends AbstractModel
 
     public function relations()
     {
-
+        return [];
     }
 }
