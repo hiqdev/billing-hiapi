@@ -12,7 +12,7 @@ interface ModelInterface
 
     public function relations();
 
-    public function hasAttribute($name): bool;
+    public function hasAttribute($name);
 
     public function getAttribute($name);
 }

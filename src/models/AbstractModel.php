@@ -6,12 +6,12 @@ use yii\base\InvalidConfigException;
 
 abstract class AbstractModel implements ModelInterface
 {
-    public function hasAttribute($name): bool
+    public function hasAttribute($name)
     {
         return isset($this->attributes()[$name]);
     }
 
-    public function hasRelation($name): bool
+    public function hasRelation($name)
     {
         return isset($this->relations()[$name]);
     }
