@@ -3,7 +3,7 @@
 namespace hiqdev\billing\hiapi\models;
 
 
-use hiapi\query\types\FloatAttribute;
+use hiapi\query\attributes\FloatAttribute;
 
 class Quantity extends AbstractModel
 {

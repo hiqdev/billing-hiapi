@@ -2,8 +2,8 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiapi\query\types\IntegerAttribute;
-use hiapi\query\types\StringAttribute;
+use hiapi\query\attributes\IntegerAttribute;
+use hiapi\query\attributes\StringAttribute;
 
 class Customer extends AbstractModel
 {

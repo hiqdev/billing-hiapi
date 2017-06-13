@@ -4,6 +4,11 @@ namespace hiqdev\billing\hiapi\models;
 
 use yii\base\InvalidConfigException;
 
+/**
+ * Class AbstractModel
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
 abstract class AbstractModel implements ModelInterface
 {
     public function hasAttribute($name)
@@ -37,6 +42,11 @@ abstract class AbstractModel implements ModelInterface
         }
 
         $className = $this->attributes()[$name];
+
+        if (is_object($className)) {
+            return $className;
+        }
+
         return new $className;
     }
 }

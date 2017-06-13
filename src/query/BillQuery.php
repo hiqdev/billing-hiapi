@@ -3,6 +3,7 @@
 namespace hiqdev\billing\hiapi\query;
 
 use hiqdev\billing\hiapi\models\Bill;
+use yii\db\Expression;
 
 class BillQuery extends \hiapi\query\Query
 {
@@ -29,7 +30,7 @@ class BillQuery extends \hiapi\query\Query
     {
         return [
             'id' => 'zb.obj_id',
-            'time' => 'zb.time',
+            'time' => new Expression("date_trunc('second', zb.time) as time"),
             'quantity' => [
                 'quantity' => 'zb.quantity',
             ],

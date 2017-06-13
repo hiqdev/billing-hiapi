@@ -2,8 +2,9 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiapi\query\types\IntegerAttribute;
-use hiapi\query\types\StringAttribute;
+use hiapi\query\attributes\DateTimeAttribute;
+use hiapi\query\attributes\IntegerAttribute;
+use hiapi\query\attributes\StringAttribute;
 
 class Bill extends AbstractModel
 {
@@ -12,7 +13,7 @@ class Bill extends AbstractModel
         return [
             'id' => IntegerAttribute::class,
             'name' => StringAttribute::class,
-            'time' => StringAttribute::class, // todo: change to time
+            'time' => DateTimeAttribute::class,
         ];
     }
 
