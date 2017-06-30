@@ -2,18 +2,21 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiqdev\php\billing\Type as Entity;
-use yii\db\ActiveRecord;
+use hiapi\query\attributes\IntegerAttribute;
+use hiapi\query\attributes\StringAttribute;
 
-class Type extends ActiveRecord
+class Type extends AbstractModel
 {
-    public static function tableName()
+    public function attributes()
     {
-        return 'zref';
+        return [
+            'id' => IntegerAttribute::class,
+            'name' => StringAttribute::class,
+        ];
     }
 
-    public function getEntity()
+    public function relations()
     {
-        return new Entity($this->obj_id, $this->name);
+        return [];
     }
 }

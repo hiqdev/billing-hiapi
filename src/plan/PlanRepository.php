@@ -1,47 +1,46 @@
 <?php
 
-namespace hiqdev\billing\hiapi\repositories;
+namespace hiqdev\billing\hiapi\plan;
 
 use hiapi\components\ConnectionInterface;
-use hiapi\query\QueryMutator;
 use hiapi\query\Specification;
+use hiapi\repositories\BaseRepository;
+use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\plan\PlanFactoryInterface;
+use hiqdev\php\billing\plan\PlanRepositoryInterface;
+use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\order\OrderInterface;
+use Yii;
 use yii\db\Query;
 
-class PlanRepository extends \hiapi\repositories\BaseRepository
+class PlanRepository extends BaseRepository implements PlanRepositoryInterface
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $db;
+    public $queryClass = PlanQuery::class;
+
     /**
      * @var PlanFactory
      */
-    private $planFactory;
-    /**
-     * @var PlanHydrator
-     */
-    private $planHydrator;
-    /**
-     * @var PriceHydrator
-     */
-    private $priceHydrator;
+    protected $factory;
 
     public function __construct(
         ConnectionInterface $db,
-        PlanFactory $planFactory,
-        PlanHydrator $planHydrator,
-        PriceHydrator $priceHydrator,
+        PlanFactoryInterface $factory,
         array $config = []
     ) {
         parent::__construct($config);
 
         $this->db = $db;
-        $this->planFactory = $planFactory;
-        $this->planHydrator = $planHydrator;
-        $this->priceHydrator = $priceHydrator;
+        $this->factory = $factory;
     }
 
-    public function findAll(Specification $specification)
+    public function create(array $row)
+    {
+        $row['seller'] = $this->createEntity(Customer::class, $row['seller']);
+
+        return parent::create($row);
+    }
+
+    public function old___findAll(Specification $specification)
     {
         $mutator = (new QueryMutator((new Query())
             ->select(['p.obj_id as id', 'p.name'])
@@ -82,5 +81,27 @@ class PlanRepository extends \hiapi\repositories\BaseRepository
                 return $row['tariff_id'] === $plan['id'];
             }));
         }
+    }
+
+    public function findByAction(ActionInterface $action)
+    {
+        $client_id = $action->getCustomer()->getId();
+        $seller = $action->getCustomer()->getSeller()->getLogin();
+        $type = $action->getTarget()->getType();
+
+        $spec = Yii::createObject(Specification::class)->where([
+            'type-name' => $type,
+            'available_for' => [
+                'client_id' => $client_id,
+                'seller'    => $seller,
+            ],
+        ]);
+
+        return $this->findOne($spec);
+    }
+
+    public function findByOrder(OrderInterface $order)
+    {
+        return array_map([$this, 'findByAction'], $order->getActions());
     }
 }

@@ -3,6 +3,7 @@
 namespace hiqdev\billing\hiapi\models;
 
 use yii\base\InvalidConfigException;
+use Yii;
 
 /**
  * Class AbstractModel
@@ -47,6 +48,6 @@ abstract class AbstractModel implements ModelInterface
             return $className;
         }
 
-        return new $className;
+        return Yii::createObject($className);
     }
 }

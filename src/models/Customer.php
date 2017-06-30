@@ -19,7 +19,7 @@ class Customer extends AbstractModel
     public function relations()
     {
         return [
-            'seller' => self::class
+            'seller' => self::class,
         ];
     }
 }

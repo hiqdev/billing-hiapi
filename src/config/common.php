@@ -24,13 +24,13 @@ return [
                     'class' => \hiqdev\billing\hiapi\repositories\CustomerRepository::class,
                     'queryClass' => \hiqdev\billing\hiapi\query\CustomerQuery::class,
                 ],
-                \hiqdev\php\billing\Plan::class => [
-                    'class' => \hiqdev\billing\hiapi\repositories\ar\ArPlanRepository::class,
-                    'recordClass' => \hiqdev\billing\hiapi\models\Plan::class,
-                ],
                 \hiqdev\php\billing\target\Target::class => [
                     'class' => \hiqdev\billing\hiapi\repositories\TargetRepository::class,
                     'queryClass' => \hiqdev\billing\hiapi\query\TargetQuery::class,
+                ],
+
+                \hiqdev\php\billing\Plan::class => [
+                    'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
                 ],
             ],
         ],
@@ -48,6 +48,9 @@ return [
             ],
             \hiqdev\php\billing\customer\CustomerFactoryInterface::class => [
                 'class' => \hiqdev\php\billing\customer\CustomerFactory::class,
+            ],
+            \hiqdev\php\billing\plan\PlanFactoryInterface::class => [
+                'class' => \hiqdev\php\billing\plan\PlanFactory::class,
             ],
             \hiqdev\php\billing\price\PriceFactoryInterface::class => function () {
                 return new \hiqdev\php\billing\price\PriceFactory($params['billing-hiapi.priceTypes']);
