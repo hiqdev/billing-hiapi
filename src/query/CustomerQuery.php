@@ -23,10 +23,9 @@ class CustomerQuery extends \hiapi\query\Query
         ];
     }
 
-    public function initSelect()
+    public function initFrom()
     {
-        return $this->selectByFields($this->getFields())
-            ->from('zclient         zc')
+        return $this->from('zclient zc')
             ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id');
     }
 }

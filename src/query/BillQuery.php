@@ -9,10 +9,9 @@ class BillQuery extends \hiapi\query\Query
 {
     protected $modelClass = Bill::class;
 
-    public function initSelect()
+    public function initFrom()
     {
-        return $this->selectByFields($this->getFields())
-            ->from('zbill           zb')
+        return $this->from('zbill   zb')
             ->leftJoin('zref        bt', 'bt.obj_id = zb.type_id')
             ->leftJoin('purse       zp', 'zp.obj_id = zb.purse_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = zp.client_id')
