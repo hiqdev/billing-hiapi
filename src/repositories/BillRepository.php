@@ -9,6 +9,7 @@ use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\bill\BillFactoryInterface;
 use hiqdev\php\units\Quantity;
+use Money\Currency;
 use Money\Money;
 
 class BillRepository extends \hiapi\repositories\BaseRepository
@@ -34,7 +35,8 @@ class BillRepository extends \hiapi\repositories\BaseRepository
         $row['type'] = $this->createEntity(Type::class, $row['type']);
         $row['time'] = new DateTime($row['time']);
         $row['quantity'] = Quantity::create('megabyte', $row['quantity']['quantity']);
-        $row['sum'] = Money::USD($row['sum']['amount']);
+        $currency = new Currency(strtoupper($row['sum']['currency']));
+        $row['sum'] = new Money($row['sum']['amount'], $currency);
         $row['customer'] = $this->createEntity(Customer::class, $row['customer']);
         $row['target'] = $this->createEntity(Target::class, $row['target']);
 
