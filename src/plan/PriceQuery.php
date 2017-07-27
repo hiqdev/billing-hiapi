@@ -1,4 +1,12 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\plan;
 
@@ -45,7 +53,6 @@ class PriceQuery extends \hiapi\query\Query
             ->leftJoin('zref            tu', 'tu.obj_id = tr.unit_id')
             ->leftJoin('zref            cu', 'cu.obj_id = tr.currency_id')
             ->leftJoin('obj             zo', 'zo.obj_id = zb.object_id')
-            ->leftJoin('zref            oc', 'oc.obj_id = zo.class_id')
-        ;
+            ->leftJoin('zref            oc', 'oc.obj_id = zo.class_id');
     }
 }

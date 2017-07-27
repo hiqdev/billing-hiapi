@@ -1,12 +1,20 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\models;
 
-use yii\base\InvalidConfigException;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
- * Class AbstractModel
+ * Class AbstractModel.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
@@ -24,8 +32,8 @@ abstract class AbstractModel implements ModelInterface
 
     /**
      * @param $name
-     * @return string
      * @throws InvalidConfigException
+     * @return string
      */
     public function getRelation($name)
     {

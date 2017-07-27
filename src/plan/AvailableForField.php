@@ -1,4 +1,12 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\plan;
 
@@ -32,11 +40,11 @@ class AvailableForField implements FieldInterface
         $params = [];
         if ($value['client_id']) {
             $params[':available_for_client_id'] = $value['client_id'];
-            $ids_sql = "
+            $ids_sql = '
                 SELECT      tariff_id
                 FROM        client2tariff
                 WHERE       client_id=:available_for_client_id
-            ";
+            ';
         } else {
             $params[':available_for_seller'] = $value['seller'];
             $ids_sql = "

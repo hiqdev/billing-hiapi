@@ -17,7 +17,7 @@ Uses:
 - [hiapi]
 
 [php-billing]: https://github.com/hiqdev/php-billing
-[hiapi]: https://github.com/hiqdev/hiapi-core
+[hiapi]: https://github.com/hiqdev/hiapi
 
 ## Installation
 

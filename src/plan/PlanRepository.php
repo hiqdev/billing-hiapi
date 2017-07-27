@@ -1,17 +1,24 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\plan;
 
 use hiapi\components\ConnectionInterface;
 use hiapi\query\Specification;
 use hiapi\repositories\BaseRepository;
+use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\PlanFactoryInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
-use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\order\OrderInterface;
 use Yii;
-use yii\db\Query;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
 {
@@ -54,8 +61,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
                     'client_id' => $client_id,
                     'seller'    => $seller,
                 ],
-            ])
-        ;
+            ]);
 
         return $this->findOne($spec);
     }

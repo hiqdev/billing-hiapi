@@ -1,4 +1,12 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\repositories;
 
@@ -28,7 +36,7 @@ class PriceCreationDto
 
     public static function fromArray(array $items)
     {
-        $instance = new self;
+        $instance = new self();
         foreach ($items as $key => $value) {
             $instance->$key = $value;
         }
