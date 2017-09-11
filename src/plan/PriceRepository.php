@@ -11,13 +11,19 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiapi\components\ConnectionInterface;
-use hiqdev\php\billing\customer\PriceFactoryInterface;
+use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
+use hiqdev\php\units\Unit;
+use hiqdev\php\units\Quantity;
+use Money\Currency;
 use Money\Money;
+use yii\helpers\Json;
 
 class PriceRepository extends \hiapi\repositories\BaseRepository
 {
+    public $queryClass = PriceQuery::class;
+
     /**
      * @var PriceFactoryInterface
      */
@@ -36,10 +42,14 @@ class PriceRepository extends \hiapi\repositories\BaseRepository
 
     public function create(array $row)
     {
-        $row['type'] = $this->createEntity(Type::class, $row['type']);
         $row['target'] = $this->createEntity(Target::class, $row['target']);
-        $currency = new Currency(strtoupper($row['price']['currency']));
-        $row['price'] = new Money($row['price']['amount'], $currency);
+        $row['type'] = $this->createEntity(Type::class, $row['type']);
+        $row['unit'] = Unit::create($row['prepaid']['unit']);
+        $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
+        $row['currency'] = new Currency(strtoupper($row['price']['currency']));
+        $row['price'] = new Money($row['price']['amount'], $row['currency']);
+        $data = Json::decode($row['data']);
+        $row['prices'] = empty($data['prices']) ? [] : $data['prices'];
 
         return parent::create($row);
     }

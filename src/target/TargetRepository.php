@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\repositories;
+namespace hiqdev\billing\hiapi\target;
 
 use hiapi\components\ConnectionInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;

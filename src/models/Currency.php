@@ -10,18 +10,19 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use Money\Currency as Entity;
-use yii\db\ActiveRecord;
+use hiapi\query\attributes\StringAttribute;
 
-class Currency extends ActiveRecord
+class Currency extends AbstractModel
 {
-    public static function tableName()
+    public function attributes()
     {
-        return 'zref';
+        return [
+            'name' => StringAttribute::class,
+        ];
     }
 
-    public function getEntity()
+    public function relations()
     {
-        return new Entity($this->obj_id, $this->name);
+        return [];
     }
 }

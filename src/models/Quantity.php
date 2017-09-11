@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\models;
 
 use hiapi\query\attributes\FloatAttribute;
+use hiapi\query\attributes\StringAttribute;
 
 class Quantity extends AbstractModel
 {
@@ -18,6 +19,7 @@ class Quantity extends AbstractModel
     {
         return [
             'quantity' => FloatAttribute::class,
+            'unit' => StringAttribute::class,
         ];
     }
 

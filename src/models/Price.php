@@ -10,21 +10,21 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiqdev\php\units\Quantity;
-use Money\Money;
-use yii\db\ActiveRecord;
+use hiapi\query\attributes\IntegerAttribute;
+use hiapi\query\attributes\StringAttribute;
 
 /**
  * Class Price.
  *
  * @property Target target
  */
-class Price extends ActiveRecord
+class Price extends AbstractModel
 {
     public function attributes()
     {
         return [
             'id' => IntegerAttribute::class,
+            'data' => StringAttribute::class,
         ];
     }
 
@@ -36,7 +36,7 @@ class Price extends ActiveRecord
             'type' => Type::class,
             'unit' => Unit::class,
             'price' => Money::class,
-            'quantity' => Quantity::class,
+            'prepaid' => Quantity::class,
         ];
     }
 }

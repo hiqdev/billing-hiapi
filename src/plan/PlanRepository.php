@@ -18,6 +18,7 @@ use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\PlanFactoryInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
+use hiqdev\php\billing\plan\PriceInterface;
 use Yii;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
@@ -44,6 +45,12 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     {
         $row['seller'] = $this->createEntity(Customer::class, $row['seller']);
 
+        if (is_array($row['prices'])) {
+            foreach ($row['prices'] as &$price) {
+                $price = $this->createEntity(PriceInterface::class, $price);
+            }
+        }
+
         return parent::create($row);
     }
 
@@ -54,7 +61,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $type = $action->getTarget()->getType();
 
         $spec = Yii::createObject(Specification::class)
-            ->with(Price::class)
+            ->with(PriceInterface::class)
             ->where([
                 'type-name' => $type,
                 'available_for' => [

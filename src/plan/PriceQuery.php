@@ -37,7 +37,7 @@ class PriceQuery extends \hiapi\query\Query
                 'currency' => 'cu.name',
                 'amount' => 'tr.price',
             ],
-            'quantity' => [
+            'prepaid' => [
                 'unit' => 'tu.name',
                 'quantity' => 'tr.quantity',
             ],
@@ -52,7 +52,7 @@ class PriceQuery extends \hiapi\query\Query
             ->leftJoin('zref            rt', 'rt.obj_id = tr.type_id')
             ->leftJoin('zref            tu', 'tu.obj_id = tr.unit_id')
             ->leftJoin('zref            cu', 'cu.obj_id = tr.currency_id')
-            ->leftJoin('obj             zo', 'zo.obj_id = zb.object_id')
+            ->leftJoin('obj             zo', 'zo.obj_id = tr.object_id')
             ->leftJoin('zref            oc', 'oc.obj_id = zo.class_id');
     }
 }
