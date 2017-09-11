@@ -38,7 +38,7 @@ abstract class AbstractModel implements ModelInterface
     public function getRelation($name)
     {
         if (!$this->hasRelation($name)) {
-            throw new InvalidConfigException('Model ' . static::class . ' does not have relation ' . $name);
+            throw new InvalidConfigException('Relation ' . $name . 'is not available within ' . static::class);
         }
 
         return $this->relations()[$name];
