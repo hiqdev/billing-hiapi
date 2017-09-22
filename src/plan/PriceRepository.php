@@ -49,7 +49,7 @@ class PriceRepository extends \hiapi\repositories\BaseRepository
         $row['currency'] = new Currency(strtoupper($row['price']['currency']));
         $row['price'] = new Money($row['price']['amount'], $row['currency']);
         $data = Json::decode($row['data']);
-        $row['prices'] = empty($data['prices']) ? [] : $data['prices'];
+        $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
 
         return parent::create($row);
     }
