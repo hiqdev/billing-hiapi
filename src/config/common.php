@@ -34,6 +34,15 @@ return [
                 \hiqdev\php\billing\plan\PriceInterface::class => [
                     'class' => \hiqdev\billing\hiapi\plan\PriceRepository::class,
                 ],
+                \hiqdev\php\billing\charge\Charge::class => [
+                    'class' => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
+                ],
+                \hiqdev\php\billing\action\SimpleAction::class => [
+                    'class' => \hiqdev\billing\hiapi\action\ActionRepository::class,
+                ],
+                \hiqdev\php\billing\sale\Sale::class => [
+                    'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
+                ],
             ],
         ],
     ],
@@ -57,6 +66,15 @@ return [
             \hiqdev\php\billing\price\PriceFactoryInterface::class => function () {
                 return new \hiqdev\php\billing\price\PriceFactory(Yii::$app->params['billing-hiapi.priceTypes']);
             },
+            \hiqdev\php\billing\charge\ChargeFactoryInterface::class => [
+                'class' => \hiqdev\php\billing\charge\ChargeFactory::class,
+            ],
+            \hiqdev\php\billing\action\ActionFactoryInterface::class => [
+                'class' => \hiqdev\php\billing\action\ActionFactory::class,
+            ],
+            \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
+                'class' => \hiqdev\php\billing\sale\SaleFactory::class,
+            ],
         ],
     ],
 ];
