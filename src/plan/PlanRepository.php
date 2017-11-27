@@ -44,14 +44,19 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     public function create(array $row)
     {
         $row['seller'] = $this->createEntity(Customer::class, $row['seller']);
-
-        if (is_array($row['prices'])) {
-            foreach ($row['prices'] as &$price) {
-                $price = $this->createEntity(PriceInterface::class, $price);
+        $raw_prices = $row['prices'];
+        unset($row['prices']);
+        $plan = parent::create($row);
+        if (is_array($raw_prices)) {
+            $prices = [];
+            foreach ($raw_prices as $key => $price) {
+                $price['plan'] = $plan;
+                $prices[$key] = $this->createEntity(PriceInterface::class, $price);
             }
+            $plan->setPrices($prices);
         }
 
-        return parent::create($row);
+        return $plan;
     }
 
     public function findByAction(ActionInterface $action)
