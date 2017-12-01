@@ -48,6 +48,15 @@ return [
     ],
     'container' => [
         'singletons' => [
+            \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
+                'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
+            ],
+            \hiqdev\php\billing\order\CalculatorInterface::class => [
+                'class' => \hiqdev\php\billing\order\Calculator::class,
+            ],
+            \hiqdev\php\billing\charge\AggregatorInterface::class => [
+                'class' => \hiqdev\php\billing\charge\Aggregator::class,
+            ],
             \hiqdev\php\billing\type\TypeFactoryInterface::class => [
                 'class' => \hiqdev\php\billing\type\TypeFactory::class,
             ],
