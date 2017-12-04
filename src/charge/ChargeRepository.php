@@ -12,7 +12,6 @@ namespace hiqdev\billing\hiapi\charge;
 
 use hiapi\db\CallExpression;
 use hiapi\db\HstoreExpression;
-use hiapi\components\ConnectionInterface;
 use hiapi\components\EntityManagerInterface;
 use hiapi\query\Specification;
 use hiapi\repositories\BaseRepository;
@@ -30,14 +29,12 @@ class ChargeRepository extends BaseRepository
     protected $factory;
 
     public function __construct(
-        ConnectionInterface $db,
         EntityManagerInterface $em,
         ChargeFactoryInterface $factory,
         array $config = []
     ) {
         parent::__construct($config);
 
-        $this->db = $db;
         $this->em = $em;
         $this->factory = $factory;
     }
