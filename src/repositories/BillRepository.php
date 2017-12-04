@@ -50,4 +50,30 @@ class BillRepository extends \hiapi\repositories\BaseRepository
 
         return parent::create($row);
     }
+
+    public function save(BillInterface $bill)
+    {
+        $chargeIds = [];
+        foreach ($bill->getCharges() as $charge) {
+            $this->em->save($charge);
+            $chargeIds[] = $charge->getId();
+        }
+        $hstore = new HstoreExpression([
+            'id'            => $bill->getId(),
+            'object_id'     => $bill->getTarget()->getId(),
+            'tariff_id'     => $bill->getPlan()->getId(),
+            'type_id'       => $bill->getType()->getId(),
+            'type'          => $bill->getType()->getName(),
+            'buyer_id'      => $bill->getCustomer()->getId(),
+            'buyer'         => $bill->getCustomer()->getLogin(),
+            'currency'      => $bill->getSum()->getCurrency()->getCode(),
+            'sum'           => $bill->getSum()->getAmount(),
+            'quantity'      => $bill->getQuantity()->getQuantity(),
+            'is_finished'   => $bill->getIsFinished(),
+            'charge_ids'    => implode(',', $chargeIds),
+        ]);
+        $call = new CallExpression('set_bill', [$hstore]);
+        $command = $this->em->getConnection()->createSelect($call);
+        $bill->setId($command->scalar());
+    }
 }
