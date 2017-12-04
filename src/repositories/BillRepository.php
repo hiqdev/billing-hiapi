@@ -72,8 +72,10 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'currency'      => $bill->getSum()->getCurrency()->getCode(),
             'sum'           => $bill->getSum()->getAmount(),
             'quantity'      => $bill->getQuantity()->getQuantity(),
+            'time'          => $bill->getTime()->format('c'),
             'is_finished'   => $bill->getIsFinished(),
             'charge_ids'    => implode(',', $chargeIds),
+            'increment'     => true,
         ]);
         $call = new CallExpression('set_bill', [$hstore]);
         $command = $this->em->getConnection()->createSelect($call);
