@@ -12,7 +12,7 @@ namespace hiqdev\billing\hiapi\query;
 
 use hiqdev\billing\hiapi\models\Customer;
 
-class CustomerQuery extends \hiapi\query\Query
+class CustomerQuery extends \hiqdev\yii\DataMapper\query\Query
 {
     /**
      * @var string

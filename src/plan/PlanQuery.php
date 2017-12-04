@@ -12,7 +12,7 @@ namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Plan;
 
-class PlanQuery extends \hiapi\query\Query
+class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
 {
     /**
      * @var string

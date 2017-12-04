@@ -23,7 +23,7 @@ use hiqdev\php\units\Quantity;
 use Money\Currency;
 use Money\Money;
 
-class BillRepository extends \hiapi\repositories\BaseRepository
+class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     /**
      * @var BillFactoryInterface

@@ -20,7 +20,7 @@ use Money\Currency;
 use Money\Money;
 use yii\helpers\Json;
 
-class PriceRepository extends \hiapi\repositories\BaseRepository
+class PriceRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     public $queryClass = PriceQuery::class;
 

@@ -7,7 +7,7 @@ use hiqdev\yii\DataMapper\query\QueryMutator;
 use hiqdev\yii\DataMapper\query\Specification;
 use yii\db\Query;
 
-class PlanRepository extends \hiapi\repositories\BaseRepository
+class PlanRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     /**
      * @var ConnectionInterface

@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\query;
 use hiqdev\billing\hiapi\models\Bill;
 use yii\db\Expression;
 
-class BillQuery extends \hiapi\query\Query
+class BillQuery extends \hiqdev\yii\DataMapper\query\Query
 {
     protected $modelClass = Bill::class;
 

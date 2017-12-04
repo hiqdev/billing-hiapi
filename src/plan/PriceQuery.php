@@ -12,7 +12,7 @@ namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Price;
 
-class PriceQuery extends \hiapi\query\Query
+class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
 {
     /**
      * @var string

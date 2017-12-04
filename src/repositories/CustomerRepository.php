@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\repositories;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\customer\CustomerFactoryInterface;
 
-class CustomerRepository extends \hiapi\repositories\BaseRepository
+class CustomerRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     /**
      * @var CustomerFactoryInterface
