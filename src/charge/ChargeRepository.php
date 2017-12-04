@@ -10,11 +10,11 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
-use hiapi\db\CallExpression;
-use hiapi\db\HstoreExpression;
-use hiapi\components\EntityManagerInterface;
-use hiapi\query\Specification;
-use hiapi\repositories\BaseRepository;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeFactoryInterface;
 use hiqdev\php\billing\sale\Sale;

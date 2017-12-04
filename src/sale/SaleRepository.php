@@ -10,10 +10,10 @@
 
 namespace hiqdev\billing\hiapi\sale;
 
-use hiapi\db\CallExpression;
-use hiapi\db\HstoreExpression;
-use hiapi\components\EntityManagerInterface;
-use hiapi\repositories\BaseRepository;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\sale\SaleFactoryInterface;
 use hiqdev\php\billing\sale\SaleQuery;

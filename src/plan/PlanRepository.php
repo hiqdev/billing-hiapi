@@ -10,9 +10,9 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiapi\components\ConnectionInterface;
-use hiapi\query\Specification;
-use hiapi\repositories\BaseRepository;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;

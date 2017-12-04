@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\target;
 
-use hiapi\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 
 class TargetRepository extends \hiapi\repositories\BaseRepository

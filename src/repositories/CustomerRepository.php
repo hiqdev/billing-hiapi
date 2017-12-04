@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\repositories;
 
-use hiapi\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\customer\CustomerFactoryInterface;
 
 class CustomerRepository extends \hiapi\repositories\BaseRepository

@@ -11,7 +11,10 @@
 namespace hiqdev\billing\hiapi\repositories;
 
 use DateTime;
-use hiapi\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillFactoryInterface;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
@@ -28,13 +31,13 @@ class BillRepository extends \hiapi\repositories\BaseRepository
     protected $factory;
 
     public function __construct(
-        ConnectionInterface $db,
+        EntityManagerInterface $em,
         BillFactoryInterface $factory,
         array $config = []
     ) {
         parent::__construct($config);
 
-        $this->db = $db;
+        $this->em = $em;
         $this->factory = $factory;
     }
 

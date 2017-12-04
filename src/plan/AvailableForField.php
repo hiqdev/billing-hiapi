@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiapi\query\FieldInterface;
+use hiqdev\yii\DataMapper\query\FieldInterface;
 use yii\db\Expression;
 
 class AvailableForField implements FieldInterface

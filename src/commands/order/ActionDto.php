@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\commands\order;
 
-use hiapi\validators\NestedModelValidator;
+use hiqdev\yii\DataMapper\validators\NestedModelValidator;
 use yii\base\Model;
 
 class ActionDto extends Model

@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiapi\query\attributes\IntegerAttribute;
-use hiapi\query\attributes\StringAttribute;
+use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
+use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
 class Target extends AbstractModel
 {

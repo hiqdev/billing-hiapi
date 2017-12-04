@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiapi\query\attributes\StringAttribute;
+use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
 class Currency extends AbstractModel
 {

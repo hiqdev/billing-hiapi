@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\repositories\ar;
 
-use hiapi\query\QueryMutator;
-use hiapi\query\Specification;
+use hiqdev\yii\DataMapper\query\QueryMutator;
+use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\billing\hiapi\models\Price;
 use hiqdev\billing\hiapi\repositories\PlanCreationDto;

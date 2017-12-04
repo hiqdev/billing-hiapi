@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiapi\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;

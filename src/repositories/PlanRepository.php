@@ -2,9 +2,9 @@
 
 namespace hiqdev\billing\hiapi\repositories;
 
-use hiapi\components\ConnectionInterface;
-use hiapi\query\QueryMutator;
-use hiapi\query\Specification;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\query\QueryMutator;
+use hiqdev\yii\DataMapper\query\Specification;
 use yii\db\Query;
 
 class PlanRepository extends \hiapi\repositories\BaseRepository

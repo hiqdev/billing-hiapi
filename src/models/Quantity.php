@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\models;
 
-use hiapi\query\attributes\FloatAttribute;
-use hiapi\query\attributes\StringAttribute;
+use hiqdev\yii\DataMapper\query\attributes\FloatAttribute;
+use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
 class Quantity extends AbstractModel
 {
