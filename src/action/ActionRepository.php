@@ -17,7 +17,6 @@ use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\action\ActionFactoryInterface;
 use hiqdev\php\billing\action\ActionQuery;
-use hiqdev\php\billing\sale\Sale;
 
 class ActionRepository extends BaseRepository
 {
@@ -44,6 +43,7 @@ class ActionRepository extends BaseRepository
         $sale = $action->getSale();
         $hstore = new HstoreExpression(array_filter([
             'id'        => $action->getId(),
+            'parent_id' => $action->hasParent() ? $action->getParent()->getId() : null,
             'object_id' => $action->getTarget()->getId(),
             'type'      => $action->getType()->getName(),
             'type_id'   => $action->getType()->getId(),
