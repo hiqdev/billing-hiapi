@@ -37,7 +37,7 @@ return [
                 \hiqdev\php\billing\charge\Charge::class => [
                     'class' => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
                 ],
-                \hiqdev\php\billing\action\SimpleAction::class => [
+                \hiqdev\php\billing\action\Action::class => [
                     'class' => \hiqdev\billing\hiapi\action\ActionRepository::class,
                 ],
                 \hiqdev\php\billing\sale\Sale::class => [
