@@ -31,7 +31,7 @@ return [
                 \hiqdev\php\billing\plan\Plan::class => [
                     'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
                 ],
-                \hiqdev\php\billing\plan\PriceInterface::class => [
+                \hiqdev\php\billing\price\PriceInterface::class => [
                     'class' => \hiqdev\billing\hiapi\plan\PriceRepository::class,
                 ],
                 \hiqdev\php\billing\charge\Charge::class => [

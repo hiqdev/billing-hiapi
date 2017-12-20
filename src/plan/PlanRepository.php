@@ -10,6 +10,10 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
+use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\plan\PlanFactory;
+use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
@@ -18,7 +22,6 @@ use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\PlanFactoryInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
-use hiqdev\php\billing\plan\PriceInterface;
 use Yii;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
@@ -26,10 +29,17 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     public $queryClass = PlanQuery::class;
 
     /**
-     * @var PlanFactory
+     * @var PlanFactory|PlanFactoryInterface
      */
     protected $factory;
 
+    /**
+     * PlanRepository constructor.
+     *
+     * @param ConnectionInterface $db
+     * @param PlanFactory|PlanFactoryInterface $factory
+     * @param array $config
+     */
     public function __construct(
         ConnectionInterface $db,
         PlanFactoryInterface $factory,
@@ -41,11 +51,16 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $this->factory = $factory;
     }
 
+    /**
+     * @param array $row
+     * @return Plan|PlanInterface
+     */
     public function create(array $row)
     {
         $row['seller'] = $this->createEntity(Customer::class, $row['seller']);
         $raw_prices = $row['prices'];
         unset($row['prices']);
+        /** @var Plan $plan */
         $plan = parent::create($row);
         if (is_array($raw_prices)) {
             $prices = [];
@@ -59,6 +74,10 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         return $plan;
     }
 
+    /**
+     * @param ActionInterface $action
+     * @return PlanInterface
+     */
     public function findByAction(ActionInterface $action)
     {
         $client_id = $action->getCustomer()->getId();
@@ -78,6 +97,10 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         return $this->findOne($spec);
     }
 
+    /**
+     * @param OrderInterface $order
+     * @return Plan[]|PlanInterface[]
+     */
     public function findByOrder(OrderInterface $order)
     {
         return array_map([$this, 'findByAction'], $order->getActions());
