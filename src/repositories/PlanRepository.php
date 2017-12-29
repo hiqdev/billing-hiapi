@@ -3,7 +3,6 @@
 namespace hiqdev\billing\hiapi\repositories;
 
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
-use hiqdev\yii\DataMapper\query\QueryMutator;
 use hiqdev\yii\DataMapper\query\Specification;
 use yii\db\Query;
 
@@ -43,12 +42,13 @@ class PlanRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 
     public function findAll(Specification $specification)
     {
-        $mutator = (new QueryMutator((new Query())
+        $query = (new Query())
             ->select(['p.obj_id as id', 'p.name'])
-            ->from('tariff p')
-        ))->apply($specification);
+            ->from('tariff p');
 
-        $rows = $mutator->getQuery()->createCommand($this->db)->queryAll();
+        $specification->applyTo($query);
+
+        $rows = $query->createCommand($this->db)->queryAll();
         $this->extendWithPrices($rows);
 
         $plans = $this->planHydrator->hydrateMultiple($this->planFactory->createPrototype(), $rows);

@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
+use hiqdev\billing\hiapi\models\relations\Bucket;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanFactory;
 use hiqdev\php\billing\plan\PlanInterface;
@@ -26,6 +27,7 @@ use Yii;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
 {
+    /** {@inheritdoc} */
     public $queryClass = PlanQuery::class;
 
     /**
@@ -57,7 +59,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
      */
     public function create(array $row)
     {
-        $row['seller'] = $this->createEntity(Customer::class, $row['seller']);
+        $row['seller'] = $this->createEntity(Customer::class, $row['seller'] ?? []);
         $raw_prices = $row['prices'];
         unset($row['prices']);
         /** @var Plan $plan */
@@ -85,7 +87,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $type = $action->getTarget()->getType();
 
         $spec = Yii::createObject(Specification::class)
-            ->with(PriceInterface::class)
+            ->with('prices')
             ->where([
                 'type-name' => $type,
                 'available_for' => [
@@ -105,4 +107,14 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     {
         return array_map([$this, 'findByAction'], $order->getActions());
     }
+
+    protected function joinPrices(&$rows)
+    {
+        $bucket = Bucket::fromRows($rows, 'id');
+        $spec = (new Specification())->where(['plan-id' => $bucket->getKeys()]);
+        $prices = $this->getRepository(PriceInterface::class)->queryAll($spec);
+        $bucket->fill($prices, 'plan.id', 'id');
+        $bucket->pour($rows, 'prices');
+    }
+
 }

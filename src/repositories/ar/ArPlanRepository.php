@@ -19,7 +19,7 @@ use hiqdev\billing\hiapi\repositories\PlanFactory;
 use hiqdev\billing\hiapi\repositories\PriceCreationDto;
 use hiqdev\billing\hiapi\repositories\PriceFactory;
 
-class ArPlanRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
+class NoArPlanRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     /**
      * @var PlanFactory

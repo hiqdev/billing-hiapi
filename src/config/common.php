@@ -43,6 +43,9 @@ return [
                 \hiqdev\php\billing\sale\Sale::class => [
                     'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
                 ],
+                \hiqdev\php\billing\price\PriceInterface::class => [
+                    'class' => \hiqdev\billing\hiapi\plan\PriceRepository::class
+                ]
             ],
         ],
     ],
