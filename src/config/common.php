@@ -54,6 +54,9 @@ return [
             \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
                 'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
             ],
+            \hiqdev\php\billing\sale\SaleRepositoryInterface::class => [
+                'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
+            ],
             \hiqdev\php\billing\order\CalculatorInterface::class => [
                 'class' => \hiqdev\php\billing\order\Calculator::class,
             ],
