@@ -41,6 +41,7 @@ class ActionRepository extends BaseRepository
     public function save(ActionInterface $action)
     {
         $sale = $action->getSale();
+        $time = $action->getTime();
         $hstore = new HstoreExpression(array_filter([
             'id'        => $action->getId(),
             'parent_id' => $action->hasParent() ? $action->getParent()->getId() : null,
@@ -49,6 +50,7 @@ class ActionRepository extends BaseRepository
             'type_id'   => $action->getType()->getId(),
             'amount'    => $action->getQuantity()->getQuantity(),
             'sale_id'   => $sale ? $this->em->findId($sale) : null,
+            'time'      => $time ? $time->format('c') : null,
         ]));
         $call = new CallExpression('replace_action', [$action->getId(), $hstore]);
         $command = $this->em->getConnection()->createSelect($call);
