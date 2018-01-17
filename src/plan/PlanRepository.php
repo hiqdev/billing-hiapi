@@ -108,6 +108,15 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         return array_map([$this, 'findByAction'], $order->getActions());
     }
 
+    public function findByIds(array $ids)
+    {
+        $spec = Yii::createObject(Specification::class)
+            ->with('prices')
+            ->where(['id' => $ids]);
+
+        return $this->findAll($spec);
+    }
+
     protected function joinPrices(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'id');
