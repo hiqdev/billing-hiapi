@@ -16,10 +16,11 @@ use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\sale\SaleFactoryInterface;
+use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\sale\SaleQuery;
 use hiqdev\php\billing\sale\Sale;
 
-class SaleRepository extends BaseRepository
+class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 {
     public $queryClass = SaleQuery::class;
 
