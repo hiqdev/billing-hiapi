@@ -56,11 +56,6 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 
     public function save(BillInterface $bill)
     {
-        $chargeIds = [];
-        foreach ($bill->getCharges() as $charge) {
-            $this->em->save($charge);
-            $chargeIds[] = $charge->getId();
-        }
         $hstore = new HstoreExpression([
             'id'            => $bill->getId(),
             'object_id'     => $bill->getTarget()->getId(),
@@ -74,11 +69,14 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'quantity'      => $bill->getQuantity()->getQuantity(),
             'time'          => $bill->getTime()->format('c'),
             'is_finished'   => $bill->getIsFinished(),
-            'charge_ids'    => implode(',', $chargeIds),
             'increment'     => true,
         ]);
-        $call = new CallExpression('set_bill', [$hstore]);
+        $call = new CallExpression('set_bill2', [$hstore]);
         $command = $this->em->getConnection()->createSelect($call);
         $bill->setId($command->scalar());
+        foreach ($bill->getCharges() as $charge) {
+            $charge->setBill($bill);
+            $this->em->save($charge);
+        }
     }
 }
