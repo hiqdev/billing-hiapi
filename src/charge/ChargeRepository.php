@@ -42,8 +42,12 @@ class ChargeRepository extends BaseRepository
     public function save(Charge $charge)
     {
         $action = $charge->getAction();
-        $sale = new Sale(null, $action->getTarget(), $action->getCustomer(), $charge->getPrice()->getPlan());
-        $action->setSale($sale);
+        if ($action->hasSale($action)) {
+            $sale = $action->getSale();
+        } else {
+            $sale = new Sale(null, $action->getTarget(), $action->getCustomer(), $charge->getPrice()->getPlan());
+            $action->setSale($sale);
+        }
         $this->em->save($action);
         $hstore = new HstoreExpression(array_filter([
             'id'        => $charge->getId(),
@@ -57,7 +61,7 @@ class ChargeRepository extends BaseRepository
             'currency'  => $charge->getSum()->getCurrency()->getCode(),
             'sum'       => $charge->getSum()->getAmount(),
             'quantity'  => $charge->getUsage()->getQuantity(),
-            'sale_id'   => $sale ? $this->em->findId($sale) : null,
+            'bill_id'   => $charge->getBill()->getId(),
             'time'      => $charge->getTime(),
         ]));
         $call = new CallExpression('set_charge', [$hstore]);
