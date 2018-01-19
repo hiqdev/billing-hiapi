@@ -67,7 +67,7 @@ return [
                 'class' => \hiqdev\php\billing\type\TypeFactory::class,
             ],
             \hiqdev\php\billing\target\TargetFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\target\TargetFactory::class,
+                'class' => \hiqdev\billing\hiapi\target\TargetFactory::class,
             ],
             \hiqdev\php\billing\bill\BillFactoryInterface::class => [
                 'class' => \hiqdev\php\billing\bill\BillFactory::class,

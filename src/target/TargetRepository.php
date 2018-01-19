@@ -10,8 +10,10 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\php\billing\target\Target;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;
+use hiqdev\yii\DataMapper\query\Specification;
 
 class TargetRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
@@ -29,5 +31,10 @@ class TargetRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepositor
 
         $this->db = $db;
         $this->factory = $factory;
+    }
+
+    public function findOneById($id): ?Target
+    {
+        return $this->findOne((new Specification())->andWhere(['id' => $id]));
     }
 }
