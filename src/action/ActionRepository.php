@@ -52,7 +52,7 @@ class ActionRepository extends BaseRepository
             'sale_id'   => $sale ? $this->em->findId($sale) : null,
             'time'      => $time ? $time->format('c') : null,
         ]));
-        $call = new CallExpression('replace_action', [$action->getId(), $hstore]);
+        $call = new CallExpression('set_action', [$hstore]);
         $command = $this->em->getConnection()->createSelect($call);
         $action->setId($command->scalar());
     }
