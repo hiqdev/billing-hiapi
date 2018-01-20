@@ -22,12 +22,12 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
     protected function attributesMap()
     {
         return [
-            'id' => 'tr.id',
+            'id' => 'zp.id',
             'plan' => [
-                'id' => 'tr.plan_id',
+                'id' => 'zp.plan_id',
             ],
             'target' => [
-                'id' => 'tr.object_id',
+                'id' => 'zp.object_id',
                 'type' => 'oc.name',
             ],
             'type' => [
@@ -35,24 +35,24 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
             ],
             'price' => [
                 'currency' => 'cu.name',
-                'amount' => 'tr.price',
+                'amount' => 'zp.price',
             ],
             'prepaid' => [
                 'unit' => 'tu.name',
-                'quantity' => 'tr.quantity',
+                'quantity' => 'zp.quantity',
             ],
-            'data' => 'tr.data',
+            'data' => 'zp.data',
         ];
     }
 
     public function initFrom()
     {
         return $this
-            ->from('uprice              tr')
-            ->leftJoin('zref            rt', 'rt.obj_id = tr.type_id')
-            ->leftJoin('zref            tu', 'tu.obj_id = tr.unit_id')
-            ->leftJoin('zref            cu', 'cu.obj_id = tr.currency_id')
-            ->leftJoin('obj             zo', 'zo.obj_id = tr.object_id')
+            ->from('uprice              zp')
+            ->leftJoin('zref            rt', 'rt.obj_id = zp.type_id')
+            ->leftJoin('zref            tu', 'tu.obj_id = zp.unit_id')
+            ->leftJoin('zref            cu', 'cu.obj_id = zp.currency_id')
+            ->leftJoin('obj             zo', 'zo.obj_id = zp.object_id')
             ->leftJoin('zref            oc', 'oc.obj_id = zo.class_id');
     }
 }
