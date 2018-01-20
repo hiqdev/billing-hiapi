@@ -24,7 +24,7 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
         return [
             'id' => 'tr.id',
             'plan' => [
-                'id' => 'tr.tariff_id',
+                'id' => 'tr.plan_id',
             ],
             'target' => [
                 'id' => 'tr.object_id',
@@ -48,7 +48,7 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
     public function initFrom()
     {
         return $this
-            ->from('tariff_resourcez    tr')
+            ->from('uprice              tr')
             ->leftJoin('zref            rt', 'rt.obj_id = tr.type_id')
             ->leftJoin('zref            tu', 'tu.obj_id = tr.unit_id')
             ->leftJoin('zref            cu', 'cu.obj_id = tr.currency_id')
