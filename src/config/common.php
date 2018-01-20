@@ -79,7 +79,10 @@ return [
                 'class' => \hiqdev\php\billing\plan\PlanFactory::class,
             ],
             \hiqdev\php\billing\price\PriceFactoryInterface::class => function () {
-                return new \hiqdev\php\billing\price\PriceFactory(Yii::$app->params['billing-hiapi.priceTypes']);
+                return new \hiqdev\php\billing\price\PriceFactory(
+                    Yii::$app->params['billing-hiapi.price.types'],
+                    Yii::$app->params['billing-hiapi.price.defaultClass']
+                );
             },
             \hiqdev\php\billing\charge\ChargeFactoryInterface::class => [
                 'class' => \hiqdev\php\billing\charge\ChargeFactory::class,
