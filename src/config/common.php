@@ -13,8 +13,8 @@ return [
         'entityManager' => [
             'repositories' => [
                 \hiqdev\php\billing\type\Type::class => [
-                    'class' => \hiqdev\billing\hiapi\repositories\TypeRepository::class,
-                    'queryClass' => \hiqdev\billing\hiapi\query\TypeQuery::class,
+                    'class' => \hiqdev\billing\hiapi\type\TypeRepository::class,
+                    'queryClass' => \hiqdev\billing\hiapi\type\TypeQuery::class,
                 ],
                 \hiqdev\php\billing\bill\Bill::class => [
                     'class' => \hiqdev\billing\hiapi\repositories\BillRepository::class,
@@ -64,7 +64,7 @@ return [
                 'class' => \hiqdev\php\billing\charge\Aggregator::class,
             ],
             \hiqdev\php\billing\type\TypeFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\type\TypeFactory::class,
+                'class' => \hiqdev\billing\hiapi\type\TypeFactory::class,
             ],
             \hiqdev\php\billing\target\TargetFactoryInterface::class => [
                 'class' => \hiqdev\billing\hiapi\target\TargetFactory::class,

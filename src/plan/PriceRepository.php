@@ -49,32 +49,10 @@ class PriceRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
         $row['unit'] = Unit::create($row['prepaid']['unit']);
         $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
         $row['currency'] = new Currency(strtoupper($row['price']['currency']));
-        $row['price'] = $this->negotiatePriceAndUnit($row['price']['amount'], $row['unit'], $row['currency']);
+        $row['price'] = new Money($row['price']['amount'], $row['currency']);
         $data = Json::decode($row['data']);
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
 
         return parent::create($row);
     }
-
-    /**
-     * @param string $amount
-     * @param Unit $unit
-     * @param Currency $currency
-     * @return Money
-     */
-    protected function negotiatePriceAndUnit($amount, Unit &$unit, Currency $currency)
-    {
-        if (filter_var($amount, FILTER_VALIDATE_INT) === false) {
-            $numberFromString = Number::fromString($amount);
-            if (!$numberFromString->isInteger()) {
-                // $smaller = $unit->getSmaller();
-                // $amount = $amount/$smaller->getFactor();
-                // TODO: !!!
-                return $this->negotiatePriceAndUnit($amount, $smaller, $currency);
-            }
-        }
-
-        return new Money($amount, $currency);
-    }
-
 }

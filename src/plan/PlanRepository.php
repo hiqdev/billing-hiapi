@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiqdev\billing\hiapi\models\relations\Bucket;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanFactory;
 use hiqdev\php\billing\plan\PlanInterface;

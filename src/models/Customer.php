@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\models;
 
+use hiqdev\yii\DataMapper\models\AbstractModel;
 use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
 use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
