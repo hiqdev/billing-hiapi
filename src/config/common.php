@@ -28,6 +28,9 @@ return [
                     'class' => \hiqdev\billing\hiapi\target\TargetRepository::class,
                     'queryClass' => \hiqdev\billing\hiapi\target\TargetQuery::class,
                 ],
+                \hiqdev\php\billing\plan\Plan::class => [
+                    'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
+                ],
                 \hiqdev\php\billing\plan\PlanInterface::class => [
                     'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
                 ],
