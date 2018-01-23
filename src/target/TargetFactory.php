@@ -29,7 +29,17 @@ class TargetFactory implements TargetFactoryInterface
         $map = [
             'device' => [
                 '*' => ServerTarget::class,
-            ]
+            ],
+            /// TODO to be fixed by SilverFire
+            'certificate' => [
+                '*' => ServerTarget::class,
+            ],
+            'ref' => [
+                '*' => ServerTarget::class,
+            ],
+            '-1' => [
+                '*' => ServerTarget::class,
+            ],
         ];
 
         $type = $dto->type;
@@ -42,6 +52,7 @@ class TargetFactory implements TargetFactoryInterface
         $class = $map[$type][$subtype] ?? $map[$type]['*'] ?? null;
 
         if ($class === null) {
+            /// d(compact('dto', 'type','subtype'));
             throw new InvalidConfigException('No class for type' . $dto->type);
         }
 
