@@ -24,7 +24,7 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
         return [
             'id' => 'zp.id',
             'plan' => [
-                'id' => 'zp.plan_id',
+                'id' => 'zp.tariff_id',
             ],
             'target' => [
                 'id' => 'zp.object_id',
