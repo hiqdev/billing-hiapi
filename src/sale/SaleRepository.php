@@ -10,19 +10,23 @@
 
 namespace hiqdev\billing\hiapi\sale;
 
-use hiqdev\billing\hiapi\models\relations\Bucket;
+use DateTimeImmutable;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;
+use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\sale\SaleFactoryInterface;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\sale\Sale;
+use hiqdev\php\billing\target\Target;
 use Yii;
 
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface
@@ -44,6 +48,16 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 
         $this->em = $em;
         $this->factory = $factory;
+    }
+
+    public function create(array $row)
+    {
+        $row['target']      = $this->createEntity(Target::class, $row['target']);
+        $row['customer']    = $this->createEntity(Customer::class, $row['customer']);
+        $row['plan']        = $this->createEntity(Plan::class, $row['plan']);
+        $row['time']        = new DateTimeImmutable($row['time']);
+
+        return parent::create($row);
     }
 
     public function findId(SaleInterface $sale)
