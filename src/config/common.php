@@ -28,7 +28,7 @@ return [
                     'class' => \hiqdev\billing\hiapi\target\TargetRepository::class,
                     'queryClass' => \hiqdev\billing\hiapi\target\TargetQuery::class,
                 ],
-                \hiqdev\php\billing\plan\Plan::class => [
+                \hiqdev\php\billing\plan\PlanInterface::class => [
                     'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
                 ],
                 \hiqdev\php\billing\price\PriceInterface::class => [
@@ -43,9 +43,6 @@ return [
                 \hiqdev\php\billing\sale\Sale::class => [
                     'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
                 ],
-                \hiqdev\php\billing\price\PriceInterface::class => [
-                    'class' => \hiqdev\billing\hiapi\plan\PriceRepository::class
-                ]
             ],
         ],
     ],
