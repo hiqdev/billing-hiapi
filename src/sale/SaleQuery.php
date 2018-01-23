@@ -39,14 +39,14 @@ class SaleQuery extends \hiqdev\yii\DataMapper\query\Query
                 'id' => 'zs.tariff_id',
                 'name' => 'zt.tariff',
             ],
-            //'available_for' => new AvailableForField(),
+            'time' => 'zs.time',
         ];
     }
 
     public function initFrom()
     {
         return $this->from('zsale   zs')
-            ->leftJoin('obj         so', 'so.obj_id = zs.obj_id')
+            ->leftJoin('obj         so', 'so.obj_id = zs.object_id')
             ->leftJoin('zref        oc', 'oc.obj_id = so.class_id')
             ->leftJoin('ztariff     zt', 'zt.obj_id = zs.tariff_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = zs.buyer_id')
