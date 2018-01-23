@@ -22,6 +22,7 @@ use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\sale\SaleFactoryInterface;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
@@ -110,7 +111,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
         }
 
         $spec = Yii::createObject(Specification::class)
-            /// XXX how to pass with prices into joinPlans?
+            /// XXX how to pass if we want with prices into joinPlans?
             ->with('plans')
             ->where($cond);
 
@@ -120,8 +121,17 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
     protected function joinPlans(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'plan-id');
-        $plans = $this->getRepository(PlanInterface::class)->findByIds($bucket->getKeys());
-        $bucket->fill($plans, 'plan.id', 'id');
-        $bucket->pour($rows, 'plans');
+        $spec = (new Specification())
+            ->with('prices')
+            ->where(['id' => $bucket->getKeys()]);
+        $raw_plans = $this->getRepository(PlanInterface::class)->queryAll($spec);
+        /// TODO for SilverFire: try to do with bucket
+        $plans = [];
+        foreach ($raw_plans as $plan) {
+            $plans[$plan['id']] = $plan;
+        }
+        foreach ($rows as &$sale) {
+            $sale['plan'] = $plans[$sale['plan-id']];
+        }
     }
 }
