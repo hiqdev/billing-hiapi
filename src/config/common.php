@@ -46,6 +46,12 @@ return [
                 \hiqdev\php\billing\sale\Sale::class => [
                     'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
                 ],
+                \DateTimeImmutable::class => [
+                    'class' => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
+                ],
+                \Money\Money::class => [
+                    'class' => \hiqdev\billing\hiapi\vo\MoneyRepostory::class,
+                ],
             ],
         ],
     ],
