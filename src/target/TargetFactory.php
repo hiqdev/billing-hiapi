@@ -30,6 +30,9 @@ class TargetFactory implements TargetFactoryInterface
             'device' => [
                 '*' => ServerTarget::class,
             ],
+            'server' => [
+                '*' => ServerTarget::class,
+            ],
             /// TODO to be fixed by SilverFire
             'certificate' => [
                 '*' => ServerTarget::class,
