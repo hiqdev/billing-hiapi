@@ -34,6 +34,12 @@ class TargetFactory implements TargetFactoryInterface
                 '*' => ServerTarget::class,
             ],
             /// TODO to be fixed by SilverFire
+            'tariff' => [
+                '*' => ServerTarget::class,
+            ],
+            'account' => [
+                '*' => ServerTarget::class,
+            ],
             'certificate' => [
                 '*' => ServerTarget::class,
             ],
