@@ -37,6 +37,9 @@ class TargetFactory implements TargetFactoryInterface
             'tariff' => [
                 '*' => ServerTarget::class,
             ],
+            'client' => [
+                '*' => ServerTarget::class,
+            ],
             'account' => [
                 '*' => ServerTarget::class,
             ],
