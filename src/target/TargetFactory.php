@@ -3,6 +3,9 @@
 namespace hiqdev\billing\hiapi\target;
 
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\part\PartTarget;
+use hiqdev\billing\hiapi\target\ref\RefTarget;
+use hiqdev\php\billing\target\certificate\CertificateTarget;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
@@ -21,7 +24,7 @@ class TargetFactory implements TargetFactoryInterface
             $class = $this->getClassForType($dto);
         }
 
-        return new $class($dto->id, $dto->type);
+        return new $class($dto->id, $dto->type, $dto->name);
     }
 
     protected function getClassForType(TargetCreationDto $dto): string
@@ -30,15 +33,17 @@ class TargetFactory implements TargetFactoryInterface
             'device' => [
                 '*' => ServerTarget::class,
             ],
-            /// TODO to be fixed by SilverFire
+            'part' => [
+                '*' => PartTarget::class,
+            ],
             'certificate' => [
-                '*' => ServerTarget::class,
+                '*' => CertificateTarget::class,
             ],
             'ref' => [
-                '*' => ServerTarget::class,
+                '*' => RefTarget::class,
             ],
             '-1' => [
-                '*' => ServerTarget::class,
+                '*' => Target::class,
             ],
         ];
 
@@ -52,8 +57,7 @@ class TargetFactory implements TargetFactoryInterface
         $class = $map[$type][$subtype] ?? $map[$type]['*'] ?? null;
 
         if ($class === null) {
-            /// d(compact('dto', 'type','subtype'));
-            throw new InvalidConfigException('No class for type' . $dto->type);
+            throw new InvalidConfigException('No class for type ' . $dto->type);
         }
 
         return $class;

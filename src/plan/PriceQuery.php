@@ -31,6 +31,7 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
                 'type' => 'oc.name',
             ],
             'type' => [
+                'id' => 'zp.type_id',
                 'name' => 'rt.name',
             ],
             'price' => [

@@ -24,6 +24,9 @@ class TargetQuery extends \hiqdev\yii\DataMapper\query\Query
                     ''
                 END as type
             "),
+            'name' => new Expression("
+                coalesce(d.name, '') as name
+            ")
         ];
     }
 
