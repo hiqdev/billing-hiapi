@@ -63,6 +63,9 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 
     public function findId(SaleInterface $sale)
     {
+        if ($sale->hasId()) {
+            return $sale->getId();
+        }
         $hstore = new HstoreExpression(array_filter([
             'buyer'     => $sale->getCustomer()->getLogin(),
             'buyer_id'  => $sale->getCustomer()->getId(),

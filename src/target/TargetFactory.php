@@ -36,6 +36,9 @@ class TargetFactory implements TargetFactoryInterface
             'part' => [
                 '*' => PartTarget::class,
             ],
+            'server' => [
+                '*' => ServerTarget::class,
+            ],
             'certificate' => [
                 '*' => CertificateTarget::class,
             ],
@@ -44,6 +47,16 @@ class TargetFactory implements TargetFactoryInterface
             ],
             '-1' => [
                 '*' => Target::class,
+            ],
+            // TODO: Create classes
+            'tariff' => [
+                '*' => ServerTarget::class,
+            ],
+            'client' => [
+                '*' => ServerTarget::class,
+            ],
+            'account' => [
+                '*' => ServerTarget::class,
             ],
         ];
 
