@@ -1,6 +1,6 @@
 <?php
 
-namespace hiqdev\php\billing\target\certificate;
+namespace hiqdev\billing\hiapi\target\certificate;
 
 use hiqdev\php\billing\target\Target;
 

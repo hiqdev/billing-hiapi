@@ -2,10 +2,10 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
-use hiqdev\php\billing\target\certificate\CertificateTarget;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
