@@ -17,6 +17,7 @@ use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeFactoryInterface;
+use hiqdev\php\billing\charge\GeneralizerInterface;
 use hiqdev\php\billing\sale\Sale;
 
 class ChargeRepository extends BaseRepository
@@ -28,15 +29,22 @@ class ChargeRepository extends BaseRepository
      */
     protected $factory;
 
+    /**
+     * @var GeneralizerInterface
+     */
+    protected $generalizer;
+
     public function __construct(
         EntityManagerInterface $em,
         ChargeFactoryInterface $factory,
+        GeneralizerInterface $generalizer,
         array $config = []
     ) {
         parent::__construct($config);
 
         $this->em = $em;
         $this->factory = $factory;
+        $this->generalizer = $generalizer;
     }
 
     public function save(Charge $charge)
@@ -49,9 +57,10 @@ class ChargeRepository extends BaseRepository
             $action->setSale($sale);
         }
         $this->em->save($action);
+        $target = $this->generalizer->lessGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
         $hstore = new HstoreExpression(array_filter([
             'id'        => $charge->getId(),
-            'object_id' => $charge->getTarget()->getId(),
+            'object_id' => $target->getId(),
             'tariff_id' => $sale->getPlan()->getId(),
             'action_id' => $action->getId(),
             'type_id'   => $action->getType()->getId(),

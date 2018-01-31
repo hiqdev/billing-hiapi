@@ -69,6 +69,9 @@ return [
             \hiqdev\php\billing\charge\AggregatorInterface::class => [
                 'class' => \hiqdev\php\billing\charge\Aggregator::class,
             ],
+            \hiqdev\php\billing\charge\GeneralizerInterface::class => [
+                'class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
+            ],
             \hiqdev\php\billing\type\TypeFactoryInterface::class => [
                 'class' => \hiqdev\billing\hiapi\type\TypeFactory::class,
             ],
