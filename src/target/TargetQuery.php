@@ -25,7 +25,7 @@ class TargetQuery extends \hiqdev\yii\DataMapper\query\Query
                 END as type
             "),
             'name' => new Expression("
-                coalesce(d.name, '') as name
+                coalesce(d.name, tr.name, '') as name
             ")
         ];
     }
@@ -35,6 +35,7 @@ class TargetQuery extends \hiqdev\yii\DataMapper\query\Query
         return $this->from('obj   o')
                 ->leftJoin('zref   t',  't.obj_id  = o.class_id')
                 ->leftJoin('device d',  'd.obj_id  = o.obj_id')
-                ->leftJoin('zref   tt', 'tt.obj_id = coalesce(d.type_id)');
+                ->leftJoin('tariff tr', 'tr.obj_id = o.obj_id')
+                ->leftJoin('zref   tt', 'tt.obj_id = coalesce(d.type_id, tr.type_id)');
     }
 }

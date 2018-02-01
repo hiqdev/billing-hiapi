@@ -6,6 +6,8 @@ use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
+use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
@@ -45,18 +47,18 @@ class TargetFactory implements TargetFactoryInterface
             'ref' => [
                 '*' => RefTarget::class,
             ],
-            '-1' => [
-                '*' => Target::class,
-            ],
-            // TODO: Create classes
             'tariff' => [
-                '*' => ServerTarget::class,
+                'server' => ServerTariffTarget::class,
+                '*' => TariffTarget::class,
             ],
             'client' => [
                 '*' => ServerTarget::class,
             ],
             'account' => [
                 '*' => ServerTarget::class,
+            ],
+            '-1' => [
+                '*' => Target::class,
             ],
         ];
 
@@ -72,6 +74,8 @@ class TargetFactory implements TargetFactoryInterface
         if ($class === null) {
             throw new InvalidConfigException('No class for type ' . $dto->type);
         }
+
+        $dto->type = $type; // Ensures `type` in DTO does not contain subtype. TODO: think about
 
         return $class;
     }

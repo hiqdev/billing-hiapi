@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Price;
+use yii\db\Expression;
 
 class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
 {
