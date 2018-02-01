@@ -19,7 +19,7 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
     {
         return $this->moreGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
 
-        /* Sorry, older variants (to be removed later):
+        /* Sorry, to be removed later, older variants
          * 1:
             if (in_array($charge->getTarget()->getType(), ['certificate', 'domain'], TRUE)) {
                 $priceTarget = $charge->getPrice()->getTarget();
@@ -35,23 +35,16 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
 
     public function moreGeneral(TargetInterface $first, TargetInterface $other)
     {
-        return $this->isMoreGeneral($first, $other) ? $first : $other;
+        return $this->isMoreGeneral($first, $other) || !$other->hasId() ? $first : $other;
     }
 
     public function lessGeneral(TargetInterface $first, TargetInterface $other)
     {
-        return $this->isMoreGeneral($first, $other) ? $other : $first;
+        return $this->isMoreGeneral($first, $other) || !$first->hasId() ? $other : $first;
     }
 
     public function isMoreGeneral(TargetInterface $first, TargetInterface $other)
     {
-        if (empty($first->getId()) && !empty($other->getId())) {
-            return true;
-        }
-        if (empty($other->getId()) && !empty($first->getId())) {
-            return false;
-        }
-
         $i = 0;
         $order = [
             'domain'        => ++$i,
