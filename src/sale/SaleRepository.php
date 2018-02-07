@@ -94,7 +94,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
     public function findByAction(ActionInterface $action)
     {
         $client_id = $action->getCustomer()->getId();
-        //$seller_id = $action->getCustomer()->getSeller()->getId();
+        $seller_id = $action->getCustomer()->getSeller()->getId();
         $type = $action->getTarget()->getType();
 
         if ($type === 'certificate') {
@@ -104,6 +104,10 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
                 'target-id' => $class_id,
                 'customer-id' => $client_id,
             ];
+            if (empty($client_id)) {
+                $cond['customer-id'] = $seller_id;
+                $cond['seller-id'] = $seller_id;
+            }
         } else if ($type === 'server') {
             $cond = [
                 'target-id' => $action->getTarget()->getId(),

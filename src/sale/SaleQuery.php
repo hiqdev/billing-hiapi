@@ -35,6 +35,9 @@ class SaleQuery extends \hiqdev\yii\DataMapper\query\Query
                     'login' => 'cr.login',
                 ],
             ],
+            'seller' => [
+                'id' => 'zs.seller_id',
+            ],
             'plan' => [
                 'id' => 'zs.tariff_id',
                 'name' => 'zt.tariff',

@@ -28,6 +28,7 @@ class Sale extends AbstractModel
     {
         return [
             'target' => Target::class,
+            'seller' => Customer::class,
             'customer' => Customer::class,
             'plan' => Plan::class,
         ];
