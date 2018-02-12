@@ -1,15 +1,15 @@
 <?php
 
-namespace hiqdev\billing\hiapi\target\ref;
+namespace hiqdev\billing\hiapi\target\modelGroup;
 
 use hiqdev\php\billing\target\Target;
 
 /**
- * Class RefTarget
+ * Class ModelGroupTarget
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class RefTarget extends Target
+class ModelGroupTarget extends Target
 {
 
 }

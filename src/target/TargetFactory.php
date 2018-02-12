@@ -4,10 +4,12 @@ namespace hiqdev\billing\hiapi\target;
 
 use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
+use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
@@ -49,6 +51,7 @@ class TargetFactory implements TargetFactoryInterface
             ],
             'tariff' => [
                 'server' => ServerTariffTarget::class,
+                'template' => TemplateTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [
@@ -56,6 +59,9 @@ class TargetFactory implements TargetFactoryInterface
             ],
             'account' => [
                 '*' => ServerTarget::class,
+            ],
+            'model_group' => [
+                '*' => ModelGroupTarget::class,
             ],
             '-1' => [
                 '*' => Target::class,
