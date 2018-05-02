@@ -44,7 +44,7 @@
         }
     ],
     "require": {
-        "hiqdev/hiapi": "<2.0 || dev-master",
+        "hiqdev/hiapi": "v2.x-dev",
         "hiqdev/php-billing": "<2.0 || dev-master"
     },
     "require-dev": {
