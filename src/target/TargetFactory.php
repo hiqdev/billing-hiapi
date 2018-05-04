@@ -17,6 +17,11 @@ use hiqdev\php\units\exceptions\InvalidConfigException;
 
 class TargetFactory implements TargetFactoryInterface
 {
+    public function getEntityClassName(): string
+    {
+        return Target::class;
+    }
+
     /**
      * @return Target|null
      */
