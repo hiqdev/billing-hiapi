@@ -5,13 +5,12 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\price;
 
 use hiqdev\billing\hiapi\models\Price;
-use yii\db\Expression;
 
 class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
 {

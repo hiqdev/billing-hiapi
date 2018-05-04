@@ -1,14 +1,17 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\charge;
 
-use DateTimeImmutable;
-use hiqdev\php\billing\bill\Bill;
-use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\target\TargetInterface;
-use hiqdev\php\units\QuantityInterface;
-use Money\Money;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -59,10 +62,9 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
             ''              => ++$i,
         ];
 
-        $lhs = $order[(string)$first->getType()];
-        $rhs = $order[(string)$other->getType()];
+        $lhs = $order[(string) $first->getType()];
+        $rhs = $order[(string) $other->getType()];
 
         return $lhs > $rhs;
     }
-
 }

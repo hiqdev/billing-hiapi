@@ -5,25 +5,20 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiqdev\yii\DataMapper\models\relations\Bucket;
+use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\Plan;
-use hiqdev\php\billing\plan\PlanFactory;
 use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use hiqdev\php\billing\price\PriceInterface;
-use hiqdev\yii\DataMapper\components\ConnectionInterface;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
-use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\order\OrderInterface;
-use hiqdev\php\billing\plan\PlanFactoryInterface;
-use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use Yii;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
@@ -80,5 +75,4 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $bucket->fill($prices, 'plan.id', 'id');
         $bucket->pour($rows, 'prices');
     }
-
 }

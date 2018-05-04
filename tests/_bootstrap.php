@@ -5,9 +5,8 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
-
 error_reporting(E_ALL & ~E_NOTICE);
 
 $bootstrap = __DIR__ . '/../src/_bootstrap.php';

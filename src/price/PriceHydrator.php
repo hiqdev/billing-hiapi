@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\price;
@@ -13,14 +13,12 @@ namespace hiqdev\billing\hiapi\price;
 use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
+use hiqdev\php\units\Quantity;
+use hiqdev\php\units\Unit;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
 use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
-use hiqdev\php\units\Unit;
-use hiqdev\php\units\Quantity;
-use hiqdev\yii2\collection\Model;
 use Money\Currency;
 use Money\Money;
-use Money\Number;
 use yii\helpers\Json;
 use Zend\Hydrator\HydratorInterface;
 
@@ -37,7 +35,7 @@ class PriceHydrator implements HydratorInterface
 
     use GeneratedHydratorTrait {
         hydrate as generatedHydrate;
-        createEmptyInstance AS generatedCreateEmptyInstance;
+        createEmptyInstance as generatedCreateEmptyInstance;
     }
 
     protected $priceFactory;
@@ -86,8 +84,8 @@ class PriceHydrator implements HydratorInterface
 
     /**
      * @param string $className
-     * @return object
      * @throws \ReflectionException
+     * @return object
      */
     public function createEmptyInstance(string $className, array $data)
     {

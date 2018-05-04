@@ -5,20 +5,19 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\repositories;
 
 use DateTime;
-use hiqdev\yii\DataMapper\expressions\CallExpression;
-use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\php\billing\bill\BillInterface;
-use hiqdev\php\billing\bill\BillFactoryInterface;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use Money\Currency;
 use Money\Money;
 use yii\db\Query;

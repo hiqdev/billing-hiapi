@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\type;
@@ -37,7 +37,7 @@ class TypeQuery extends \hiqdev\yii\DataMapper\query\Query
     public function joins()
     {
         return [
-            'fullRef' => new Join('zref_h zh', 'zh.obj_id = zr.obj_id')
+            'fullRef' => new Join('zref_h zh', 'zh.obj_id = zr.obj_id'),
         ];
     }
 

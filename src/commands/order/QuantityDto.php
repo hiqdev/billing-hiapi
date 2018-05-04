@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\commands\order;
@@ -33,9 +33,11 @@ class QuantityDto extends Model
     {
         try {
             Quantity::create($this->unit, $this->quantity);
+
             return true;
         } catch (\Exception $exception) {
             $this->addError('unit', $exception->getMessage());
+
             return false;
         }
     }

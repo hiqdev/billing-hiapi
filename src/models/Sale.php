@@ -5,14 +5,14 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\models;
 
 use hiqdev\yii\DataMapper\models\AbstractModel;
-use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
 use hiqdev\yii\DataMapper\query\attributes\DateTimeAttribute;
+use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
 
 class Sale extends AbstractModel
 {

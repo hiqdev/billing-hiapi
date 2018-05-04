@@ -5,30 +5,26 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\sale;
 
 use DateTimeImmutable;
-use hiqdev\yii\DataMapper\components\ConnectionInterface;
-use hiqdev\yii\DataMapper\models\relations\Bucket;
-use hiqdev\yii\DataMapper\expressions\CallExpression;
-use hiqdev\yii\DataMapper\expressions\HstoreExpression;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
-use hiqdev\php\billing\price\PriceInterface;
-use hiqdev\php\billing\sale\SaleInterface;
-use hiqdev\php\billing\sale\SaleFactoryInterface;
-use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\sale\Sale;
+use hiqdev\php\billing\sale\SaleInterface;
+use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\target\Target;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
+use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use Yii;
 
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface
@@ -93,7 +89,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
                 $cond['customer-id'] = $seller_id;
                 $cond['seller-id'] = $seller_id;
             }
-        } else if ($type === 'server') {
+        } elseif ($type === 'server') {
             $cond = [
                 'target-id' => $action->getTarget()->getId(),
                 'customer-id' => $client_id,

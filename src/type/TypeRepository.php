@@ -5,13 +5,13 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\type;
 
-use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\php\billing\type\TypeFactoryInterface;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 
 class TypeRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {

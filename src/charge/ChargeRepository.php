@@ -5,21 +5,19 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\charge;
 
-use hiqdev\yii\DataMapper\expressions\CallExpression;
-use hiqdev\yii\DataMapper\expressions\HstoreExpression;
-use hiqdev\yii\DataMapper\components\ConnectionInterface;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\charge\Charge;
-use hiqdev\php\billing\charge\ChargeFactoryInterface;
 use hiqdev\php\billing\charge\GeneralizerInterface;
 use hiqdev\php\billing\sale\Sale;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\expressions\CallExpression;
+use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use yii\db\Query;
 
 class ChargeRepository extends BaseRepository
