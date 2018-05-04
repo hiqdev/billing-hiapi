@@ -12,11 +12,13 @@ namespace hiqdev\billing\hiapi\action;
 
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\action\ActionFactoryInterface;
 use hiqdev\php\billing\action\ActionQuery;
+use yii\db\Query;
 
 class ActionRepository extends BaseRepository
 {
@@ -28,13 +30,12 @@ class ActionRepository extends BaseRepository
     protected $factory;
 
     public function __construct(
+        ConnectionInterface $db,
         EntityManagerInterface $em,
         ActionFactoryInterface $factory,
         array $config = []
     ) {
-        parent::__construct($config);
-
-        $this->em = $em;
+        parent::__construct($db, $em, $config);
         $this->factory = $factory;
     }
 
@@ -53,7 +54,7 @@ class ActionRepository extends BaseRepository
             'time'      => $time ? $time->format('c') : null,
         ]));
         $call = new CallExpression('set_action', [$hstore]);
-        $command = $this->em->getConnection()->createSelect($call);
-        $action->setId($command->scalar());
+        $command = (new Query())->select($call);
+        $action->setId($command->scalar($this->db));
     }
 }

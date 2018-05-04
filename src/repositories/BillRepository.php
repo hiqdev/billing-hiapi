@@ -13,7 +13,6 @@ namespace hiqdev\billing\hiapi\repositories;
 use DateTime;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillFactoryInterface;
 use hiqdev\php\billing\customer\Customer;
@@ -22,25 +21,10 @@ use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use Money\Currency;
 use Money\Money;
+use yii\db\Query;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
-    /**
-     * @var BillFactoryInterface
-     */
-    protected $factory;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        BillFactoryInterface $factory,
-        array $config = []
-    ) {
-        parent::__construct($config);
-
-        $this->em = $em;
-        $this->factory = $factory;
-    }
-
     public function create(array $row)
     {
         $row['type'] = $this->createEntity(Type::class, $row['type']);
@@ -72,8 +56,8 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'increment'     => true,
         ]);
         $call = new CallExpression('set_bill2', [$hstore]);
-        $command = $this->em->getConnection()->createSelect($call);
-        $bill->setId($command->scalar());
+        $command = (new Query())->select($call);
+        $bill->setId($command->scalar($this->db));
         foreach ($bill->getCharges() as $charge) {
             $charge->setBill($bill);
             $this->em->save($charge);

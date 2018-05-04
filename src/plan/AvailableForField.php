@@ -35,7 +35,7 @@ class AvailableForField implements FieldInterface
         return $this->name;
     }
 
-    public function buildCondition($value)
+    public function buildCondition($key, $value)
     {
         $params = [];
         if ($value['client_id']) {

@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\sale;
 
 use DateTimeImmutable;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
@@ -34,22 +35,6 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 {
     /** {@inheritdoc} */
     public $queryClass = SaleQuery::class;
-
-    /**
-     * @var SaleFactory
-     */
-    protected $factory;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        SaleFactoryInterface $factory,
-        array $config = []
-    ) {
-        parent::__construct($config);
-
-        $this->em = $em;
-        $this->factory = $factory;
-    }
 
     public function create(array $row)
     {

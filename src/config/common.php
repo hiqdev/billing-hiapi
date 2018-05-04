@@ -9,83 +9,64 @@
  */
 
 return [
-    'components' => [
-        'entityManager' => [
-            'repositories' => [
-                \hiqdev\php\billing\type\Type::class => [
-                    'class' => \hiqdev\billing\hiapi\type\TypeRepository::class,
-                    'queryClass' => \hiqdev\billing\hiapi\type\TypeQuery::class,
-                ],
-                \hiqdev\php\billing\bill\Bill::class => [
-                    'class' => \hiqdev\billing\hiapi\repositories\BillRepository::class,
-                    'queryClass' => \hiqdev\billing\hiapi\query\BillQuery::class,
-                ],
-                \hiqdev\php\billing\customer\Customer::class => [
-                    'class' => \hiqdev\billing\hiapi\repositories\CustomerRepository::class,
-                    'queryClass' => \hiqdev\billing\hiapi\query\CustomerQuery::class,
-                ],
-                \hiqdev\php\billing\target\Target::class => [
-                    'class' => \hiqdev\billing\hiapi\target\TargetRepository::class,
-                    'queryClass' => \hiqdev\billing\hiapi\target\TargetQuery::class,
-                ],
-                \hiqdev\php\billing\plan\Plan::class => [
-                    'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
-                ],
-                \hiqdev\php\billing\plan\PlanInterface::class => [
-                    'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
-                ],
-                \hiqdev\php\billing\price\PriceInterface::class => [
-                    'class' => \hiqdev\billing\hiapi\plan\PriceRepository::class,
-                ],
-                \hiqdev\php\billing\charge\Charge::class => [
-                    'class' => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
-                ],
-                \hiqdev\php\billing\action\Action::class => [
-                    'class' => \hiqdev\billing\hiapi\action\ActionRepository::class,
-                ],
-                \hiqdev\php\billing\sale\Sale::class => [
-                    'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
-                ],
-                \DateTimeImmutable::class => [
-                    'class' => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
-                ],
-                \Money\Money::class => [
-                    'class' => \hiqdev\billing\hiapi\vo\MoneyRepostory::class,
-                ],
-            ],
-        ],
-    ],
     'container' => [
         'singletons' => [
+            hiqdev\yii\DataMapper\components\EntityManagerInterface::class => [
+                'repositories' => [
+                    \hiqdev\php\billing\type\Type::class            => \hiqdev\billing\hiapi\type\TypeRepository::class,
+                    \hiqdev\php\billing\bill\Bill::class            => \hiqdev\billing\hiapi\repositories\BillRepository::class,
+                    \hiqdev\php\billing\customer\Customer::class    => \hiqdev\billing\hiapi\customer\CustomerRepository::class,
+                    \hiqdev\php\billing\target\Target::class        => \hiqdev\billing\hiapi\target\TargetRepository::class,
+                    \hiqdev\php\billing\plan\PlanInterface::class   => \hiqdev\billing\hiapi\plan\PlanRepository::class,
+                    \hiqdev\php\billing\plan\Plan::class            => \hiqdev\billing\hiapi\plan\PlanRepository::class,
+                    \hiqdev\php\billing\price\PriceInterface::class => \hiqdev\billing\hiapi\price\PriceRepository::class,
+                    \hiqdev\php\billing\charge\Charge::class        => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
+                    \hiqdev\php\billing\action\Action::class        => \hiqdev\billing\hiapi\action\ActionRepository::class,
+                    \hiqdev\php\billing\sale\Sale::class            => \hiqdev\billing\hiapi\sale\SaleRepository::class,
+                    \DateTimeImmutable::class                       => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
+                    \Money\Money::class                             => \hiqdev\billing\hiapi\vo\MoneyRepostory::class,
+                ],
+            ],
+            \hiqdev\yii\DataMapper\hydrator\ConfigurableAggregateHydrator::class => [
+                'hydrators' => [
+                    \hiqdev\php\billing\customer\Customer::class    => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
+                    \hiqdev\php\billing\target\Target::class        => \hiqdev\billing\hiapi\target\TargetHydrator::class,
+                    \hiqdev\php\billing\type\Type::class            => \hiqdev\billing\hiapi\type\TypeHydrator::class,
+                    \hiqdev\php\billing\plan\Plan::class            => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
+                    \hiqdev\php\billing\plan\PlanInterface::class   => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
+                    \hiqdev\php\billing\price\Price::class          => \hiqdev\billing\hiapi\price\PriceHydrator::class,
+                    \hiqdev\php\billing\price\PriceInterface::class => \hiqdev\billing\hiapi\price\PriceHydrator::class,
+                ],
+            ],
             \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
-                'class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
+                '__class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
             ],
             \hiqdev\php\billing\sale\SaleRepositoryInterface::class => [
-                'class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
+                '__class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
             ],
             \hiqdev\php\billing\order\CalculatorInterface::class => [
-                'class' => \hiqdev\php\billing\order\Calculator::class,
+                '__class' => \hiqdev\php\billing\order\Calculator::class,
             ],
             \hiqdev\php\billing\charge\AggregatorInterface::class => [
-                'class' => \hiqdev\php\billing\charge\Aggregator::class,
+                '__class' => \hiqdev\php\billing\charge\Aggregator::class,
             ],
             \hiqdev\php\billing\charge\GeneralizerInterface::class => [
-                'class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
+                '__class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
             ],
             \hiqdev\php\billing\type\TypeFactoryInterface::class => [
-                'class' => \hiqdev\billing\hiapi\type\TypeFactory::class,
+                '__class' => \hiqdev\billing\hiapi\type\TypeFactory::class,
             ],
             \hiqdev\php\billing\target\TargetFactoryInterface::class => [
-                'class' => \hiqdev\billing\hiapi\target\TargetFactory::class,
+                '__class' => \hiqdev\billing\hiapi\target\TargetFactory::class,
             ],
             \hiqdev\php\billing\bill\BillFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\bill\BillFactory::class,
+                '__class' => \hiqdev\php\billing\bill\BillFactory::class,
             ],
             \hiqdev\php\billing\customer\CustomerFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\customer\CustomerFactory::class,
+                '__class' => \hiqdev\php\billing\customer\CustomerFactory::class,
             ],
             \hiqdev\php\billing\plan\PlanFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\plan\PlanFactory::class,
+                '__class' => \hiqdev\php\billing\plan\PlanFactory::class,
             ],
             \hiqdev\php\billing\price\PriceFactoryInterface::class => function () {
                 return new \hiqdev\billing\hiapi\price\PriceFactory(
@@ -94,13 +75,13 @@ return [
                 );
             },
             \hiqdev\php\billing\charge\ChargeFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\charge\ChargeFactory::class,
+                '__class' => \hiqdev\php\billing\charge\ChargeFactory::class,
             ],
             \hiqdev\php\billing\action\ActionFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\action\ActionFactory::class,
+                '__class' => \hiqdev\php\billing\action\ActionFactory::class,
             ],
             \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
-                'class' => \hiqdev\php\billing\sale\SaleFactory::class,
+                '__class' => \hiqdev\php\billing\sale\SaleFactory::class,
             ],
         ],
     ],

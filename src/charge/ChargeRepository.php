@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
@@ -19,15 +20,11 @@ use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeFactoryInterface;
 use hiqdev\php\billing\charge\GeneralizerInterface;
 use hiqdev\php\billing\sale\Sale;
+use yii\db\Query;
 
 class ChargeRepository extends BaseRepository
 {
     public $queryClass = ChargeQuery::class;
-
-    /**
-     * @var ChargeFactory
-     */
-    protected $factory;
 
     /**
      * @var GeneralizerInterface
@@ -35,15 +32,12 @@ class ChargeRepository extends BaseRepository
     protected $generalizer;
 
     public function __construct(
+        ConnectionInterface $db,
         EntityManagerInterface $em,
-        ChargeFactoryInterface $factory,
         GeneralizerInterface $generalizer,
         array $config = []
     ) {
-        parent::__construct($config);
-
-        $this->em = $em;
-        $this->factory = $factory;
+        parent::__construct($db, $em, $config);
         $this->generalizer = $generalizer;
     }
 
@@ -73,7 +67,7 @@ class ChargeRepository extends BaseRepository
             'bill_id'   => $charge->getBill()->getId(),
         ]));
         $call = new CallExpression('set_charge', [$hstore]);
-        $command = $this->em->getConnection()->createSelect($call);
-        $charge->setId($command->scalar());
+        $command = (new Query())->select($call);
+        $charge->setId($command->scalar($this->db));
     }
 }

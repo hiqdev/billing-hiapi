@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\plan;
+namespace hiqdev\billing\hiapi\price;
 
 use hiqdev\billing\hiapi\models\Price;
 use yii\db\Expression;
