@@ -28,7 +28,7 @@ class SaleHydrator extends GeneratedHydrator
         $data['target']     = $this->hydrator->hydrate($data['target'], Target::class);
         $data['customer']   = $this->hydrator->hydrate($data['customer'], Customer::class);
         $data['plan']       = $this->hydrator->hydrate($data['plan'], Plan::class);
-        $data['time']       = new DateTimeImmutable($data['time']);
+        $data['time']       = $this->hydrator->hydrate((array)$data['time'], DateTimeImmutable::class);
 
         return parent::hydrate($data, $object);
     }
@@ -41,17 +41,19 @@ class SaleHydrator extends GeneratedHydrator
     {
         $result = array_filter([
             'id'            => $object->getId(),
-            'time'          => $object->time ? $object->time->format(DateTimeImmutable::ATOM) : null,
         ]);
 
-        if ($object->getPlan()) {
-            $result['plan'] = $this->hydrator->extract($object->getPlan());
-        }
         if ($object->getTarget()) {
             $result['target'] = $this->hydrator->extract($object->getTarget());
         }
         if ($object->getCustomer()) {
             $result['customer'] = $this->hydrator->extract($object->getCustomer());
+        }
+        if ($object->getPlan()) {
+            $result['plan'] = $this->hydrator->extract($object->getPlan());
+        }
+        if ($object->getTime()) {
+            $result['time'] = $this->hydrator->extract($object->getTime());
         }
 
         return $result;
