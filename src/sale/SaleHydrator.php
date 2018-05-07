@@ -28,7 +28,7 @@ class SaleHydrator extends GeneratedHydrator
         $data['target']     = $this->hydrator->hydrate($data['target'], Target::class);
         $data['customer']   = $this->hydrator->hydrate($data['customer'], Customer::class);
         $data['plan']       = $this->hydrator->hydrate($data['plan'], Plan::class);
-        $data['time']       = $this->hydrator->hydrate((array)$data['time'], DateTimeImmutable::class);
+        $data['time']       = $this->hydrator->hydrate((array) $data['time'], DateTimeImmutable::class);
 
         return parent::hydrate($data, $object);
     }

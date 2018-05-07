@@ -1,9 +1,9 @@
 <?php
 /**
- * PHP Billing Library
+ * API for Billing
  *
- * @link      https://github.com/hiqdev/php-billing
- * @package   php-billing
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
  * @license   BSD-3-Clause
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
