@@ -36,6 +36,7 @@ return [
                     \hiqdev\php\billing\plan\PlanInterface::class   => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
                     \hiqdev\php\billing\price\Price::class          => \hiqdev\billing\hiapi\price\PriceHydrator::class,
                     \hiqdev\php\billing\price\PriceInterface::class => \hiqdev\billing\hiapi\price\PriceHydrator::class,
+                    \hiqdev\php\billing\sale\Sale::class            => \hiqdev\billing\hiapi\sale\SaleHydrator::class,
                 ],
             ],
             \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
