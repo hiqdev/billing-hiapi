@@ -1,0 +1,66 @@
+<?php
+/**
+ * PHP Billing Library
+ *
+ * @link      https://github.com/hiqdev/php-billing
+ * @package   php-billing
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ */
+
+namespace hiqdev\billing\hiapi\tests\unit\customer;
+
+use hiqdev\php\billing\customer\Customer;
+use Yii;
+use Zend\Hydrator\HydratorInterface;
+
+/**
+ * @author Andrii Vasyliev <sol@hiqdev.com>
+ */
+class CustomerHydratorTest extends \PHPUnit\Framework\TestCase
+{
+    const ID1 = 11111;
+    const LOGIN1 = 'login11111';
+
+    const ID2 = 22222;
+    const LOGIN2 = 'login22222';
+
+    protected $data = [
+        'id'        => self::ID1,
+        'login'     => self::LOGIN1,
+        'seller'    => [
+            'id'        => self::ID2,
+            'login'     => self::LOGIN2,
+        ],
+    ];
+
+    public function setUp()
+    {
+        $this->hydrator = Yii::$container->get(HydratorInterface::class);
+    }
+
+    public function testHydrateNew()
+    {
+        $obj = $this->hydrator->hydrate($this->data, Customer::class);
+        $this->checkValues($obj);
+    }
+
+    public function testHydrateOld()
+    {
+        $obj = new Customer(self::ID2, self::LOGIN2);
+        $this->hydrator->hydrate($this->data, $obj);
+        $this->checkValues($obj);
+    }
+
+    public function checkValues($obj)
+    {
+        $this->assertInstanceOf(Customer::class, $obj);
+        $this->assertSame(self::ID1, $obj->getId());
+        $this->assertSame(self::LOGIN1, $obj->getLogin());
+
+        $seller = $obj->getSeller();
+        $this->assertInstanceOf(Customer::class, $seller);
+        $this->assertSame(self::ID2, $seller->getId());
+        $this->assertSame(self::LOGIN2, $seller->getLogin());
+    }
+}

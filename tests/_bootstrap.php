@@ -7,22 +7,15 @@
  * @license   BSD-3-Clause
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
-error_reporting(E_ALL & ~E_NOTICE);
 
-$bootstrap = __DIR__ . '/../src/_bootstrap.php';
+error_reporting(E_ALL);
 
-require_once file_exists($bootstrap) ? $bootstrap : __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
-/*
- * Ensures compatibility with PHPUnit 6.x
- */
-if (!class_exists('PHPUnit_Framework_Constraint') && class_exists('PHPUnit\Framework\Constraint\Constraint')) {
-    abstract class PHPUnit_Framework_Constraint extends \PHPUnit\Framework\Constraint\Constraint
-    {
-    }
-}
-if (!class_exists('PHPUnit_Framework_TestCase') && class_exists('PHPUnit\Framework\TestCase')) {
-    abstract class PHPUnit_Framework_TestCase extends \PHPUnit\Framework\TestCase
-    {
-    }
-}
+use yii\console\Application;
+use hiqdev\composer\config\Builder;
+
+Yii::setAlias('@root', dirname(__DIR__));
+$config = require Builder::path('common');
+Yii::$app = new Application($config);
