@@ -10,20 +10,15 @@
 
 namespace hiqdev\billing\hiapi\type;
 
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
-use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
-use Zend\Hydrator\HydratorInterface;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
  * Class TypeHydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class TypeHydrator implements HydratorInterface
+class TypeHydrator extends GeneratedHydrator
 {
-    use RootHydratorAwareTrait;
-    use GeneratedHydratorTrait;
-
     /**
      * {@inheritdoc}
      * @param object|Type $object

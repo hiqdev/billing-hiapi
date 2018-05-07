@@ -11,22 +11,15 @@
 namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\php\billing\customer\Customer;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
-use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
-use Zend\Hydrator\HydratorInterface;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
  * Class CustomerHydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class CustomerHydrator implements HydratorInterface
+class CustomerHydrator extends GeneratedHydrator
 {
-    use RootHydratorAwareTrait;
-    use GeneratedHydratorTrait {
-        hydrate as generatedHydrate;
-    }
-
     /**
      * {@inheritdoc}
      * @param object|Customer $object
@@ -37,7 +30,7 @@ class CustomerHydrator implements HydratorInterface
             $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
         }
 
-        return $this->generatedHydrate($data, $object);
+        return parent::hydrate($data, $object);
     }
 
     /**
