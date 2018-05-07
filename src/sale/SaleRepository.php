@@ -22,6 +22,7 @@ use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use Yii;
+use yii\db\Query;
 
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 {
@@ -40,9 +41,9 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             'tariff_id' => $sale->getPlan()->getId(),
         ]));
         $call = new CallExpression('sale_id', [$hstore]);
-        $command = $this->em->getConnection()->createSelect($call);
+        $command = (new Query())->select($call);
 
-        return $command->scalar();
+        return $command->scalar($this->db);
     }
 
     /**
