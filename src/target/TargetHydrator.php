@@ -10,31 +10,15 @@
 
 namespace hiqdev\billing\hiapi\target;
 
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
-use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
-use Zend\Hydrator\HydratorInterface;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
  * Class TargetHydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class TargetHydrator implements HydratorInterface
+class TargetHydrator extends GeneratedHydrator
 {
-    use RootHydratorAwareTrait;
-    use GeneratedHydratorTrait {
-        hydrate as generatedHydrate;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @param object|Target $object
-     */
-    public function hydrate(array $data, $object)
-    {
-        return $this->generatedHydrate($data, $object);
-    }
-
     /**
      * {@inheritdoc}
      * @param object|Target $object
