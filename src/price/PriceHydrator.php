@@ -15,8 +15,7 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
-use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 use Money\Currency;
 use Money\Money;
 use yii\helpers\Json;
@@ -27,24 +26,15 @@ use Zend\Hydrator\HydratorInterface;
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class PriceHydrator implements HydratorInterface
+class PriceHydrator extends GeneratedHydrator
 {
-    use RootHydratorAwareTrait {
-        __construct as rootHydratorAwareConstructor;
-    }
-
-    use GeneratedHydratorTrait {
-        hydrate as generatedHydrate;
-        createEmptyInstance as generatedCreateEmptyInstance;
-    }
-
     protected $priceFactory;
 
     public function __construct(
         HydratorInterface $hydrator,
         PriceFactoryInterface $priceFactory
     ) {
-        $this->rootHydratorAwareConstructor($hydrator);
+        parent::__construct($hydrator);
         $this->priceFactory = $priceFactory;
     }
 
@@ -56,14 +46,24 @@ class PriceHydrator implements HydratorInterface
     {
         $row['target'] = $this->hydrator->hydrate($row['target'], Target::class);
         $row['type'] = $this->hydrator->hydrate($row['type'], Type::class);
-        $row['unit'] = Unit::create($row['prepaid']['unit']);
-        $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
-        $row['currency'] = new Currency(strtoupper($row['price']['currency']));
-        $row['price'] = new Money($row['price']['amount'], $row['currency']);
-        $data = Json::decode($row['data']);
+        if (isset($row['prepaid']['unit'])) {
+            $row['unit'] = Unit::create($row['prepaid']['unit']);
+        }
+        if (isset($row['prepaid']['quantity'])) {
+            $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
+        }
+        if (isset($row['price']['currency'])) {
+            $row['currency'] = new Currency(strtoupper($row['price']['currency']));
+        }
+        if (isset($row['price']['amount'])) {
+            $row['price'] = new Money($row['price']['amount'], $row['currency']);
+        }
+        if (isset($row['data'])) {
+            $data = Json::decode($row['data']);
+        }
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
 
-        return $this->generatedHydrate($row, $object);
+        return parent::hydrate($row, $object);
     }
 
     /**
@@ -87,10 +87,10 @@ class PriceHydrator implements HydratorInterface
      * @throws \ReflectionException
      * @return object
      */
-    public function createEmptyInstance(string $className, array $data)
+    public function createEmptyInstance(string $className, array $data = [])
     {
-        $className = $this->priceFactory->findClassForTypes([$data['type']]);
+        $className = $this->priceFactory->findClassForTypes([$data['type']['name']]);
 
-        return $this->generatedCreateEmptyInstance($className, $data);
+        return parent::createEmptyInstance($className, $data);
     }
 }
