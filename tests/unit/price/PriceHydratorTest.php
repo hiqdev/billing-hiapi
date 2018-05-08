@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\price;
 
+use hiqdev\php\billing\price\EnumPrice;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\billing\price\SinglePrice;
 use hiqdev\php\billing\target\Target;
@@ -19,6 +20,7 @@ use hiqdev\php\units\Unit;
 use Money\Currency;
 use Money\Money;
 use Yii;
+use yii\helpers\Json;
 use Zend\Hydrator\HydratorInterface;
 
 /**
@@ -34,7 +36,7 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
 
     const ID2   = '22222';
     const CUR2  = 'EUR';
-    const NAME2 = 'name-22222';
+    const NAME2 = 'certificate_purchase';
     const TYPE2 = 'type-22222';
     const UNIT2 = 'GB';
 
@@ -59,9 +61,34 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
         ],
     ];
 
+    protected $dataEnumPrice = [
+        'id' => self::ID2,
+        'type' => [
+            'id'        => self::ID2,
+            'name'      => self::NAME2,
+        ],
+        'target' => [
+            'id'        => self::ID2,
+            'type'      => self::TYPE2,
+            'name'      => self::NAME2,
+        ],
+        'prepaid' => [
+            'unit'      => self::UNIT2,
+        ],
+        'price' => [
+            'currency'  => self::CUR2,
+        ],
+    ];
+
+    protected $sums = [
+        1 => self::ID1,
+        2 => self::ID2,
+    ];
+
     public function setUp()
     {
         $this->hydrator = Yii::$container->get(HydratorInterface::class);
+        $this->dataEnumPrice['data'] = Json::encode(['sums' => $this->sums]);
     }
 
     public function testHydrateNewSinglePrice()
@@ -106,5 +133,49 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Money::class, $price);
         $this->assertSame(self::ID1,    $price->getAmount());
         $this->assertSame(self::CUR1,   $price->getCurrency()->getCode());
+    }
+
+    public function testHydrateNewEnumPrice()
+    {
+        $obj = $this->hydrator->hydrate($this->dataEnumPrice, PriceInterface::class);
+        $this->checkEnumPrice($obj);
+    }
+
+    public function testHydrateOldEnumPrice()
+    {
+        $type = new Type(self::ID2, self::NAME2);
+        $target = new Target(self::ID2, self::TYPE2, self::NAME2);
+        $currency = new Currency(self::CUR2);
+        $unit = Unit::create(self::UNIT2);
+        $sums = array_reverse($this->sums);
+        $obj = new EnumPrice(self::ID2, $type, $target, null, $unit, $currency, $sums);
+        $this->hydrator->hydrate($this->dataEnumPrice, $obj);
+        $this->checkEnumPrice($obj);
+    }
+
+    public function checkEnumPrice($obj)
+    {
+        $this->assertInstanceOf(EnumPrice::class, $obj);
+        $this->assertSame(self::ID2,    $obj->getId());
+        $this->assertSame($this->sums,  $obj->getSums());
+
+        $type = $obj->getType();
+        $this->assertInstanceOf(Type::class, $type);
+        $this->assertSame(self::ID2,    $type->getId());
+        $this->assertSame(self::NAME2,  $type->getName());
+
+        $target = $obj->getTarget();
+        $this->assertInstanceOf(Target::class, $target);
+        $this->assertSame(self::ID2,    $target->getId());
+        $this->assertSame(self::TYPE2,  $target->getType());
+        $this->assertSame(self::NAME2,  $target->getName());
+
+        $unit = $obj->getUnit();
+        $this->assertInstanceOf(Unit::class, $unit);
+        $this->assertSame(self::UNIT2,  $unit->getName());
+
+        $currency = $obj->getCurrency();
+        $this->assertInstanceOf(Currency::class, $currency);
+        $this->assertSame(self::CUR2,   $currency->getCode());
     }
 }
