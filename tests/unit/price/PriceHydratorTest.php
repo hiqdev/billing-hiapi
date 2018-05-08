@@ -12,8 +12,8 @@ namespace hiqdev\billing\hiapi\tests\unit\price;
 
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\billing\price\SinglePrice;
-use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\target\Target;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
 use Money\Currency;
@@ -38,7 +38,7 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
     const TYPE2 = 'type-22222';
     const UNIT2 = 'GB';
 
-    protected $data = [
+    protected $dataSinglePrice = [
         'id' => self::ID1,
         'type' => [
             'id'        => self::ID1,
@@ -64,24 +64,24 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
         $this->hydrator = Yii::$container->get(HydratorInterface::class);
     }
 
-    public function testHydrateNew()
+    public function testHydrateNewSinglePrice()
     {
-        $obj = $this->hydrator->hydrate($this->data, PriceInterface::class);
-        $this->checkSimplePrice($obj);
+        $obj = $this->hydrator->hydrate($this->dataSinglePrice, PriceInterface::class);
+        $this->checkSinglePrice($obj);
     }
 
-    public function testHydrateOld()
+    public function testHydrateOldSinglePrice()
     {
         $type = new Type(self::ID2, self::NAME2);
         $target = new Target(self::ID2, self::TYPE2, self::NAME2);
         $price = new Money(self::ID2, new Currency(self::CUR2));
         $prepaid = Quantity::create(self::ID2, Unit::create(self::UNIT2));
         $obj = new SinglePrice(self::ID2, $type, $target, null, $prepaid, $price);
-        $this->hydrator->hydrate($this->data, $obj);
-        $this->checkSimplePrice($obj);
+        $this->hydrator->hydrate($this->dataSinglePrice, $obj);
+        $this->checkSinglePrice($obj);
     }
 
-    public function checkSimplePrice($obj)
+    public function checkSinglePrice($obj)
     {
         $this->assertInstanceOf(SinglePrice::class, $obj);
         $this->assertSame(self::ID1,    $obj->getId());
