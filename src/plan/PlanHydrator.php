@@ -12,23 +12,15 @@ namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\price\PriceInterface;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydratorTrait;
-use hiqdev\yii\DataMapper\hydrator\RootHydratorAwareTrait;
-use Zend\Hydrator\HydratorInterface;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
  * Class PlanHydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class PlanHydrator implements HydratorInterface
+class PlanHydrator extends GeneratedHydrator
 {
-    use RootHydratorAwareTrait;
-
-    use GeneratedHydratorTrait {
-        hydrate as generatedHydrate;
-    }
-
     /**
      * {@inheritdoc}
      * @param object|Plan $object
@@ -40,7 +32,7 @@ class PlanHydrator implements HydratorInterface
         unset($data['prices']);
 
         /** @var Plan $plan */
-        $plan = $this->generatedHydrate($data, $object);
+        $plan = parent::hydrate($data, $object);
 
         if (is_array($raw_prices)) {
             $prices = [];
