@@ -49,13 +49,13 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['prepaid']['unit'])) {
             $row['unit'] = Unit::create($row['prepaid']['unit']);
         }
-        if (isset($row['prepaid']['quantity'])) {
+        if (isset($row['unit']) && isset($row['prepaid']['quantity'])) {
             $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
         }
         if (isset($row['price']['currency'])) {
             $row['currency'] = new Currency(strtoupper($row['price']['currency']));
         }
-        if (isset($row['price']['amount'])) {
+        if (isset($row['currency']) && isset($row['price']['amount'])) {
             $row['price'] = new Money($row['price']['amount'], $row['currency']);
         }
         if (isset($row['data'])) {
