@@ -45,7 +45,8 @@
     ],
     "require": {
         "hiqdev/hiapi": "<2.0 || dev-master",
-        "hiqdev/php-billing": "<2.0 || dev-master"
+        "hiqdev/php-billing": "<2.0 || dev-master",
+        "hoa/ruler": "^2.17"
     },
     "require-dev": {
         "hiqdev/hidev": "<2.0 || dev-master",
