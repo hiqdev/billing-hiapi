@@ -10,9 +10,16 @@
 
 namespace hiqdev\billing\hiapi\type;
 
+use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\type\TypeFactoryInterface;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 
+/**
+ * Class TypeRepository
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
 class TypeRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
     /**
@@ -25,12 +32,12 @@ class TypeRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 
     public function __construct(
         ConnectionInterface $db,
-        TypeFactoryInterface $factory,
+        EntityManagerInterface $em,
+        TargetFactoryInterface $factory,
         array $config = []
     ) {
-        parent::__construct($config);
+        parent::__construct($db, $em, $config);
 
-        $this->db = $db;
         $this->factory = $factory;
     }
 }

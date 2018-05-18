@@ -13,16 +13,21 @@ namespace hiqdev\billing\hiapi\price;
 use hiqdev\php\billing\price\EnumPrice;
 use hiqdev\php\billing\price\SinglePrice;
 
+/**
+ * Class PriceFactory
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
 class PriceFactory extends \hiqdev\php\billing\price\PriceFactory
 {
     protected $creators = [
         SinglePrice::class => 'createSinglePrice',
         EnumPrice::class => 'createEnumPrice',
-        ModelGroupPrice::class => 'createModelGroupPrice',
+        TemplatePrice::class => 'createTemplatePrice',
     ];
 
-    public function createModelGroupPrice(ModelGroupPriceCreationDto $dto): ModelGroupPrice
+    public function createTemplatePrice(TemplatePriceDto $dto): TemplatePrice
     {
-        return new ModelGroupPrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->subprices);
+        return new TemplatePrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->subprices);
     }
 }

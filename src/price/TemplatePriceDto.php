@@ -14,11 +14,11 @@ use hiqdev\php\billing\price\PriceCreationDto;
 use Money\Money;
 
 /**
- * Class ModelGroupPriceCreationDto.
+ * Class TemplatePriceDto.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class ModelGroupPriceCreationDto extends PriceCreationDto
+class TemplatePriceDto extends PriceCreationDto
 {
     /** @var Money[] */
     public $subprices = [];

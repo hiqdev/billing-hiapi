@@ -38,13 +38,34 @@ class TargetFactory implements TargetFactoryInterface
         if (!isset($dto->type)) {
             $class = Target::class;
         } else {
-            $class = $this->getClassForType($dto);
+            $class = $this->getClassForType($dto->type);
+            $dto->type = $this->shortenType($dto->type);
         }
 
         return new $class($dto->id, $dto->type, $dto->name);
     }
 
-    protected function getClassForType(TargetCreationDto $dto): string
+    /**
+     * {@inheritdoc}
+     */
+    public function shortenType(string $type): string
+    {
+        return $this->parseType($type)[0];
+    }
+
+    protected function parseType(string $type): array
+    {
+        if (strpos($type, '.') !== false) {
+            return explode('.', $type, 2);
+        }
+
+        return [$type, '*'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassForType(string $type): string
     {
         $map = [
             'device' => [
@@ -81,20 +102,11 @@ class TargetFactory implements TargetFactoryInterface
             ],
         ];
 
-        $type = $dto->type;
-        $subtype = '*';
-
-        if (strpos($type, '.') !== false) {
-            [$type, $subtype] = explode('.', $type, 2);
-        }
-
+        [$type, $subtype] = $this->parseType($type);
         $class = $map[$type][$subtype] ?? $map[$type]['*'] ?? null;
-
         if ($class === null) {
-            throw new InvalidConfigException('No class for type ' . $dto->type);
+            throw new InvalidConfigException('No class for type ' . $type);
         }
-
-        $dto->type = $type; // Ensures `type` in DTO does not contain subtype. TODO: think about
 
         return $class;
     }

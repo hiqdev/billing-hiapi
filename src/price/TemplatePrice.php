@@ -18,15 +18,12 @@ use hiqdev\php\units\QuantityInterface;
 use Money\Money;
 
 /**
- * Class ModelGroupPrice.
+ * Class TemplatePrice.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class ModelGroupPrice extends SinglePrice
+class TemplatePrice extends SinglePrice
 {
-    const SUBTYPE_RENT = 'rent';
-    const SUBTYPE_LEASING = 'leasing';
-
     /**
      * @var Money[]
      */
@@ -42,6 +39,7 @@ class ModelGroupPrice extends SinglePrice
         array $subprices
     ) {
         parent::__construct($id, $type, $target, $plan, $prepaid, $price);
+
         $this->subprices = $subprices;
     }
 
