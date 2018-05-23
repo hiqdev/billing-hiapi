@@ -97,6 +97,9 @@ class TargetFactory implements TargetFactoryInterface
             'model_group' => [
                 '*' => ModelGroupTarget::class,
             ],
+            'type' => [
+                '*' => Target::class,
+            ],
             '-1' => [
                 '*' => Target::class,
             ],
@@ -105,7 +108,7 @@ class TargetFactory implements TargetFactoryInterface
         [$type, $subtype] = $this->parseType($type);
         $class = $map[$type][$subtype] ?? $map[$type]['*'] ?? null;
         if ($class === null) {
-            throw new InvalidConfigException('No class for type ' . $type);
+            throw new InvalidConfigException("No class for type '$type'");
         }
 
         return $class;

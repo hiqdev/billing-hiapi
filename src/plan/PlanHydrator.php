@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
@@ -24,6 +25,7 @@ class PlanHydrator extends GeneratedHydrator
     /**
      * {@inheritdoc}
      * @param object|Plan $object
+     * @throws \Exception
      */
     public function hydrate(array $data, $object)
     {

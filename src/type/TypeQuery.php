@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\type;
 use hiqdev\billing\hiapi\models\Type;
 use hiqdev\yii\DataMapper\query\join\Join;
 use hiqdev\yii\DataMapper\query\JoinedField;
+use yii\db\Expression;
 
 class TypeQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -28,7 +29,7 @@ class TypeQuery extends \hiqdev\yii\DataMapper\query\Query
     {
         return [
             'id' => 'zr.obj_id',
-            'name' => 'zr.name',
+            'name' => new Expression("pr.name || ',' || zr.name as name"),
             //                                TODO: Drop ˯˯˯˯˯˯˯˯ this after removing models
             new JoinedField('fullName', 'zh.name', $this->getModel()->getAttribute('fullName'), 'fullRef'),
         ];
@@ -44,6 +45,7 @@ class TypeQuery extends \hiqdev\yii\DataMapper\query\Query
     public function initFrom()
     {
         return $this
-            ->from('zref zr');
+            ->from('zref zr')
+            ->leftJoin('zref pr', 'pr.obj_id = zr._id');
     }
 }

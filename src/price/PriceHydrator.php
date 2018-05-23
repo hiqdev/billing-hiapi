@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\price;
 
+use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
@@ -28,6 +29,9 @@ use Zend\Hydrator\HydratorInterface;
  */
 class PriceHydrator extends GeneratedHydrator
 {
+    /**
+     * @var PriceFactoryInterface|PriceFactory
+     */
     protected $priceFactory;
 
     public function __construct(
@@ -58,10 +62,11 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['currency']) && isset($row['price']['amount'])) {
             $row['price'] = new Money($row['price']['amount'], $row['currency']);
         }
-        if (isset($row['data'])) {
+        if (isset($row['data']) && !is_array($row['data'])) {
             $data = Json::decode($row['data']);
         }
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
+        $row['subprices'] = $data['subprices'] ?? null;
 
         return parent::hydrate($row, $object);
     }
@@ -84,12 +89,20 @@ class PriceHydrator extends GeneratedHydrator
 
     /**
      * @param string $className
-     * @throws \ReflectionException
+     * @param array $data
      * @return object
+     * @throws \ReflectionException
      */
     public function createEmptyInstance(string $className, array $data = [])
     {
-        $className = $this->priceFactory->findClassForTypes([$data['type']['name']]);
+        if (isset($data['data']) && !is_array($data['data'])) {
+            $additionalData = Json::decode($data['data']);
+        }
+
+        $className = $this->priceFactory->findClassForTypes([
+            $additionalData['class'] ?? null,
+            $data['type']['name']
+        ]);
 
         return parent::createEmptyInstance($className, $data);
     }

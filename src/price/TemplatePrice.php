@@ -57,4 +57,13 @@ class TemplatePrice extends SinglePrice
     {
         return $this->subprices;
     }
+
+    /**
+     * @param string $currencyCode
+     * @return string the subprice in decimal format (e.g. `10.25`)
+     */
+    public function getSubprice($currencyCode): string
+    {
+        return $this->subprices[strtoupper($currencyCode)] ?? '0';
+    }
 }
