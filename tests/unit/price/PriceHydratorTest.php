@@ -31,13 +31,13 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
     const ID1   = '11111';
     const CUR1  = 'USD';
     const NAME1 = 'name-11111';
-    const TYPE1 = 'type-11111';
+    const TYPE1 = 'server';
     const UNIT1 = 'MB';
 
     const ID2   = '22222';
     const CUR2  = 'EUR';
     const NAME2 = 'certificate_purchase';
-    const TYPE2 = 'type-22222';
+    const TYPE2 = 'certificate';
     const UNIT2 = 'GB';
 
     protected $dataSinglePrice = [

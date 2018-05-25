@@ -20,11 +20,11 @@ use Zend\Hydrator\HydratorInterface;
 class TargetHydratorTest extends \PHPUnit\Framework\TestCase
 {
     const ID1 = 11111;
-    const TYPE1 = 'type-11111';
+    const TYPE1 = 'server';
     const NAME1 = 'name-11111';
 
     const ID2 = 22222;
-    const TYPE2 = 'type-22222';
+    const TYPE2 = 'certificate';
     const NAME2 = 'name-22222';
 
     protected $data = [
