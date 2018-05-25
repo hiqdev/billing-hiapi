@@ -11,7 +11,9 @@
 namespace hiqdev\billing\hiapi\target;
 
 use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
+use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
@@ -69,6 +71,8 @@ class TargetFactory implements TargetFactoryInterface
     {
         $map = [
             'device' => [
+                'cdn' => VideoCdnTarget::class,
+                'cdnpix' => PixCdnTarget::class,
                 '*' => ServerTarget::class,
             ],
             'part' => [
