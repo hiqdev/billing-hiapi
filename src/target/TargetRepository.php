@@ -14,7 +14,7 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\yii\DataMapper\query\Specification;
 
 /**
- * Class TargetRepository
+ * Class TargetRepository.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */

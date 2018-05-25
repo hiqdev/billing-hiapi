@@ -14,7 +14,7 @@ use hiqdev\php\billing\price\EnumPrice;
 use hiqdev\php\billing\price\SinglePrice;
 
 /**
- * Class PriceFactory
+ * Class PriceFactory.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */

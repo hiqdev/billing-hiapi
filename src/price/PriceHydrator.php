@@ -90,8 +90,8 @@ class PriceHydrator extends GeneratedHydrator
     /**
      * @param string $className
      * @param array $data
-     * @return object
      * @throws \ReflectionException
+     * @return object
      */
     public function createEmptyInstance(string $className, array $data = [])
     {
@@ -101,7 +101,7 @@ class PriceHydrator extends GeneratedHydrator
 
         $className = $this->priceFactory->findClassForTypes([
             $additionalData['class'] ?? null,
-            $data['type']['name']
+            $data['type']['name'],
         ]);
 
         return parent::createEmptyInstance($className, $data);

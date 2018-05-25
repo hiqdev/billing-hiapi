@@ -16,7 +16,7 @@ use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 
 /**
- * Class TypeRepository
+ * Class TypeRepository.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
