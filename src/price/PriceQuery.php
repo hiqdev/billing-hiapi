@@ -50,7 +50,7 @@ class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
     {
         return $this
             ->from('uprice              zp')
-            ->leftJoin('bill_type       rt', 'rt.obj_id = zp.type_id')
+            ->leftJoin('zref            rt', 'rt.obj_id = zp.type_id')
             ->leftJoin('zref            tu', 'tu.obj_id = zp.unit_id')
             ->leftJoin('zref            cu', 'cu.obj_id = zp.currency_id')
             ->leftJoin('obj             zo', 'zo.obj_id = zp.object_id')
