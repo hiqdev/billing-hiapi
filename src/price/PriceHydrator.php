@@ -62,8 +62,8 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['currency']) && isset($row['price']['amount'])) {
             $row['price'] = new Money($row['price']['amount'], $row['currency']);
         }
-        if (isset($row['data']) && !is_array($row['data'])) {
-            $data = Json::decode($row['data']);
+        if (isset($row['data'])) {
+            $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
         $row['subprices'] = $data['subprices'] ?? null;
