@@ -66,6 +66,7 @@ class PriceHydrator extends GeneratedHydrator
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
+        $row['formula'] = $data['formula'] ?? null;
         $row['subprices'] = $data['subprices'] ?? null;
 
         return parent::hydrate($row, $object);
