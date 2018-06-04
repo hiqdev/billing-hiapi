@@ -97,7 +97,7 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
         $this->checkSinglePrice($obj);
     }
 
-    public function testHydrateOldSinglePrice()
+    public function testHydrateExistingSinglePrice()
     {
         $type = new Type(self::ID2, self::NAME2);
         $target = new Target(self::ID2, self::TYPE2, self::NAME2);
@@ -141,7 +141,7 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
         $this->checkEnumPrice($obj);
     }
 
-    public function testHydrateOldEnumPrice()
+    public function testHydrateExistingEnumPrice()
     {
         $type = new Type(self::ID2, self::NAME2);
         $target = new Target(self::ID2, self::TYPE2, self::NAME2);
