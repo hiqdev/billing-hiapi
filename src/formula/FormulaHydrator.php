@@ -48,7 +48,7 @@ class FormulaHydrator extends GeneratedHydrator
     public function extract($object)
     {
         return array_filter([
-            'text'  => (string)$object,
+            'text'  => (string) $object,
         ]);
     }
 

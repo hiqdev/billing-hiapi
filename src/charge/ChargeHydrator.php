@@ -11,8 +11,8 @@
 namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\php\billing\action\Action;
-use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\bill\Bill;
+use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;

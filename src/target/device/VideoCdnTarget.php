@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\target\device;
 use hiqdev\php\billing\target\Target;
 
 /**
- * Class VideoCdnTarget
+ * Class VideoCdnTarget.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */

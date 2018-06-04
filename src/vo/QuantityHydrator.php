@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\vo;
 
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 use hiqdev\php\units\Quantity;
+use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
  * Quantity Hydrator.
