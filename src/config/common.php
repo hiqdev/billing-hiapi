@@ -30,6 +30,7 @@ return [
             \hiqdev\yii\DataMapper\hydrator\ConfigurableAggregateHydrator::class => [
                 'hydrators' => [
                     \hiqdev\php\billing\customer\Customer::class    => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
+                    \hiqdev\php\billing\formula\FormulaInterface::class => \hiqdev\billing\hiapi\formula\FormulaHydrator::class,
                     \hiqdev\php\billing\target\Target::class        => \hiqdev\billing\hiapi\target\TargetHydrator::class,
                     \hiqdev\php\billing\type\Type::class            => \hiqdev\billing\hiapi\type\TypeHydrator::class,
                     \hiqdev\php\billing\plan\Plan::class            => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
@@ -41,6 +42,9 @@ return [
                     \hiqdev\php\billing\sale\Sale::class            => \hiqdev\billing\hiapi\sale\SaleHydrator::class,
                     \Money\Money::class                             => \hiqdev\billing\hiapi\vo\MoneyHydrator::class,
                 ],
+            ],
+            \hiqdev\php\billing\formula\FormulaEngineInterface::class => [
+                '__class' => \hiqdev\php\billing\formula\FormulaEngine::class,
             ],
             \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
                 '__class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,

@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\price;
 
 use hiqdev\billing\hiapi\models\Plan;
+use hiqdev\php\billing\formula\FormulaInterface;
 use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
@@ -65,8 +66,11 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
+        if (isset($data['formula'])) {
+            $row['formula'] = $this->hydrator->hydrate([$data['formula']], FormulaInterface::class);
+        }
+
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
-        $row['formula'] = $data['formula'] ?? null;
         $row['subprices'] = $data['subprices'] ?? null;
 
         return parent::hydrate($row, $object);
