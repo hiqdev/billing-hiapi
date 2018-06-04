@@ -49,7 +49,7 @@ class PriceHydrator extends GeneratedHydrator
      */
     public function hydrate(array $row, $object)
     {
-        $row['target'] = $this->hydrator->hydrate($row['target'], Target::class);
+        $row['target'] = $this->hydrator->hydrate($row['target'] ?? [], Target::class);
         $row['type'] = $this->hydrator->hydrate($row['type'], Type::class);
         if (isset($row['prepaid']['unit'])) {
             $row['unit'] = Unit::create($row['prepaid']['unit']);
@@ -82,14 +82,12 @@ class PriceHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        $result = array_filter([
+        return array_filter([
             'id'            => $object->getId(),
-            'name'          => $object->getName(),
-            'parent_id'     => $object->parent->getid(),
-            'seller_id'     => $object->seller->getid(),
+            'type'          => $this->hydrator->extract($object->getType()),
+            'target'        => $this->hydrator->extract($object->getTarget()),
+            'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
         ]);
-
-        return $result;
     }
 
     /**

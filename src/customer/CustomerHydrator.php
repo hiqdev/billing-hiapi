@@ -42,7 +42,7 @@ class CustomerHydrator extends GeneratedHydrator
         $result = array_filter([
             'id'            => $object->getId(),
             'login'         => $object->getLogin(),
-            'seller_id'     => $object->seller->getid(),
+            'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
         ]);
 
         return $result;

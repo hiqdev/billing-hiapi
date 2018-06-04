@@ -11,32 +11,29 @@
 namespace hiqdev\billing\hiapi\vo;
 
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
-use Money\Currency;
-use Money\Money;
+use hiqdev\php\units\Quantity;
 
 /**
- * Class MoneyHydrator.
+ * Quantity Hydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class MoneyHydrator extends GeneratedHydrator
+class QuantityHydrator extends GeneratedHydrator
 {
     public function hydrate(array $data, $object)
     {
-        $currency = new Currency(strtoupper($data['currency']));
-
-        return new Money($data['amount'], $currency);
+        return Quantity::create($data['unit'], $data['quantity']);
     }
 
     /**
      * {@inheritdoc}
-     * @param object|Money $object
+     * @param object|Quantity $object
      */
     public function extract($object)
     {
         return array_filter([
-            'currency'  => $object->getCurrency()->getCode(),
-            'amount'    => $object->getAmount(),
+            'unit'      => $object->getUnit()->getName(),
+            'quantity'  => $object->getQuantity(),
         ]);
     }
 }
