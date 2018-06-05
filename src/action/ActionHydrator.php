@@ -15,6 +15,7 @@ use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
+use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 

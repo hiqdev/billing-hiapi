@@ -39,23 +39,12 @@ class SaleHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        $result = array_filter([
-            'id'            => $object->getId(),
+        return array_filter([
+            'id'        => $object->getId(),
+            'target'    => $this->hydrator->extract($object->getTarget()),
+            'customer'  => $this->hydrator->extract($object->getCustomer()),
+            'plan'      => $this->hydrator->extract($object->getPlan()),
+            'time'      => $object->getTime() ? $this->hydrator->extract($object->getTime()) : null,
         ]);
-
-        if ($object->getTarget()) {
-            $result['target'] = $this->hydrator->extract($object->getTarget());
-        }
-        if ($object->getCustomer()) {
-            $result['customer'] = $this->hydrator->extract($object->getCustomer());
-        }
-        if ($object->getPlan()) {
-            $result['plan'] = $this->hydrator->extract($object->getPlan());
-        }
-        if ($object->getTime()) {
-            $result['time'] = $this->hydrator->extract($object->getTime());
-        }
-
-        return $result;
     }
 }

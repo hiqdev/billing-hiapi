@@ -39,8 +39,13 @@ class PlanHydrator extends GeneratedHydrator
         if (is_array($raw_prices)) {
             $prices = [];
             foreach ($raw_prices as $key => $price) {
-                $price['plan'] = $plan;
-                $prices[$key] = $this->hydrator->hydrate($price, PriceInterface::class);
+                if ($price instanceof PriceInterface) {
+                    $price->setPlan($plan);
+                    $prices[$key] = $price;
+                } else {
+                    $price['plan'] = $plan;
+                    $prices[$key] = $this->hydrator->hydrate($price, PriceInterface::class);
+                }
             }
             $plan->setPrices($prices);
         }
@@ -50,15 +55,15 @@ class PlanHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param Plan $object
      */
     public function extract($object)
     {
         $result = array_filter([
             'id'            => $object->getId(),
             'name'          => $object->getName(),
-            'parent_id'     => $object->parent->getid(),
-            'seller_id'     => $object->seller->getid(),
+            'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
+            'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
         ]);
 
         return $result;

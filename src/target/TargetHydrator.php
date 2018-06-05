@@ -39,13 +39,11 @@ class TargetHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        $result = array_filter([
+        return [
             'id'            => $object->getId(),
             'type'          => $object->getType(),
             'name'          => $object->getName(),
-        ]);
-
-        return $result;
+        ];
     }
 
     /** {@inheritdoc} */

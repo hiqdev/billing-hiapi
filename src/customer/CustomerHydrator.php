@@ -39,12 +39,10 @@ class CustomerHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        $result = array_filter([
+        return [
             'id'            => $object->getId(),
             'login'         => $object->getLogin(),
             'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
-        ]);
-
-        return $result;
+        ];
     }
 }

@@ -31,9 +31,9 @@ class QuantityHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        return array_filter([
+        return [
             'unit'      => $object->getUnit()->getName(),
             'quantity'  => $object->getQuantity(),
-        ]);
+        ];
     }
 }
