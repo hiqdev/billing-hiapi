@@ -66,7 +66,7 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
-        if (isset($data['formula'])) {
+        if (isset($data['formula']) && !empty($data['formula'])) {
             $row['formula'] = $this->hydrator->hydrate([$data['formula']], FormulaInterface::class);
         }
 
