@@ -29,16 +29,16 @@ class ActionHydrator extends GeneratedHydrator
     /** {@inheritdoc} */
     public function hydrate(array $data, $object)
     {
-        $data['type'] = $this->hydrator->hydrate($data['type'], Type::class);
-        $data['target'] = $this->hydrator->hydrate($data['target'], Target::class);
-        $data['quantity'] = $this->hydrator->hydrate($data['quantity'], Quantity::class);
-        $data['customer'] = $this->hydrator->hydrate($data['customer'], Customer::class);
-        $data['time'] = $this->hydrator->hydrate([$data['time']], DateTimeImmutable::class);
+        $data['type'] = $this->hydrator->create($data['type'], Type::class);
+        $data['target'] = $this->hydrator->create($data['target'], Target::class);
+        $data['quantity'] = $this->hydrator->create($data['quantity'], Quantity::class);
+        $data['customer'] = $this->hydrator->create($data['customer'], Customer::class);
+        $data['time'] = $this->hydrator->create([$data['time']], DateTimeImmutable::class);
         if (isset($data['sale'])) {
-            $data['sale'] = $this->hydrator->hydrate($data['sale'], Sale::class);
+            $data['sale'] = $this->hydrator->create($data['sale'], Sale::class);
         }
         if (isset($data['parent'])) {
-            $data['parent'] = $this->hydrator->hydrate($data['parent'], Action::class);
+            $data['parent'] = $this->hydrator->create($data['parent'], Action::class);
         }
 
         return parent::hydrate($data, $object);
