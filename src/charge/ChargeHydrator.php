@@ -52,6 +52,7 @@ class ChargeHydrator extends GeneratedHydrator
             'usage'         => $this->hydrator->extract($object->getUsage()),
             'sum'           => $this->hydrator->extract($object->getSum()),
             'bill'          => $object->getBill() ? $this->hydrator->extract($object->getBill()) : null,
+            'comment'       => $object->getComment(),
         ]);
 
         return $result;
