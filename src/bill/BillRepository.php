@@ -37,7 +37,19 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
         return parent::create($row);
     }
 
-    public function save(BillInterface $bill)
+    /**
+     * XXX TO BE REMOVED
+     */
+    public function saveReal(BillInterface $bill)
+    {
+        return $this->save($bill, true);
+    }
+
+    /**
+     * @param BillInterface $bill
+     * @param bool $isReal XXX TO BE REMOVED
+     */
+    public function save(BillInterface $bill, $isReal = false)
     {
         $hstore = new HstoreExpression([
             'id'            => $bill->getId(),
@@ -54,7 +66,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'is_finished'   => $bill->getIsFinished(),
             'increment'     => true,
         ]);
-        $call = new CallExpression('set_bill2', [$hstore]);
+        $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
         $command = (new Query())->select($call);
         $bill->setId($command->scalar($this->db));
         foreach ($bill->getCharges() as $charge) {
