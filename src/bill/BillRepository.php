@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\repositories;
+namespace hiqdev\billing\hiapi\bill;
 
 use DateTime;
 use hiqdev\php\billing\bill\BillInterface;
