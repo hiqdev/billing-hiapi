@@ -14,7 +14,7 @@ return [
             hiqdev\yii\DataMapper\components\EntityManagerInterface::class => [
                 'repositories' => [
                     \hiqdev\php\billing\type\Type::class            => \hiqdev\billing\hiapi\type\TypeRepository::class,
-                    \hiqdev\php\billing\bill\Bill::class            => \hiqdev\billing\hiapi\repositories\BillRepository::class,
+                    \hiqdev\php\billing\bill\Bill::class            => \hiqdev\billing\hiapi\bill\BillRepository::class,
                     \hiqdev\php\billing\customer\Customer::class    => \hiqdev\billing\hiapi\customer\CustomerRepository::class,
                     \hiqdev\php\billing\target\Target::class        => \hiqdev\billing\hiapi\target\TargetRepository::class,
                     \hiqdev\php\billing\plan\PlanInterface::class   => \hiqdev\billing\hiapi\plan\PlanRepository::class,
