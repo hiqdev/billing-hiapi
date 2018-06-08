@@ -54,7 +54,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
         $hstore = new HstoreExpression([
             'id'            => $bill->getId(),
             'object_id'     => $bill->getTarget()->getId(),
-            'tariff_id'     => $bill->getPlan()->getId(),
+            'tariff_id'     => $bill->getPlan() ? $bill->getPlan()->getId() : null,
             'type_id'       => $bill->getType()->getId(),
             'type'          => $bill->getType()->getName(),
             'buyer_id'      => $bill->getCustomer()->getId(),
