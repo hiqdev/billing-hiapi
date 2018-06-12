@@ -10,7 +10,6 @@
 
 namespace hiqdev\billing\hiapi\action;
 
-use hiqdev\php\billing\action\ActionFactoryInterface;
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\action\ActionQuery;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
@@ -23,21 +22,6 @@ use yii\db\Query;
 class ActionRepository extends BaseRepository
 {
     public $queryClass = ActionQuery::class;
-
-    /**
-     * @var ActionFactory
-     */
-    protected $factory;
-
-    public function __construct(
-        ConnectionInterface $db,
-        EntityManagerInterface $em,
-        ActionFactoryInterface $factory,
-        array $config = []
-    ) {
-        parent::__construct($db, $em, $config);
-        $this->factory = $factory;
-    }
 
     public function save(ActionInterface $action)
     {
