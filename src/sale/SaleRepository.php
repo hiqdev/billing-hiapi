@@ -109,4 +109,20 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             $sale['plan'] = $plans[$sale['plan-id']];
         }
     }
+
+    /**
+     * @param SaleInterface $sale
+     */
+    public function save(SaleInterface $sale)
+    {
+        $hstore = new HstoreExpression([
+            'object_id'     => $sale->getTarget()->getId(),
+            'contact_id'    => $sale->getCustomer()->getId(),
+            'tariff_id'     => $sale->getPlan() ? $sale->getPlan()->getId() : null,
+            'time'          => $sale->getTime()->format('c'),
+        ]);
+        $call = new CallExpression('sale_object', [$hstore]);
+        $command = (new Query())->select($call);
+        $sale->setId($command->scalar($this->db));
+    }
 }
