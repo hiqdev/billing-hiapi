@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\sale;
 
 use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
@@ -62,20 +63,17 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
     public function findByAction(ActionInterface $action)
     {
         $client_id = $action->getCustomer()->getId();
-        $seller_id = $action->getCustomer()->getSeller()->getId();
         $type = $action->getTarget()->getType();
 
         if ($type === 'certificate') {
             //// XXX tmp crutch
             $class_id = new CallExpression('class_id', ['certificate']);
-            $cond = [
-                'target-id' => $class_id,
-                'customer-id' => $client_id,
-            ];
-            if (empty($client_id)) {
-                $cond['customer-id'] = $seller_id;
-                $cond['seller-id'] = $seller_id;
-            }
+            $cond = empty($client_id)
+                ? $this->buildSellerCond($action->getCustomer()->getSeller())
+                : [
+                    'target-id' => $class_id,
+                    'customer-id' => $client_id,
+                ];
         } elseif ($type === 'server') {
             $cond = [
                 'target-id' => $action->getTarget()->getId(),
@@ -91,6 +89,14 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             ->where($cond);
 
         return $this->findOne($spec);
+    }
+
+    protected function buildSellerCond(CustomerInterface $seller)
+    {
+        return [
+            'customer-id'   => $seller->getId(),
+            'seller-id'     => $seller->getId(),
+        ];
     }
 
     protected function joinPlans(&$rows)
