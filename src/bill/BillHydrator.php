@@ -68,7 +68,7 @@ class BillHydrator extends GeneratedHydrator
             'customer'      => $this->hydrator->extract($object->getCustomer()),
             'target'        => $object->getTarget() ? $this->hydrator->extract($object->getTarget()) : null,
             'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
-            'charges'       => $this->hydrator->extractMultiple($object->getCharges()),
+            'charges'       => $this->hydrator->extractAll($object->getCharges()),
         ]);
     }
 
