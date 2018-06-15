@@ -13,8 +13,10 @@ use hiqdev\php\billing\price\SinglePrice;
 
 return [
     'billing-hiapi.price.types' => [
-        'certificate_purchase'  => EnumPrice::class,
-        'certificate_renewal'   => EnumPrice::class,
+        'certificate_purchase'              => EnumPrice::class,
+        'certificate_renewal'               => EnumPrice::class,
+        'certificate,certificate_purchase'  => EnumPrice::class,
+        'certificate,certificate_renewal'   => EnumPrice::class,
         \hiqdev\billing\hiapi\price\TemplatePriceDto::class => TemplatePrice::class,
     ],
     'billing-hiapi.price.defaultClass' => SinglePrice::class,
