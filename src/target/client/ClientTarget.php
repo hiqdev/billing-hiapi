@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\target\tariff;
+namespace hiqdev\billing\hiapi\target\client;
 
 use hiqdev\php\billing\target\Target;
 

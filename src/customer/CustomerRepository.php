@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\repositories;
+namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\php\billing\customer\CustomerFactoryInterface;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;

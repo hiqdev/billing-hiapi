@@ -12,6 +12,10 @@ namespace hiqdev\billing\hiapi\price;
 
 use hiqdev\billing\hiapi\models\Price;
 
+/**
+ * Class PriceQuery.
+ * @author Andrii Vasyliev <sol@hiqdev.com>
+ */
 class PriceQuery extends \hiqdev\yii\DataMapper\query\Query
 {
     /**
