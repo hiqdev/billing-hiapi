@@ -24,19 +24,6 @@ use yii\db\Query;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
-    public function create(array $row)
-    {
-        $row['type'] = $this->createEntity(Type::class, $row['type']);
-        $row['time'] = new DateTime($row['time']);
-        $row['quantity'] = Quantity::create('megabyte', $row['quantity']['quantity']);
-        $currency = new Currency(strtoupper($row['sum']['currency']));
-        $row['sum'] = new Money($row['sum']['amount'], $currency);
-        $row['customer'] = $this->createEntity(Customer::class, $row['customer']);
-        $row['target'] = $this->createEntity(Target::class, $row['target']);
-
-        return parent::create($row);
-    }
-
     /**
      * XXX TO BE REMOVED.
      */
