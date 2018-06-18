@@ -64,7 +64,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'quantity'      => $bill->getQuantity()->getQuantity(),
             'time'          => $bill->getTime()->format('c'),
             'label'         => $bill->getComment() ?: null,
-            'is_finished'   => $bill->getIsFinished(),
+            'is_finished'   => $bill->isFinished(),
             'increment'     => true,
         ]);
         $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);

@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\charge;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\charge\Charge;
+use hiqdev\php\billing\charge\ChargeState;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
@@ -35,6 +36,9 @@ class ChargeHydrator extends GeneratedHydrator
         if (isset($data['bill'])) {
             $data['bill'] = $this->hydrator->hydrate($data['bill'], Bill::class);
         }
+        if (isset($data['state'])) {
+            $data['state'] = $this->hydrator->hydrate($data['state'], ChargeState::class);
+        }
 
         return parent::hydrate($data, $object);
     }
@@ -52,6 +56,7 @@ class ChargeHydrator extends GeneratedHydrator
             'usage'         => $this->hydrator->extract($object->getUsage()),
             'sum'           => $this->hydrator->extract($object->getSum()),
             'bill'          => $object->getBill() ? $this->hydrator->extract($object->getBill()) : null,
+            'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
             'comment'       => $object->getComment(),
         ]);
 

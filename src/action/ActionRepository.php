@@ -35,6 +35,7 @@ class ActionRepository extends BaseRepository
             'type_id'   => $action->getType()->getId(),
             'amount'    => $action->getQuantity()->getQuantity(),
             'sale_id'   => $sale ? $this->em->findId($sale) : null,
+            'state'     => $action->getState() ? $action->getState()->getName() : null,
             'time'      => $time ? $time->format('c') : null,
         ]));
         $call = new CallExpression('set_action', [$hstore]);

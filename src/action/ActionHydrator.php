@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\action;
 
 use DateTimeImmutable;
 use hiqdev\php\billing\action\Action;
+use hiqdev\php\billing\action\ActionState;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
@@ -40,6 +41,9 @@ class ActionHydrator extends GeneratedHydrator
         if (isset($data['parent'])) {
             $data['parent'] = $this->hydrator->create($data['parent'], Action::class);
         }
+        if (isset($data['state'])) {
+            $data['state']  = $this->hydrator->create($data['state'], ActionState::class);
+        }
 
         return parent::hydrate($data, $object);
     }
@@ -59,6 +63,7 @@ class ActionHydrator extends GeneratedHydrator
             'time'          => $this->hydrator->extract($object->getTime()),
             'sale'          => $object->getSale() ? $this->hydrator->extract($object->getSale()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
+            'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
         ]);
 
         return $result;

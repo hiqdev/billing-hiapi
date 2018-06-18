@@ -62,6 +62,7 @@ class ChargeRepository extends BaseRepository
             'quantity'      => $charge->getUsage()->getQuantity(),
             'bill_id'       => $charge->getBill()->getId(),
             'time'          => $charge->getAction()->getTime()->format('c'),
+            'is_finished'   => $charge->isFinished(),
         ]));
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
