@@ -24,9 +24,7 @@ class ChargeRepository extends BaseRepository
 {
     public $queryClass = ChargeQuery::class;
 
-    /**
-     * @var GeneralizerInterface
-     */
+    /** @var GeneralizerInterface */
     protected $generalizer;
 
     public function __construct(
@@ -51,19 +49,19 @@ class ChargeRepository extends BaseRepository
         $this->em->save($action);
         $target = $this->generalizer->lessGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
         $hstore = new HstoreExpression(array_filter([
-            'id'        => $charge->getId(),
-            'object_id' => $target->getId(),
-            'tariff_id' => $sale->getPlan()->getId(),
-            'action_id' => $action->getId(),
-            'type_id'   => $action->getType()->getId(),
-            'type'      => $action->getType()->getName(),
-            'buyer_id'  => $action->getCustomer()->getId(),
-            'buyer'     => $action->getCustomer()->getLogin(),
-            'currency'  => $charge->getSum()->getCurrency()->getCode(),
-            'sum'       => $charge->getSum()->getAmount(),
-            'quantity'  => $charge->getUsage()->getQuantity(),
-            'bill_id'   => $charge->getBill()->getId(),
-            'time'      => $charge->getAction()->getTime()->format('c'),
+            'id'            => $charge->getId(),
+            'object_id'     => $target->getId(),
+            'tariff_id'     => $sale->getPlan()->getId(),
+            'action_id'     => $action->getId(),
+            'type_id'       => $action->getType()->getId(),
+            'type'          => $action->getType()->getName(),
+            'buyer_id'      => $action->getCustomer()->getId(),
+            'buyer'         => $action->getCustomer()->getLogin(),
+            'currency'      => $charge->getSum()->getCurrency()->getCode(),
+            'sum'           => $charge->getSum()->getAmount(),
+            'quantity'      => $charge->getUsage()->getQuantity(),
+            'bill_id'       => $charge->getBill()->getId(),
+            'time'          => $charge->getAction()->getTime()->format('c'),
         ]));
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
