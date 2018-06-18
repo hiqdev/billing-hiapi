@@ -38,7 +38,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
     }
 
     /**
-     * XXX TO BE REMOVED
+     * XXX TO BE REMOVED.
      */
     public function saveReal(BillInterface $bill)
     {

@@ -14,17 +14,11 @@ use DateTimeImmutable;
 use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\php\billing\bill\BillState;
 use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\formula\FormulaInterface;
-use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
-use hiqdev\php\units\Unit;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
-use Money\Currency;
 use Money\Money;
-use yii\helpers\Json;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Bill Hydrator.
@@ -76,5 +70,4 @@ class BillHydrator extends GeneratedHydrator
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
         ]);
     }
-
 }

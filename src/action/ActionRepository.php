@@ -12,8 +12,6 @@ namespace hiqdev\billing\hiapi\action;
 
 use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\action\ActionQuery;
-use hiqdev\yii\DataMapper\components\ConnectionInterface;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
