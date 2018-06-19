@@ -22,8 +22,6 @@ use yii\db\Query;
 
 class ChargeRepository extends BaseRepository
 {
-    public $queryClass = ChargeQuery::class;
-
     /** @var GeneralizerInterface */
     protected $generalizer;
 

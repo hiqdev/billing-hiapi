@@ -19,8 +19,6 @@ use yii\db\Query;
 
 class ActionRepository extends BaseRepository
 {
-    public $queryClass = ActionQuery::class;
-
     public function save(ActionInterface $action)
     {
         $sale = $action->getSale();

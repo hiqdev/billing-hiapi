@@ -24,7 +24,6 @@ return [
                     \hiqdev\php\billing\action\Action::class        => \hiqdev\billing\hiapi\action\ActionRepository::class,
                     \hiqdev\php\billing\sale\Sale::class            => \hiqdev\billing\hiapi\sale\SaleRepository::class,
                     \DateTimeImmutable::class                       => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
-                    \Money\Money::class                             => \hiqdev\billing\hiapi\vo\MoneyRepostory::class,
                 ],
             ],
             \hiqdev\yii\DataMapper\hydrator\ConfigurableAggregateHydrator::class => [
@@ -42,7 +41,6 @@ return [
                     \hiqdev\php\billing\type\Type::class            => \hiqdev\billing\hiapi\type\TypeHydrator::class,
                     \hiqdev\php\billing\plan\Plan::class            => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
                     \hiqdev\php\billing\plan\PlanInterface::class   => \hiqdev\billing\hiapi\plan\PlanHydrator::class,
-                    \hiqdev\php\billing\price\Price::class          => \hiqdev\billing\hiapi\price\PriceHydrator::class,
                     \hiqdev\php\billing\price\PriceInterface::class => \hiqdev\billing\hiapi\price\PriceHydrator::class,
                     \hiqdev\php\billing\price\EnumPrice::class      => \hiqdev\billing\hiapi\price\EnumPriceHydrator::class,
                     \hiqdev\php\billing\price\SinglePrice::class    => \hiqdev\billing\hiapi\price\SinglePriceHydrator::class,
@@ -90,12 +88,6 @@ return [
                     Yii::$app->params['billing-hiapi.price.defaultClass']
                 );
             },
-            \hiqdev\php\billing\charge\ChargeFactoryInterface::class => [
-                '__class' => \hiqdev\php\billing\charge\ChargeFactory::class,
-            ],
-            \hiqdev\php\billing\action\ActionFactoryInterface::class => [
-                '__class' => \hiqdev\php\billing\action\ActionFactory::class,
-            ],
             \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
                 '__class' => \hiqdev\php\billing\sale\SaleFactory::class,
             ],

@@ -26,7 +26,7 @@ class EnumPriceHydrator extends PriceHydrator
         return array_merge(parent::extract($object), array_filter([
             'unit'          => $this->hydrator->extract($object->getUnit()),
             'currency'      => $this->hydrator->extract($object->getCurrency()),
-            'sums'          => $sums,
+            'sums'          => $object->getSums(),
         ]));
     }
 }

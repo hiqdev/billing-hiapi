@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\controllers;
 
-use hiqdev\php\billing\Plan;
+use hiqdev\php\billing\plan\Plan;
 
 class PlanController extends \hiapi\controllers\BaseController
 {

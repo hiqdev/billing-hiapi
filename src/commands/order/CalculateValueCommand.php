@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\commands\order;
 
-use hiqdev\yii\DataMapper\commands\BaseCommand;
+use hiapi\commands\BaseCommand;
 use hiqdev\yii\DataMapper\validators\NestedModelValidator;
 
 class CalculateValueCommand extends BaseCommand
