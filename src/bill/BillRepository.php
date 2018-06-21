@@ -10,16 +10,9 @@
 
 namespace hiqdev\billing\hiapi\bill;
 
-use DateTime;
 use hiqdev\php\billing\bill\BillInterface;
-use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\target\Target;
-use hiqdev\php\billing\type\Type;
-use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
-use Money\Currency;
-use Money\Money;
 use yii\db\Query;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
@@ -54,12 +47,14 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'is_finished'   => $bill->isFinished(),
             'increment'     => true,
         ]);
-        $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
-        $command = (new Query())->select($call);
-        $bill->setId($command->scalar($this->db));
-        foreach ($bill->getCharges() as $charge) {
-            $charge->setBill($bill);
-            $this->em->save($charge);
-        }
+        $this->db->transaction(function() use ($bill, $isReal, $hstore) {
+            $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
+            $command = (new Query())->select($call);
+            $bill->setId($command->scalar($this->db));
+            foreach ($bill->getCharges() as $charge) {
+                $charge->setBill($bill);
+                $this->em->save($charge);
+            }
+        });
     }
 }
