@@ -10,17 +10,9 @@
 
 namespace hiqdev\billing\hiapi\bill;
 
-use DateTime;
 use hiqdev\php\billing\bill\BillInterface;
-use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\target\Target;
-use hiqdev\php\billing\type\Type;
-use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
-use Money\Currency;
-use Money\Money;
-use Yii;
 use yii\db\Query;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
