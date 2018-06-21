@@ -65,7 +65,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
                 $this->em->save($charge);
             }
             $transaction->commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $transaction->rollBack();
 
             throw $e;
