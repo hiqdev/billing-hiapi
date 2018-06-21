@@ -55,8 +55,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'is_finished'   => $bill->isFinished(),
             'increment'     => true,
         ]);
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
+        $this->db->transaction(function() use ($bill, $isReal, $hstore) {
             $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
             $command = (new Query())->select($call);
             $bill->setId($command->scalar($this->db));
@@ -64,11 +63,6 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
                 $charge->setBill($bill);
                 $this->em->save($charge);
             }
-            $transaction->commit();
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-
-            throw $e;
-        }
+        });
     }
 }
