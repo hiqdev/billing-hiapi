@@ -20,6 +20,7 @@ use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use Money\Currency;
 use Money\Money;
+use Yii;
 use yii\db\Query;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
@@ -54,12 +55,20 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'is_finished'   => $bill->isFinished(),
             'increment'     => true,
         ]);
-        $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
-        $command = (new Query())->select($call);
-        $bill->setId($command->scalar($this->db));
-        foreach ($bill->getCharges() as $charge) {
-            $charge->setBill($bill);
-            $this->em->save($charge);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $call = new CallExpression('set_bill' . ($isReal ? '' : '2'), [$hstore]);
+            $command = (new Query())->select($call);
+            $bill->setId($command->scalar($this->db));
+            foreach ($bill->getCharges() as $charge) {
+                $charge->setBill($bill);
+                $this->em->save($charge);
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+
+            throw $e;
         }
     }
 }
