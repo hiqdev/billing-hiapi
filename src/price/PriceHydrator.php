@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\price;
 
-use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\php\billing\formula\FormulaInterface;
+use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\price\PriceFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
@@ -62,6 +62,9 @@ class PriceHydrator extends GeneratedHydrator
         }
         if (isset($row['currency']) && isset($row['price']['amount'])) {
             $row['price'] = new Money($row['price']['amount'], $row['currency']);
+        }
+        if (!empty($row['plan'])) {
+            $row['plan'] = $this->hydrator->create($row['plan'], Plan::class);
         }
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
