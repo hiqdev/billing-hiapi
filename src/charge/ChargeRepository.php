@@ -44,9 +44,7 @@ class ChargeRepository extends BaseRepository
             $sale = new Sale(null, $action->getTarget(), $action->getCustomer(), $charge->getPrice()->getPlan());
             $action->setSale($sale);
         }
-        if ($action->getTarget()->getId()) {
-            $this->em->save($action);
-        }
+        $this->em->save($action);
         $target = $this->generalizer->lessGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
         $hstore = new HstoreExpression(array_filter([
             'id'            => $charge->getId(),
@@ -63,7 +61,7 @@ class ChargeRepository extends BaseRepository
             'bill_id'       => $charge->getBill()->getId(),
             'time'          => $charge->getAction()->getTime()->format('c'),
             'is_finished'   => $charge->isFinished(),
-            'label'         => $charge->getComment() ?: null,
+            'label'         => $charge->getComment(),
         ]));
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
