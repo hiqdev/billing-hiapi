@@ -29,7 +29,9 @@ class PlanHydrator extends GeneratedHydrator
      */
     public function hydrate(array $data, $object)
     {
-        $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
+        if (!empty($data['seller'])) {
+            $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
+        }
         $raw_prices = $data['prices'];
         unset($data['prices']);
 
