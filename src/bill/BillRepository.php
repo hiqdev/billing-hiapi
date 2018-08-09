@@ -31,7 +31,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'buyer_id'      => $bill->getCustomer()->getId(),
             'buyer'         => $bill->getCustomer()->getLogin(),
             'currency'      => $bill->getSum()->getCurrency()->getCode(),
-            'sum'           => $bill->getSum()->getAmount() * -1,
+            'sum'           => $bill->getSum()->getAmount(),
             'quantity'      => $bill->getQuantity()->getQuantity(),
             'time'          => $bill->getTime()->format('c'),
             'label'         => $bill->getComment() ?: null,
