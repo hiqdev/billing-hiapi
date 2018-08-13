@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\price;
 
+use hiqdev\billing\hiapi\models\Price;
 use hiqdev\php\billing\formula\FormulaInterface;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\price\PriceFactoryInterface;
@@ -81,7 +82,7 @@ class PriceHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param object|Price $object
      */
     public function extract($object)
     {

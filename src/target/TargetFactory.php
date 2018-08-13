@@ -18,6 +18,7 @@ use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
 use hiqdev\php\billing\target\Target;
@@ -90,6 +91,7 @@ class TargetFactory implements TargetFactoryInterface
             'tariff' => [
                 'server' => ServerTariffTarget::class,
                 'template' => TemplateTariffTarget::class,
+                'certificate' => CertificateTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [
