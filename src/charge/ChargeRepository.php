@@ -55,6 +55,7 @@ class ChargeRepository extends BaseRepository
             'buyer'         => $action->getCustomer()->getLogin(),
             'currency'      => $charge->getSum()->getCurrency()->getCode(),
             'sum'           => $charge->getSum()->getAmount(),
+            'unit'          => $charge->getUsage()->getUnit()->getName(),
             'quantity'      => $charge->getUsage()->getQuantity(),
             'bill_id'       => $charge->getBill()->getId(),
             'time'          => $charge->getAction()->getTime()->format('c'),
