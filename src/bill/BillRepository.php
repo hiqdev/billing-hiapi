@@ -55,16 +55,15 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
      * @param BillInterface $bill
      * @return string - comma separated charges ids
      */
-    private function getBillChargesIds(BillInterface $bill)
+    private function getBillChargesIds(BillInterface $bill): string
     {
         $ids = [];
 
         foreach ($bill->getCharges() as $charge) {
-            if ($charge->getId())
+            if ($charge->getId() !== null) {
                 $ids[] = $charge->getId();
+            }
         }
-        $chargeIds = implode(',', $ids);
-
-        return $chargeIds;
+        return implode(',', $ids);
     }
 }
