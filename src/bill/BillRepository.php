@@ -38,6 +38,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'label'         => $bill->getComment() ?: null,
             'is_finished'   => $bill->isFinished(),
             'increment'     => true,
+            'charge_ids'    => $this->getBillChargesIds($bill)
         ]);
         $this->db->transaction(function() use ($bill, $hstore) {
             $call = new CallExpression('set_bill', [$hstore]);
@@ -48,5 +49,21 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
                 $this->em->save($charge);
             }
         });
+    }
+
+    /**
+     * @param BillInterface $bill
+     * @return string - comma separated charges ids
+     */
+    private function getBillChargesIds(BillInterface $bill): string
+    {
+        $ids = [];
+
+        foreach ($bill->getCharges() as $charge) {
+            if ($charge->getId() !== null) {
+                $ids[] = $charge->getId();
+            }
+        }
+        return implode(',', $ids);
     }
 }
