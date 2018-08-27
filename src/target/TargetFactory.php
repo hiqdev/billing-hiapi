@@ -14,11 +14,13 @@ use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
+use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\DomainTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
 use hiqdev\php\billing\target\Target;
@@ -92,6 +94,7 @@ class TargetFactory implements TargetFactoryInterface
                 'server' => ServerTariffTarget::class,
                 'template' => TemplateTariffTarget::class,
                 'certificate' => CertificateTariffTarget::class,
+                'domain' => DomainTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [
@@ -108,6 +111,9 @@ class TargetFactory implements TargetFactoryInterface
             ],
             '-1' => [
                 '*' => Target::class,
+            ],
+            'zone' => [
+                '*' => DomainZoneTarget::class,
             ],
         ];
 
