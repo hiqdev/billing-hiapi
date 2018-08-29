@@ -62,7 +62,7 @@ return [
                 '__class' => \hiqdev\php\billing\order\Calculator::class,
             ],
             \hiqdev\php\billing\charge\AggregatorInterface::class => [
-                '__class' => \hiqdev\php\billing\charge\Aggregator::class,
+                '__class' => \hiqdev\billing\hiapi\charge\Aggregator::class,
             ],
             \hiqdev\php\billing\charge\GeneralizerInterface::class => [
                 '__class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
@@ -91,6 +91,7 @@ return [
             \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
                 '__class' => \hiqdev\php\billing\sale\SaleFactory::class,
             ],
+            \hiqdev\billing\hiapi\type\TypeSemantics::class,
         ],
     ],
 ];

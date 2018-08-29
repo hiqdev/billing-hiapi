@@ -10,15 +10,38 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
+use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\target\TargetInterface;
+use hiqdev\php\billing\type\TypeInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class Generalizer extends \hiqdev\php\billing\charge\Generalizer
 {
-    public function generalizeTarget(ChargeInterface $charge)
+    /**
+     * @var TypeSemantics
+     */
+    private $typeSemantics;
+
+    public function __construct(TypeSemantics $typeSemantics)
+    {
+        $this->typeSemantics = $typeSemantics;
+    }
+
+    public function generalizeType(ChargeInterface $charge): TypeInterface
+    {
+        $chargeType = $charge->getPrice()->getType();
+
+        if ($this->typeSemantics->isMonthly($chargeType)) {
+            return $this->typeSemantics->createMonthlyType();
+        }
+
+        return $charge->getPrice()->getType();
+    }
+
+    public function generalizeTarget(ChargeInterface $charge): TargetInterface
     {
         return $this->moreGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
 
@@ -62,8 +85,8 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
             ''              => ++$i,
         ];
 
-        $lhs = $order[(string) $first->getType()];
-        $rhs = $order[(string) $other->getType()];
+        $lhs = $order[(string) $first->getType()] ?? 0;
+        $rhs = $order[(string) $other->getType()] ?? 0;
 
         return $lhs > $rhs;
     }

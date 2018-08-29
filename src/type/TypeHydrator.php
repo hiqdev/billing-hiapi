@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\type;
 
+use hiqdev\billing\hiapi\models\Type;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
 /**
