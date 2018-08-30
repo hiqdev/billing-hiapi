@@ -58,6 +58,7 @@ class ChargeRepository extends BaseRepository
             'unit'          => $charge->getUsage()->getUnit()->getName(),
             'quantity'      => $charge->getUsage()->getQuantity(),
             'bill_id'       => $charge->getBill()->getId(),
+            'parent_id'     => $charge->getParent() !== null ? $charge->getParent()->getId() : null,
             'time'          => $charge->getAction()->getTime()->format('c'),
             'is_finished'   => $charge->isFinished(),
             'label'         => $charge->getComment(),
