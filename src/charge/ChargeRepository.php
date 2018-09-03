@@ -43,16 +43,20 @@ class ChargeRepository extends BaseRepository
             $tariff_id = $action->getSale()->getPlan()->getId();
             $this->em->save($action);
         }
-        $target = $this->generalizer->lessGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
+        $target = $this->generalizer->lessGeneral(
+            $charge->getAction()->getTarget(),
+            $charge->getPrice()->getTarget()
+        );
         $hstore = new HstoreExpression(array_filter([
             'id'            => $charge->getId(),
             'object_id'     => $target->getId(),
             'tariff_id'     => $tariff_id,
             'action_id'     => $action->getId(),
-            'type_id'       => $action->getType()->getId(),
-            'type'          => $action->getType()->getName(),
             'buyer_id'      => $action->getCustomer()->getId(),
             'buyer'         => $action->getCustomer()->getLogin(),
+            'parent_id'     => $charge->getParent() !== null ? $charge->getParent()->getId() : null,
+            'type_id'       => $charge->getPrice()->getType()->getId(),
+            'type'          => $charge->getPrice()->getType()->getName(),
             'currency'      => $charge->getSum()->getCurrency()->getCode(),
             'sum'           => $charge->getSum()->getAmount(),
             'unit'          => $charge->getUsage()->getUnit()->getName(),
