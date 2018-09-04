@@ -14,6 +14,8 @@ use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\type\TypeInterface;
+use hiqdev\php\units\Quantity;
+use hiqdev\php\units\QuantityInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -43,6 +45,30 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
         }
 
         return $chargeType;
+    }
+
+    public function generalizeQuantity(ChargeInterface $charge): QuantityInterface
+    {
+        $action = $charge->getAction();
+
+        if ($action->getSale() !== null && $this->typeSemantics->isMonthly($action->getType())) {
+            $actionMonth = $action->getTime()->modify('first day of this month 00:00');
+            $saleMonth = $action->getSale()->getTime()->modify('first day of this month 00:00');
+
+            if ($saleMonth > $actionMonth) {
+                $amount = 0;
+            } else if ($actionMonth > $saleMonth) {
+                $amount = 1;
+            } else {
+                $saleDay = $action->getSale()->getTime()->format('d');
+                $daysInMonth = $action->getSale()->getTime()->format('t');
+                $amount = 1 - (($saleDay - 1) / $daysInMonth);
+            }
+
+            return Quantity::create('days', $amount);
+        }
+
+        return parent::generalizeQuantity($charge);
     }
 
     public function generalizeTarget(ChargeInterface $charge): TargetInterface
@@ -77,20 +103,20 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
     {
         $i = 0;
         $order = [
-            'domain'        => ++$i,
-            'zone'          => ++$i,
-            'certificate'   => ++$i,
-            'type'          => ++$i,
-            'part'          => ++$i,
-            'server'        => ++$i,
-            'device'        =>   $i,
-            'tariff'        => ++$i,
-            'ref'           => ++$i,
-            ''              => ++$i,
+            'domain' => ++$i,
+            'zone' => ++$i,
+            'certificate' => ++$i,
+            'type' => ++$i,
+            'part' => ++$i,
+            'server' => ++$i,
+            'device' => $i,
+            'tariff' => ++$i,
+            'ref' => ++$i,
+            '' => ++$i,
         ];
 
-        $lhs = $order[(string) $first->getType()] ?? 0;
-        $rhs = $order[(string) $other->getType()] ?? 0;
+        $lhs = $order[(string)$first->getType()] ?? 0;
+        $rhs = $order[(string)$other->getType()] ?? 0;
 
         return $lhs > $rhs;
     }
