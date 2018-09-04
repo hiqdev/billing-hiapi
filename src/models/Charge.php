@@ -14,7 +14,7 @@ use hiqdev\yii\DataMapper\models\AbstractModel;
 use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
 use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
-class Bill extends AbstractModel
+class Charge extends AbstractModel
 {
     public function attributes()
     {
@@ -26,9 +26,11 @@ class Bill extends AbstractModel
     public function relations()
     {
         return [
-            'type'      => Type::class,
-            'seller'    => Customer::class,
-            'quantity'  => Quantity::class,
+            'action'    => Action::class,
+            'price'     => Price::class,
+            'usage'     => Quantity::class,
+            'sum'       => Money::class,
+            'bill'      => Bill::class,
         ];
     }
 }

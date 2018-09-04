@@ -21,6 +21,7 @@ return [
                     \hiqdev\php\billing\plan\Plan::class            => \hiqdev\billing\hiapi\plan\PlanRepository::class,
                     \hiqdev\php\billing\price\PriceInterface::class => \hiqdev\billing\hiapi\price\PriceRepository::class,
                     \hiqdev\php\billing\charge\Charge::class        => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
+                    \hiqdev\php\billing\charge\ChargeInterface::class => \hiqdev\billing\hiapi\charge\ChargeRepository::class,
                     \hiqdev\php\billing\action\Action::class        => \hiqdev\billing\hiapi\action\ActionRepository::class,
                     \hiqdev\php\billing\sale\Sale::class            => \hiqdev\billing\hiapi\sale\SaleRepository::class,
                     \DateTimeImmutable::class                       => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
@@ -51,6 +52,9 @@ return [
             ],
             \hiqdev\php\billing\formula\FormulaEngineInterface::class => [
                 '__class' => \hiqdev\php\billing\formula\FormulaEngine::class,
+            ],
+            \hiqdev\php\billing\bill\BillRepositoryInterface::class => [
+                '__class' => \hiqdev\billing\hiapi\bill\BillRepository::class,
             ],
             \hiqdev\php\billing\plan\PlanRepositoryInterface::class => [
                 '__class' => \hiqdev\billing\hiapi\plan\PlanRepository::class,
