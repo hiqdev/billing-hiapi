@@ -4,6 +4,7 @@ namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\bill\BillInterface;
+use hiqdev\php\billing\bill\BillRepositoryInterface;
 use hiqdev\php\billing\charge\GeneralizerInterface;
 use hiqdev\php\units\QuantityInterface;
 
@@ -19,9 +20,12 @@ class Aggregator extends \hiqdev\php\billing\charge\Aggregator
      */
     private $typeSemantics;
 
-    public function __construct(GeneralizerInterface $generalizer, TypeSemantics $typeSemantics)
-    {
-        parent::__construct($generalizer);
+    public function __construct(
+        GeneralizerInterface $generalizer,
+        BillRepositoryInterface $billRepository,
+        TypeSemantics $typeSemantics
+    ) {
+        parent::__construct($generalizer, $billRepository);
 
         $this->typeSemantics = $typeSemantics;
     }
