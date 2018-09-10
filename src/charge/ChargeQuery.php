@@ -29,7 +29,11 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             'action' => [
                 'id' => 'zh.action_id',
                 'type' => [
-                    'name' => 'at.name',
+                    'name' => 'at.g2name',
+                ],
+                'target' => [
+                    'id' => 'ha.object_id',
+                    'type' => 'tt.name',
                 ],
                 'customer' => [
                     'id' => 'zc.obj_id',
@@ -39,9 +43,18 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
                         'login' => 'cr.login',
                     ],
                 ],
+                'quantity' => [
+                    'unit' => "hu.parent",
+                    'quantity' => 'ha.amount',
+                ],
+                'time' => 'ha.time',
+            ],
+            'sum' => [
+                'currency' => 'py.name',
+                'amount' => 'zh.sum',
             ],
             'usage' => [
-                'unit' => 'qu.name',
+                'unit' => 'hu.name',
                 'quantity' => 'zh.quantity',
             ],
         ];
@@ -50,11 +63,14 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
     public function initFrom()
     {
         return $this->from('zcharge zh')
-            ->leftJoin('purse       bp', 'bp.obj_id = zh.purse_id')
-            ->leftJoin('zclient     zc', 'zc.obj_id = bp.client_id')
+            ->leftJoin('purse       hp', 'hp.obj_id = zh.purse_id')
+            ->leftJoin('zclient     zc', 'zc.obj_id = hp.client_id')
             ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id')
-            ->leftJoin('zref        qu', 'qu.obj_id = zh.unit_id')
+            ->leftJoin('zref        py', 'py.obj_id = hp.currency_id')
+            ->leftJoin('unit        hu', 'hu.obj_id = zh.unit_id')
             ->leftJoin('action      ha', 'ha.id = zh.action_id')
-            ->leftJoin('zref        at', 'at.obj_id = ha.type_id');
+            ->leftJoin('obj         tj', 'tj.obj_id = zh.object_id')
+            ->leftJoin('zref        tt', 'tt.obj_id = tj.class_id')
+            ->leftJoin('gref        at', 'at.obj_id = ha.type_id');
     }
 }
