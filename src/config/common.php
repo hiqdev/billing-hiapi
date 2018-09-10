@@ -34,6 +34,7 @@ return [
                     \hiqdev\php\billing\action\Action::class            => \hiqdev\billing\hiapi\action\ActionHydrator::class,
                     \hiqdev\php\billing\action\ActionState::class       => \hiqdev\billing\hiapi\action\ActionStateHydrator::class,
                     \hiqdev\php\billing\charge\Charge::class            => \hiqdev\billing\hiapi\charge\ChargeHydrator::class,
+                    \hiqdev\php\billing\charge\ChargeInterface::class   => \hiqdev\billing\hiapi\charge\ChargeHydrator::class,
                     \hiqdev\php\billing\charge\ChargeState::class       => \hiqdev\billing\hiapi\charge\ChargeStateHydrator::class,
                     \hiqdev\php\billing\bill\Bill::class                => \hiqdev\billing\hiapi\bill\BillHydrator::class,
                     \hiqdev\php\billing\bill\BillState::class           => \hiqdev\billing\hiapi\bill\BillStateHydrator::class,
@@ -65,8 +66,11 @@ return [
             \hiqdev\php\billing\order\CalculatorInterface::class => [
                 '__class' => \hiqdev\php\billing\order\Calculator::class,
             ],
-            \hiqdev\php\billing\charge\AggregatorInterface::class => [
-                '__class' => \hiqdev\billing\hiapi\charge\Aggregator::class,
+            \hiqdev\php\billing\tools\AggregatorInterface::class => [
+                '__class' => \hiqdev\php\billing\tools\DbMergingAggregator::class,
+            ],
+            \hiqdev\php\billing\tools\MergerInterface::class => [
+                '__class' => \hiqdev\billing\hiapi\tools\Merger::class,
             ],
             \hiqdev\php\billing\charge\GeneralizerInterface::class => [
                 '__class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
