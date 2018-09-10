@@ -24,9 +24,16 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
         return [
             'id' => 'zb.obj_id',
             'type' => [
-                'name' => 'tt.name',
+                'name' => 'bt.g2name',
             ],
-            'seller' => [
+            'plan' => [
+                'id' => 'zb.tariff_id',
+            ],
+            'target' => [
+                'id' => 'zb.object_id',
+                'type' => 'tt.name',
+            ],
+            'customer' => [
                 'id' => 'zc.obj_id',
                 'login' => 'zc.login',
                 'seller' => [
@@ -34,20 +41,28 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
                     'login' => 'cr.login',
                 ],
             ],
+            'sum' => [
+                'currency' => 'py.name',
+                'amount' => 'zb.sum',
+            ],
             'quantity' => [
                 'unit' => 'qu.name',
                 'quantity' => 'zb.quantity',
             ],
+            'time' => 'zb.time',
         ];
     }
 
     public function initFrom()
     {
         return $this->from('zbill   zb')
-            ->leftJoin('zref        tt', 'tt.obj_id = zb.type_id')
+            ->leftJoin('gref        bt', 'bt.obj_id = zb.type_id')
+            ->leftJoin('obj         tj', 'tj.obj_id = zb.object_id')
+            ->leftJoin('zref        tt', 'tt.obj_id = tj.class_id')
             ->leftJoin('purse       bp', 'bp.obj_id = zb.purse_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = bp.client_id')
             ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id')
+            ->leftJoin('zref        py', 'py.obj_id = bp.currency_id')
             ->leftJoin('zref        qu', 'qu.obj_id = zb.unit_id');
     }
 }

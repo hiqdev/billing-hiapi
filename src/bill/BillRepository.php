@@ -43,7 +43,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
                 $chargeIds[] = $charge->getId();
             }
             if ($chargeIds) {
-                $call = new CallExpression('set_bill_charges', [$bill->getId(), new ArrayExpression($chargeIds)]);
+                $call = new CallExpression('set_bill_charges', [$bill->getId(), new ArrayExpression($chargeIds, 'integer')]);
                 (new Query())->select($call)->scalar($this->db);
             }
         });
