@@ -15,6 +15,8 @@ use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeState;
 use hiqdev\php\billing\price\PriceInterface;
+use hiqdev\php\billing\target\Target;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 use Money\Money;
@@ -29,6 +31,8 @@ class ChargeHydrator extends GeneratedHydrator
     /** {@inheritdoc} */
     public function hydrate(array $data, $object)
     {
+        $data['type']   = $this->hydrator->create($data['type'], Type::class);
+        $data['target'] = $this->hydrator->create($data['target'], Target::class);
         $data['action'] = $this->hydrator->create($data['action'], Action::class);
         $data['usage']  = $this->hydrator->create($data['usage'], Quantity::class);
         $data['sum']    = $this->hydrator->create($data['sum'], Money::class);
@@ -53,6 +57,8 @@ class ChargeHydrator extends GeneratedHydrator
     {
         $result = array_filter([
             'id'            => $object->getId(),
+            'type'          => $this->hydrator->extract($object->getType()),
+            'target'        => $this->hydrator->extract($object->getTarget()),
             'action'        => $this->hydrator->extract($object->getAction()),
             'price'         => $this->hydrator->extract($object->getPrice()),
             'usage'         => $this->hydrator->extract($object->getUsage()),

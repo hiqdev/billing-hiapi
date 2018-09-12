@@ -26,6 +26,8 @@ class Charge extends AbstractModel
     public function relations()
     {
         return [
+            'type'      => Type::class,
+            'target'    => Target::class,
             'action'    => Action::class,
             'price'     => Price::class,
             'usage'     => Quantity::class,

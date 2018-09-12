@@ -26,15 +26,16 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             'bill' => [
                 'id' => 'zh.bill_id',
             ],
+            'type' => [
+                'id' => 'zh.type_id',
+                'name' => 'ht.g2name',
+            ],
+            'target' => [
+                'id' => 'zh.object_id',
+                'type' => 'tt.name',
+            ],
             'action' => [
                 'id' => 'zh.action_id',
-                'type' => [
-                    'name' => 'at.g2name',
-                ],
-                'target' => [
-                    'id' => 'ha.object_id',
-                    'type' => 'tt.name',
-                ],
                 'customer' => [
                     'id' => 'zc.obj_id',
                     'login' => 'zc.login',
@@ -71,6 +72,6 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             ->leftJoin('action      ha', 'ha.id = zh.action_id')
             ->leftJoin('obj         tj', 'tj.obj_id = zh.object_id')
             ->leftJoin('zref        tt', 'tt.obj_id = tj.class_id')
-            ->leftJoin('gref        at', 'at.obj_id = ha.type_id');
+            ->leftJoin('gref        ht', 'ht.obj_id = zh.type_id');
     }
 }
