@@ -11,18 +11,64 @@
 namespace hiqdev\billing\hiapi\bill;
 
 use hiqdev\php\billing\bill\BillInterface;
+use hiqdev\php\billing\bill\BillRepositoryInterface;
+use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
+use hiqdev\yii\DataMapper\query\Specification;
+use Yii;
+use yii\db\ArrayExpression;
 use yii\db\Query;
 
-class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
+class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository implements BillRepositoryInterface
 {
+    /** {@inheritdoc} */
+    public $queryClass = BillQuery::class;
+
     /**
      * @param BillInterface $bill
      */
     public function save(BillInterface $bill)
     {
-        $hstore = new HstoreExpression([
+        $hstore = $this->prepareHstore($bill);
+        $this->db->transaction(function() use ($bill, $hstore) {
+            $chargeIds = [];
+            $call = new CallExpression('set_bill', [$hstore]);
+            $command = (new Query())->select($call);
+            $bill->setId($command->scalar($this->db));
+            foreach ($bill->getCharges() as $charge) {
+                $charge->setBill($bill);
+                $this->em->save($charge);
+                $chargeIds[] = $charge->getId();
+            }
+            if ($chargeIds) {
+                $call = new CallExpression('set_bill_charges', [$bill->getId(), new ArrayExpression($chargeIds, 'integer')]);
+                (new Query())->select($call)->scalar($this->db);
+            }
+        });
+    }
+
+    public function findId(BillInterface $bill)
+    {
+        if ($bill->getId()) {
+            return $bill->getId();
+        }
+
+        $hstore = $this->prepareHstore($bill);
+        $call = new CallExpression('bill_id', [$hstore]);
+
+        return (new Query())->select($call)->scalar($this->db);
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return HstoreExpression
+     */
+    protected function prepareHstore(BillInterface $bill): HstoreExpression
+    {
+        return new HstoreExpression([
             'id'            => $bill->getId(),
             'object_id'     => $bill->getTarget()->getId(),
             'tariff_id'     => $bill->getPlan() ? $bill->getPlan()->getId() : null,
@@ -38,32 +84,24 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
             'label'         => $bill->getComment() ?: null,
             'is_finished'   => $bill->isFinished(),
             'increment'     => true,
-            'charge_ids'    => $this->getBillChargesIds($bill)
         ]);
-        $this->db->transaction(function() use ($bill, $hstore) {
-            $call = new CallExpression('set_bill', [$hstore]);
-            $command = (new Query())->select($call);
-            $bill->setId($command->scalar($this->db));
-            foreach ($bill->getCharges() as $charge) {
-                $charge->setBill($bill);
-                $this->em->save($charge);
-            }
-        });
     }
 
-    /**
-     * @param BillInterface $bill
-     * @return string - comma separated charges ids
-     */
-    private function getBillChargesIds(BillInterface $bill): string
+    public function findByIds(array $ids): array
     {
-        $ids = [];
+        $spec = Yii::createObject(Specification::class)
+            ->with('charges')
+            ->where(['id' => $ids]);
 
-        foreach ($bill->getCharges() as $charge) {
-            if ($charge->getId() !== null) {
-                $ids[] = $charge->getId();
-            }
-        }
-        return implode(',', $ids);
+        return $this->findAll($spec);
+    }
+
+    protected function joinCharges(&$rows)
+    {
+        $bucket = Bucket::fromRows($rows, 'id');
+        $spec = (new Specification())->where(['bill-id' => $bucket->getKeys()]);
+        $charges = $this->getRepository(ChargeInterface::class)->queryAll($spec);
+        $bucket->fill($charges, 'bill.id', 'id');
+        $bucket->pour($rows, 'charges');
     }
 }

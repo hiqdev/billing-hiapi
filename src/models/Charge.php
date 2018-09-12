@@ -11,16 +11,15 @@
 namespace hiqdev\billing\hiapi\models;
 
 use hiqdev\yii\DataMapper\models\AbstractModel;
-use hiqdev\yii\DataMapper\query\attributes\DateTimeAttribute;
 use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
+use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
 
-class Bill extends AbstractModel
+class Charge extends AbstractModel
 {
     public function attributes()
     {
         return [
             'id'        => IntegerAttribute::class,
-            'time'      => DateTimeAttribute::class,
         ];
     }
 
@@ -29,10 +28,11 @@ class Bill extends AbstractModel
         return [
             'type'      => Type::class,
             'target'    => Target::class,
-            'customer'  => Customer::class,
-            'plan'      => Plan::class,
+            'action'    => Action::class,
+            'price'     => Price::class,
+            'usage'     => Quantity::class,
             'sum'       => Money::class,
-            'quantity'  => Quantity::class,
+            'bill'      => Bill::class,
         ];
     }
 }

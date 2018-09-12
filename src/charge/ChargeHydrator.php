@@ -15,6 +15,8 @@ use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeState;
 use hiqdev\php\billing\price\PriceInterface;
+use hiqdev\php\billing\target\Target;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 use Money\Money;
@@ -29,15 +31,19 @@ class ChargeHydrator extends GeneratedHydrator
     /** {@inheritdoc} */
     public function hydrate(array $data, $object)
     {
-        $data['action'] = $this->hydrator->hydrate($data['action'], Action::class);
-        $data['price']  = $this->hydrator->hydrate($data['price'], PriceInterface::class);
-        $data['usage']  = $this->hydrator->hydrate($data['usage'], Quantity::class);
-        $data['sum']    = $this->hydrator->hydrate($data['sum'], Money::class);
+        $data['type']   = $this->hydrator->create($data['type'], Type::class);
+        $data['target'] = $this->hydrator->create($data['target'], Target::class);
+        $data['action'] = $this->hydrator->create($data['action'], Action::class);
+        $data['usage']  = $this->hydrator->create($data['usage'], Quantity::class);
+        $data['sum']    = $this->hydrator->create($data['sum'], Money::class);
+        if (isset($data['price'])) {
+            $data['price'] = $this->hydrator->create($data['price'], PriceInterface::class);
+        }
         if (isset($data['bill'])) {
-            $data['bill'] = $this->hydrator->hydrate($data['bill'], Bill::class);
+            $data['bill'] = $this->hydrator->create($data['bill'], Bill::class);
         }
         if (isset($data['state'])) {
-            $data['state'] = $this->hydrator->hydrate($data['state'], ChargeState::class);
+            $data['state'] = $this->hydrator->create($data['state'], ChargeState::class);
         }
 
         return parent::hydrate($data, $object);
@@ -51,6 +57,8 @@ class ChargeHydrator extends GeneratedHydrator
     {
         $result = array_filter([
             'id'            => $object->getId(),
+            'type'          => $this->hydrator->extract($object->getType()),
+            'target'        => $this->hydrator->extract($object->getTarget()),
             'action'        => $this->hydrator->extract($object->getAction()),
             'price'         => $this->hydrator->extract($object->getPrice()),
             'usage'         => $this->hydrator->extract($object->getUsage()),
@@ -61,5 +69,16 @@ class ChargeHydrator extends GeneratedHydrator
         ]);
 
         return $result;
+    }
+
+    /**
+     * @param string $className
+     * @param array $data
+     * @throws \ReflectionException
+     * @return object
+     */
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        return parent::createEmptyInstance(Charge::class, $data);
     }
 }

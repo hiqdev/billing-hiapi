@@ -61,4 +61,14 @@ class TypeSemantics
 
         return $name;
     }
+
+    public function localName(TypeInterface $type): string
+    {
+        $name = $type->getName();
+        if (strpos($name, ',') !== false) {
+            [,$name] = explode(',', $name, 2);
+        }
+
+        return $name;
+    }
 }

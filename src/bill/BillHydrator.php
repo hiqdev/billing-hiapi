@@ -11,9 +11,10 @@
 namespace hiqdev\billing\hiapi\bill;
 
 use DateTimeImmutable;
-use hiqdev\billing\hiapi\models\Plan;
 use hiqdev\php\billing\bill\BillState;
+use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
@@ -48,7 +49,27 @@ class BillHydrator extends GeneratedHydrator
             $row['state']  = $this->hydrator->create($row['state'],   BillState::class);
         }
 
-        return parent::hydrate($row, $object);
+        $raw_charges = $row['charges'];
+        unset($row['charges']);
+
+        /** @var Bill $bill */
+        $bill = parent::hydrate($row, $object);
+
+        if (is_array($raw_charges)) {
+            $charges = [];
+            foreach ($raw_charges as $key => $charge) {
+                if ($charge instanceof ChargeInterface) {
+                    $charge->setBill($bill);
+                    $charges[$key] = $charge;
+                } else {
+                    $charge['bill'] = $bill;
+                    $charges[$key] = $this->hydrator->hydrate($charge, ChargeInterface::class);
+                }
+            }
+            $bill->setCharges($charges);
+        }
+
+        return $bill;
     }
 
     /**
