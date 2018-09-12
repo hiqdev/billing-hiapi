@@ -94,7 +94,7 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
         return $this->isMoreGeneral($first, $other) || !$other->hasId() ? $first : $other;
     }
 
-    public function lessGeneral(TargetInterface $first, TargetInterface $other)
+    public function specializeTarget(TargetInterface $first, TargetInterface $other): TargetInterface
     {
         return $this->isMoreGeneral($first, $other) || !$first->hasId() ? $other : $first;
     }
