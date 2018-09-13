@@ -24,6 +24,7 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
         return [
             'id' => 'zb.obj_id',
             'type' => [
+                'id' => 'zb.type_id',
                 'name' => 'bt.g2name',
             ],
             'plan' => [
