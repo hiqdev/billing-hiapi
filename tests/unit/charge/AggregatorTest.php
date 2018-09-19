@@ -2,16 +2,16 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\charge;
 
-use hiqdev\billing\hiapi\charge\Aggregator;
 use hiqdev\billing\hiapi\charge\Generalizer;
 use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\order\Order;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
+use hiqdev\php\billing\tools\Aggregator;
 use hiqdev\php\units\Quantity;
 
-class AggregatorTest extends \hiqdev\php\billing\tests\unit\charge\AggregatorTest
+class AggregatorTest extends \hiqdev\php\billing\tests\unit\tools\AggregatorTest
 {
     /** @var Aggregator */
     protected $aggregator;
@@ -46,7 +46,7 @@ class AggregatorTest extends \hiqdev\php\billing\tests\unit\charge\AggregatorTes
         ];
 
         $order = new Order(null, $this->plan->customer, $actions);
-        $charges = $this->calculator->calculateCharges($order);
+        $charges = $this->calculator->calculateOrder($order);
 
         // TODO: aggregate bills from charges
         // TODO: Check bill quantity is not summarized
