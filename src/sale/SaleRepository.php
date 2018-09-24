@@ -62,23 +62,14 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
      */
     public function findByAction(ActionInterface $action)
     {
-        $client_id = $action->getCustomer()->getId();
         $type = $action->getTarget()->getType();
 
         if ($type === 'certificate') {
-            //// XXX tmp crutch
-            $class_id = new CallExpression('class_id', ['certificate']);
-            $cond = empty($client_id)
-                ? $this->buildSellerCond($action->getCustomer()->getSeller())
-                : [
-                    'target-id' => $class_id,
-                    'customer-id' => $client_id,
-                ];
+            $target_id = new CallExpression('class_id', ['certificate']);
+        } elseif ($type === 'domain') {
+            $target_id = new CallExpression('class_id', ['zone']);
         } elseif ($type === 'server') {
-            $cond = [
-                'target-id' => $action->getTarget()->getId(),
-                'customer-id' => $client_id,
-            ];
+            $target_id = $action->getTarget()->getId();
         } else {
             throw new \Exception('not implemented for: ' . $type);
         }
@@ -86,17 +77,26 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
         $spec = Yii::createObject(Specification::class)
             /// XXX how to pass if we want with prices into joinPlans?
             ->with('plans')
-            ->where($cond);
+            ->where($this->buildTargetCond($target_id, $action->getCustomer()));
 
         return $this->findOne($spec);
     }
 
-    protected function buildSellerCond(CustomerInterface $seller)
+    protected function buildTargetCond($target_id, CustomerInterface $client)
     {
-        return [
-            'customer-id'   => $seller->getId(),
-            'seller-id'     => $seller->getId(),
-        ];
+        $client_id = $client->getId();
+        if ($client_id) {
+            $seller_id = null;
+        } else {
+            $seller_id = $client->getSeller()->getId();
+            $client_id = $seller_id;
+        }
+
+        return array_filter([
+            'target-id'     => $target_id,
+            'customer-id'   => $client_id,
+            'seller-id'     => $seller_id,
+        ]);
     }
 
     protected function joinPlans(&$rows)
