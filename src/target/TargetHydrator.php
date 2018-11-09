@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\billing\hiapi\models\Target;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
@@ -40,10 +41,19 @@ class TargetHydrator extends GeneratedHydrator
     public function extract($object)
     {
         return [
-            'id'            => $object->getId(),
-            'type'          => $object->getType(),
+            'id'            => $this->extractNone($object->getId()),
+            'type'          => $this->extractNone($object->getType()),
             'name'          => $object->getName(),
         ];
+    }
+
+    protected function extractNone($value)
+    {
+        /**
+         * XXX JSON doesn't support float INF and NAN
+         * TODO think of it more.
+         */
+        return $value === TargetInterface::NONE ? '' : $value;
     }
 
     /** {@inheritdoc} */
