@@ -44,12 +44,15 @@
         }
     ],
     "require": {
-        "hiqdev/hiapi": "<2.0 || dev-master",
+        "hiqdev/hiapi": "^1.0@dev",
         "hiqdev/php-billing": "<2.0 || dev-master",
         "hoa/ruler": "^2.17"
     },
     "require-dev": {
-        "hiqdev/hidev": "<2.0 || dev-master",
+        "yiisoft/di": "^3.0@dev",
+        "yiisoft/log": "^3.0@dev",
+        "yiisoft/cache": "^3.0@dev",
+        "hiqdev/hidev": "^1.0@dev",
         "hiqdev/hidev-php": "<2.0 || dev-master",
         "hiqdev/hidev-hiqdev": "<2.0 || dev-master"
     },
