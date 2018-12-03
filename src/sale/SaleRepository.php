@@ -22,7 +22,7 @@ use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
-use Yii;
+use yii\helpers\Yii;
 use yii\db\Query;
 
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface

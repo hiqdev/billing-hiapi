@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\tests\unit\type;
 
 use hiqdev\php\billing\type\Type;
-use Yii;
+use yii\helpers\Yii;
 use Zend\Hydrator\HydratorInterface;
 
 /**

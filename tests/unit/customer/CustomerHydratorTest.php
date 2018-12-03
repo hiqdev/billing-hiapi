@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\tests\unit\customer;
 
 use hiqdev\php\billing\customer\Customer;
-use Yii;
+use yii\helpers\Yii;
 use Zend\Hydrator\HydratorInterface;
 
 /**

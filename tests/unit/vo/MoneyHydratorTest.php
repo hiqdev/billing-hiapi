@@ -12,7 +12,7 @@ namespace hiqdev\billing\hiapi\tests\unit\vo;
 
 use Money\Currency;
 use Money\Money;
-use Yii;
+use yii\helpers\Yii;
 use Zend\Hydrator\HydratorInterface;
 
 /**

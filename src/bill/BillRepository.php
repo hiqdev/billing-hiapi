@@ -17,7 +17,7 @@ use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
-use Yii;
+use yii\helpers\Yii;
 use yii\db\ArrayExpression;
 use yii\db\Query;
 

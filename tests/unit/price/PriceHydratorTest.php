@@ -19,7 +19,7 @@ use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
 use Money\Currency;
 use Money\Money;
-use Yii;
+use yii\helpers\Yii;
 use yii\helpers\Json;
 use Zend\Hydrator\HydratorInterface;
 
