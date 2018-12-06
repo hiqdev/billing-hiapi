@@ -40,7 +40,6 @@ class ChargeRepository extends BaseRepository
             'action_id'     => $action->getId(),
             'buyer_id'      => $action->getCustomer()->getId(),
             'buyer'         => $action->getCustomer()->getLogin(),
-            'parent_id'     => $charge->getParent() !== null ? $charge->getParent()->getId() : null,
             'type_id'       => $charge->getType()->getId(),
             'type'          => $charge->getType()->getName(),
             'currency'      => $charge->getSum()->getCurrency()->getCode(),

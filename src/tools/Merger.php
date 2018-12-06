@@ -2,6 +2,7 @@
 
 namespace hiqdev\billing\hiapi\tools;
 
+use hiqdev\billing\hiapi\charge\Generalizer;
 use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\charge\GeneralizerInterface;

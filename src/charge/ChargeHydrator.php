@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\charge;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\charge\Charge;
+use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\charge\ChargeState;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\php\billing\target\Target;
@@ -44,6 +45,9 @@ class ChargeHydrator extends GeneratedHydrator
         }
         if (isset($data['state'])) {
             $data['state'] = $this->hydrator->create($data['state'], ChargeState::class);
+        }
+        if (isset($data['parent']['id'])) {
+            $data['parent'] = parent::hydrate($data['parent'], $this->createEmptyInstance(ChargeInterface::class));
         }
 
         return parent::hydrate($data, $object);
