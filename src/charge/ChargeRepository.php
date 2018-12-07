@@ -11,12 +11,15 @@
 namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\php\billing\charge\Charge;
+use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\charge\GeneralizerInterface;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
+use hiqdev\yii\DataMapper\models\relations\Bucket;
+use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 use yii\db\Query;
 
@@ -55,5 +58,14 @@ class ChargeRepository extends BaseRepository
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
         $charge->setId($command->scalar($this->db));
+    }
+
+    protected function joinParent(&$rows)
+    {
+        $bucket = Bucket::fromRows($rows, 'parent-id');
+        $spec = (new Specification())->where(['id' => $bucket->getKeys()]);
+        $charges = $this->getRepository(ChargeInterface::class)->queryAll($spec);
+        $bucket->fill($charges, 'id');
+        $bucket->pourOneToOne($rows, 'parent');
     }
 }

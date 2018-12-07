@@ -41,13 +41,21 @@ class ChargeHydrator extends GeneratedHydrator
             $data['price'] = $this->hydrator->create($data['price'], PriceInterface::class);
         }
         if (isset($data['bill'])) {
-            $data['bill'] = $this->hydrator->create($data['bill'], Bill::class);
+            if (\count($data['bill']) > 1) { // If relation is actually populated
+                $data['bill'] = $this->hydrator->create($data['bill'], Bill::class);
+            } else {
+                unset($data['bill']);
+            }
         }
         if (isset($data['state'])) {
             $data['state'] = $this->hydrator->create($data['state'], ChargeState::class);
         }
-        if (isset($data['parent']['id'])) {
-            $data['parent'] = parent::hydrate($data['parent'], $this->createEmptyInstance(ChargeInterface::class));
+        if (isset($data['parent'])) {
+            if (\count($data['parent']) > 1) { // If relation is actually populated
+                $data['parent'] = $this->hydrate($data['parent'], $this->createEmptyInstance(ChargeInterface::class));
+            } else {
+                unset($data['parent']);
+            }
         }
 
         return parent::hydrate($data, $object);
