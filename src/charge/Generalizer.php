@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
+use hiqdev\billing\hiapi\plan\GroupingPlan;
 use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\target\TargetInterface;
@@ -73,6 +74,11 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
 
     public function generalizeTarget(ChargeInterface $charge): TargetInterface
     {
+        $plan = $charge->getPrice()->getPlan();
+        if ($plan instanceof GroupingPlan) {
+            return $plan->convertToTarget();
+        }
+
         return $this->moreGeneral($charge->getAction()->getTarget(), $charge->getPrice()->getTarget());
 
         /* Sorry, to be removed later, older variants
