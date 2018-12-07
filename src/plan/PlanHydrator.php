@@ -66,8 +66,24 @@ class PlanHydrator extends GeneratedHydrator
             'name'          => $object->getName(),
             'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
+            'is_grouping'   => $object instanceof GroupingPlan,
         ]);
 
         return $result;
+    }
+
+    /**
+     * @param string $className
+     * @param array $data
+     * @throws \ReflectionException
+     * @return object
+     */
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        if (isset($data['is_grouping']) && $data['is_grouping'] === true) {
+            $className = GroupingPlan::class;
+        }
+
+        return parent::createEmptyInstance($className, $data);
     }
 }
