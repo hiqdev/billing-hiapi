@@ -12,8 +12,6 @@ namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeInterface;
-use hiqdev\php\billing\charge\GeneralizerInterface;
-use hiqdev\php\billing\sale\Sale;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
@@ -21,10 +19,27 @@ use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use League\Event\EmitterInterface;
 use yii\db\Query;
 
 class ChargeRepository extends BaseRepository
 {
+    /**
+     * @var EmitterInterface
+     */
+    private $emitter;
+
+    public function __construct(
+        ConnectionInterface $db,
+        EntityManagerInterface $em,
+        EmitterInterface $emitter,
+        array $config = []
+    ) {
+        parent::__construct($db, $em, $config);
+
+        $this->emitter = $emitter;
+    }
+
     /** {@inheritdoc} */
     public $queryClass = ChargeQuery::class;
 
@@ -58,6 +73,10 @@ class ChargeRepository extends BaseRepository
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
         $charge->setId($command->scalar($this->db));
+        $events = $charge->releaseEvents();
+        if (!empty($events)) {
+            $this->emitter->emitBatch($events);
+        }
     }
 
     protected function joinParent(&$rows)
