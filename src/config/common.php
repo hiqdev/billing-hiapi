@@ -65,7 +65,7 @@ return [
         '__class' => \hiqdev\php\billing\order\Calculator::class,
     ],
     \hiqdev\php\billing\tools\AggregatorInterface::class => [
-        '__class' => hiqdev\php\billing\tools\Aggregator::class,
+        '__class' => \hiqdev\php\billing\tools\Aggregator::class,
     ],
     \hiqdev\php\billing\tools\MergerInterface::class => [
         '__class' => \hiqdev\billing\hiapi\tools\Merger::class,
