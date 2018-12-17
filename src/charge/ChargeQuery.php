@@ -45,7 +45,7 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
                     ],
                 ],
                 'quantity' => [
-                    'unit' => "hu.parent",
+                    'unit' => 'hu.parent',
                     'quantity' => 'ha.amount',
                 ],
                 'time' => 'ha.time',
@@ -58,6 +58,9 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
                 'unit' => 'hu.name',
                 'quantity' => 'zh.quantity',
             ],
+            'parent' => [
+                'id' => 'zh.parent_id',
+            ]
         ];
     }
 

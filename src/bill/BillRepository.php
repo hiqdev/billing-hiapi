@@ -99,7 +99,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
     protected function joinCharges(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'id');
-        $spec = (new Specification())->where(['bill-id' => $bucket->getKeys()]);
+        $spec = (new Specification())->with('parent')->where(['bill-id' => $bucket->getKeys()]);
         $charges = $this->getRepository(ChargeInterface::class)->queryAll($spec);
         $bucket->fill($charges, 'bill.id', 'id');
         $bucket->pour($rows, 'charges');

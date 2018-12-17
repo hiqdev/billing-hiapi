@@ -33,6 +33,7 @@ class Charge extends AbstractModel
             'usage'     => Quantity::class,
             'sum'       => Money::class,
             'bill'      => Bill::class,
+            'parent'    => self::class,
         ];
     }
 }

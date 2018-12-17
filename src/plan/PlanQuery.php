@@ -35,6 +35,7 @@ class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
                     'login' => 'cr.login',
                 ],
             ],
+            'is_grouping' => 'zt.is_grouping',
             'available_for' => new AvailableForField(),
         ];
     }
