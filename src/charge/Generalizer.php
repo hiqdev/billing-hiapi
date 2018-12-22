@@ -35,6 +35,10 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
 
     public function generalizeType(ChargeInterface $charge): TypeInterface
     {
+        if ($this->typeSemantics->isDeposit($charge->getType())) {
+            return $charge->getType();
+        }
+
         if ($charge->getParent() !== null) {
             $chargeType = $charge->getParent()->getPrice()->getType();
         } else {

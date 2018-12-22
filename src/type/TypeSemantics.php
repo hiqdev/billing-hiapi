@@ -10,6 +10,7 @@ class TypeSemantics
     private const MONTHLY = 'monthly';
     private const OVERUSE = 'overuse';
     private const DISCOUNT = 'discount';
+    private const DEPOSIT = 'deposit';
 
     /**
      * // TODO: Probably not the best place for this method
@@ -46,6 +47,15 @@ class TypeSemantics
     public function isOveruse(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::OVERUSE;
+    }
+
+    /**
+     * @param TypeInterface $type
+     * @return bool
+     */
+    public function isDeposit(TypeInterface $type): bool
+    {
+        return $this->groupName($type) === self::DEPOSIT;
     }
 
     /**
