@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\target;
 use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\device\SwitchTarget;
 use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
 use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
@@ -76,6 +77,12 @@ class TargetFactory implements TargetFactoryInterface
             'device' => [
                 'cdn' => VideoCdnTarget::class,
                 'cdnpix' => PixCdnTarget::class,
+                'net' => SwitchTarget::class,
+                'rack' => SwitchTarget::class,
+                'cable_organizer' => SwitchTarget::class,
+                'console' => SwitchTarget::class,
+                'ipmi' => SwitchTarget::class,
+                'pdu' => SwitchTarget::class,
                 '*' => ServerTarget::class,
             ],
             'part' => [
