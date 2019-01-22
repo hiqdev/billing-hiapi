@@ -20,6 +20,7 @@ use hiqdev\yii\DataMapper\query\Specification;
 use Yii;
 use yii\db\ArrayExpression;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository implements BillRepositoryInterface
 {
@@ -103,5 +104,21 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
         $charges = $this->getRepository(ChargeInterface::class)->queryAll($spec);
         $bucket->fill($charges, 'bill.id', 'id');
         $bucket->pour($rows, 'charges');
+
+        $indexedCharges = ArrayHelper::index($charges, 'id');
+        foreach ($rows as &$bill) {
+            foreach ($bill['charges'] as &$charge) {
+                $charge = $this->enrichChargeWithParents($indexedCharges, $charge);
+            }
+        }
+    }
+
+    private function enrichChargeWithParents(array $charges, ?array $charge = null): array
+    {
+        if (isset($charge['parent-id'], $charges[$charge['parent-id']])) {
+            $charge['parent'] = $this->enrichChargeWithParents($charges, $charges[$charge['parent-id']]);
+        }
+
+        return $charge;
     }
 }
