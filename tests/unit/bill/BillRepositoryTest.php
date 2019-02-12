@@ -4,9 +4,9 @@ namespace hiqdev\billing\hiapi\tests\unit\bill;
 
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\billing\hiapi\bill\BillRepository;
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 
-class BillRepositoryTest extends \PHPUnit\Framework\TestCase
+class BillRepositoryTest extends BaseRepositoryTest
 {
     public function testDI()
     {
@@ -15,16 +15,6 @@ class BillRepositoryTest extends \PHPUnit\Framework\TestCase
 
     protected function getRepo(): BillRepository
     {
-        return $this->getEntityManager()->getRepository(Bill::class);
-    }
-
-    protected function getEntityManager(): EntityManagerInterface
-    {
-        return $this->getContainer()->get(EntityManagerInterface::class);
-    }
-
-    protected function getContainer()
-    {
-        return class_exists('Yii') ? \Yii::$container : \yii\helpers\Yii::getContainer();
+        return $this->getRepository(Bill::class);
     }
 }
