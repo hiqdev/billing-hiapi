@@ -11,13 +11,13 @@
 namespace hiqdev\billing\hiapi\tests\unit\customer;
 
 use hiqdev\php\billing\customer\Customer;
-use Yii;
+use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
 use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class CustomerHydratorTest extends \PHPUnit\Framework\TestCase
+class CustomerHydratorTest extends BaseHydratorTest
 {
     const ID1 = 11111;
     const LOGIN1 = 'login11111';
@@ -36,7 +36,7 @@ class CustomerHydratorTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->hydrator = Yii::$container->get(HydratorInterface::class);
+        $this->hydrator = $this->getHydrator();
     }
 
     public function testHydrateNew()

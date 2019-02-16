@@ -17,16 +17,16 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
+use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
 use Money\Currency;
 use Money\Money;
-use Yii;
 use yii\helpers\Json;
 use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class PriceHydratorTest extends \PHPUnit\Framework\TestCase
+class PriceHydratorTest extends BaseHydratorTest
 {
     const ID1   = '11111';
     const CUR1  = 'USD';
@@ -87,7 +87,7 @@ class PriceHydratorTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->hydrator = Yii::$container->get(HydratorInterface::class);
+        $this->hydrator = $this->getHydrator();
         $this->dataEnumPrice['data'] = Json::encode(['sums' => $this->sums]);
     }
 
