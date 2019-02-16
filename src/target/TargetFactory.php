@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\target;
 use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
 use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\device\SwitchTarget;
 use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
 use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
@@ -21,6 +22,7 @@ use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\DomainTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\SwitchTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
 use hiqdev\php\billing\target\Target;
@@ -76,6 +78,12 @@ class TargetFactory implements TargetFactoryInterface
             'device' => [
                 'cdn' => VideoCdnTarget::class,
                 'cdnpix' => PixCdnTarget::class,
+                'net' => SwitchTarget::class,
+                'rack' => SwitchTarget::class,
+                'cable_organizer' => SwitchTarget::class,
+                'console' => SwitchTarget::class,
+                'ipmi' => SwitchTarget::class,
+                'pdu' => SwitchTarget::class,
                 '*' => ServerTarget::class,
             ],
             'part' => [
@@ -95,6 +103,7 @@ class TargetFactory implements TargetFactoryInterface
                 'template' => TemplateTariffTarget::class,
                 'certificate' => CertificateTariffTarget::class,
                 'domain' => DomainTariffTarget::class,
+                'switch' => SwitchTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [

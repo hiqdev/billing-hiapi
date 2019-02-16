@@ -106,14 +106,8 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             ->with('prices')
             ->where(['id' => $bucket->getKeys()]);
         $raw_plans = $this->getRepository(PlanInterface::class)->queryAll($spec);
-        /// TODO for SilverFire: try to do with bucket
-        $plans = [];
-        foreach ($raw_plans as $plan) {
-            $plans[$plan['id']] = $plan;
-        }
-        foreach ($rows as &$sale) {
-            $sale['plan'] = $plans[$sale['plan-id']];
-        }
+        $bucket->fill($raw_plans, 'id');
+        $bucket->pourOneToOne($rows, 'plan');
     }
 
     /**
