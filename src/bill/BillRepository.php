@@ -17,7 +17,6 @@ use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
-use Yii;
 use yii\db\ArrayExpression;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -90,7 +89,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
 
     public function findByIds(array $ids): array
     {
-        $spec = Yii::createObject(Specification::class)
+        $spec = $this->createSpecification()
             ->with('charges')
             ->where(['id' => $ids]);
 
@@ -100,7 +99,7 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
     protected function joinCharges(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'id');
-        $spec = (new Specification())->with('parent')->where(['bill-id' => $bucket->getKeys()]);
+        $spec = $this->createSpecification()->with('parent')->where(['bill-id' => $bucket->getKeys()]);
         $charges = $this->getRepository(ChargeInterface::class)->queryAll($spec);
         $bucket->fill($charges, 'bill.id', 'id');
         $bucket->pour($rows, 'charges');

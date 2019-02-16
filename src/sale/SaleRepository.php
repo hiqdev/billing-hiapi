@@ -22,7 +22,6 @@ use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
-use Yii;
 use yii\db\Query;
 
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface
@@ -74,7 +73,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             throw new \Exception('not implemented for: ' . $type);
         }
 
-        $spec = Yii::createObject(Specification::class)
+        $spec = $this->createSpecification()
             /// XXX how to pass if we want with prices into joinPlans?
             ->with('plans')
             ->where($this->buildTargetCond($target_id, $action->getCustomer()));
@@ -102,7 +101,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
     protected function joinPlans(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'plan-id');
-        $spec = (new Specification())
+        $spec = $this->createSpecification()
             ->with('prices')
             ->where(['id' => $bucket->getKeys()]);
         $raw_plans = $this->getRepository(PlanInterface::class)->queryAll($spec);

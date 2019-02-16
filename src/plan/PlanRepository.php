@@ -19,7 +19,6 @@ use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
-use Yii;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
 {
@@ -36,7 +35,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $seller = $action->getCustomer()->getSeller()->getLogin();
         $type = $action->getTarget()->getType();
 
-        $spec = Yii::createObject(Specification::class)
+        $spec = $this->createSpecification()
             ->with('prices')
             ->where([
                 'type-name' => $type,
@@ -60,7 +59,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
 
     public function findByIds(array $ids): array
     {
-        $spec = Yii::createObject(Specification::class)
+        $spec = $this->createSpecification()
             ->with('prices')
             ->where(['id' => $ids]);
 
@@ -70,7 +69,7 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     protected function joinPrices(&$rows)
     {
         $bucket = Bucket::fromRows($rows, 'id');
-        $spec = (new Specification())->where(['plan-id' => $bucket->getKeys()]);
+        $spec = $this->createSpecification()->where(['plan-id' => $bucket->getKeys()]);
         $prices = $this->getRepository(PriceInterface::class)->queryAll($spec);
         $bucket->fill($prices, 'plan.id', 'id');
         $bucket->pour($rows, 'prices');
