@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
  */
 
-return [
+$singletons = [
     \hiqdev\yii\DataMapper\components\EntityManagerInterface::class => [
         'repositories' => [
             \hiqdev\php\billing\type\Type::class                => \hiqdev\billing\hiapi\type\TypeRepository::class,
@@ -100,3 +100,5 @@ return [
     ],
     \hiqdev\billing\hiapi\type\TypeSemantics::class,
 ];
+
+return class_exists('Yii') ? ['container' => ['singletons' => $singletons]] : $singletons;
