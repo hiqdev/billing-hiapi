@@ -10,15 +10,15 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\vo;
 
+use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
 use Money\Currency;
 use Money\Money;
-use yii\helpers\Yii;
 use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class MoneyHydratorTest extends \PHPUnit\Framework\TestCase
+class MoneyHydratorTest extends BaseHydratorTest
 {
     const AMOUNT1 = '11111';
     const CURRENCY1 = 'USD';
@@ -33,7 +33,7 @@ class MoneyHydratorTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->hydrator = Yii::$container->get(HydratorInterface::class);
+        $this->hydrator = $this->getHydrator();
     }
 
     public function testHydrateNew()
