@@ -91,8 +91,8 @@ $singletons = [
     \hiqdev\php\billing\price\PriceFactoryInterface::class => [
         '__class' => \hiqdev\billing\hiapi\price\PriceFactory::class,
         '__construct()' => [
-            'types'         => $params['billing-hiapi.price.types'],
-            'defaultClass'  => $params['billing-hiapi.price.defaultClass'],
+            $params['billing-hiapi.price.types'],
+            $params['billing-hiapi.price.defaultClass'],
         ],
     ],
     \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
