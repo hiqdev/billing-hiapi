@@ -16,6 +16,7 @@ use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\device\SwitchTarget;
 use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
 use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
+use hiqdev\billing\hiapi\target\domain\DomainTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
@@ -124,6 +125,9 @@ class TargetFactory implements TargetFactoryInterface
             ],
             '-1' => [
                 '*' => Target::class,
+            ],
+            'domain' => [
+                '*' => DomainTarget::class,
             ],
             'zone' => [
                 '*' => DomainZoneTarget::class,
