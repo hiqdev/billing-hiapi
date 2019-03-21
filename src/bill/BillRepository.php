@@ -83,7 +83,6 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
             'time'          => $bill->getTime()->format('c'),
             'label'         => $bill->getComment() ?: null,
             'is_finished'   => $bill->isFinished(),
-            'increment'     => true,
         ]);
     }
 
