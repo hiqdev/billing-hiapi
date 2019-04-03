@@ -80,6 +80,7 @@ class TargetFactory implements TargetFactoryInterface
         $map = [
             'device' => [
                 'cdn' => VideoCdnTarget::class,
+                'cloudservice' => VideoCdnTarget::class,
                 'cdnpix' => PixCdnTarget::class,
                 'net' => SwitchTarget::class,
                 'rack' => SwitchTarget::class,
