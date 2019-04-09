@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
+use hiqdev\php\billing\action\TemporaryAction;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\yii\DataMapper\components\ConnectionInterface;
@@ -49,13 +50,20 @@ class ChargeRepository extends BaseRepository
         $tariff_id = null;
         if ($action->hasSale($action)) {
             $tariff_id = $action->getSale()->getPlan()->getId();
-            $this->em->save($action);
+            if ($action instanceof TemporaryAction) {
+                $this->em->save($action->getParent());
+            } else {
+                $this->em->save($action);
+            }
         }
+
         $hstore = new HstoreExpression(array_filter([
             'id'            => $charge->getId(),
             'object_id'     => $charge->getTarget()->getId(),
             'tariff_id'     => $tariff_id,
-            'action_id'     => $action->getId(),
+            'action_id'     => $action instanceof TemporaryAction
+                                ? $action->getParent()->getId()
+                                : $action->getId(),
             'buyer_id'      => $action->getCustomer()->getId(),
             'buyer'         => $action->getCustomer()->getLogin(),
             'type_id'       => $charge->getType()->getId(),
