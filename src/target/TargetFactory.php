@@ -127,6 +127,9 @@ class TargetFactory implements TargetFactoryInterface
             '-1' => [
                 '*' => Target::class,
             ],
+            'feature' => [
+                '*' => Target::class,
+            ],
             'domain' => [
                 '*' => DomainTarget::class,
             ],
