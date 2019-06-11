@@ -90,6 +90,9 @@ class TargetFactory implements TargetFactoryInterface
                 'pdu' => SwitchTarget::class,
                 '*' => ServerTarget::class,
             ],
+            'serverConfig' => [
+                '*' => Target::class,
+            ],
             'part' => [
                 '*' => PartTarget::class,
             ],

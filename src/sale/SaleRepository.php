@@ -69,6 +69,8 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             $target_id = new CallExpression('class_id', ['zone']);
         } elseif ($type === 'server') {
             $target_id = $action->getTarget()->getId();
+        } elseif ($type === 'serverConfig') {
+            $target_id = $action->getTarget()->getId();
         } else {
             throw new \Exception('not implemented for: ' . $type);
         }
