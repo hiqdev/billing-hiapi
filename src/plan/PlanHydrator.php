@@ -32,7 +32,7 @@ class PlanHydrator extends GeneratedHydrator
         if (!empty($data['seller'])) {
             $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
         }
-        $raw_prices = $data['prices'];
+        $raw_prices = $data['prices'] ?? null;
         unset($data['prices']);
 
         /** @var Plan $plan */
