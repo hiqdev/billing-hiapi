@@ -5,7 +5,7 @@ namespace hiqdev\billing\hiapi\type;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\type\TypeInterface;
 
-class TypeSemantics
+final class TypeSemantics
 {
     private const MONTHLY = 'monthly';
     private const OVERUSE = 'overuse';
