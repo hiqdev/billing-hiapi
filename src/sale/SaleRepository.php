@@ -56,12 +56,21 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
     }
 
     /**
+     * Used to find a sale by action target.
+     *
      * @param ActionInterface $action
-     * @return SaleInterface
+     * @return SaleInterface|false
      */
     public function findByAction(ActionInterface $action)
     {
         $type = $action->getTarget()->getType();
+        if ($type === null) {
+            // When action target type is not set, then action can be applied to any target.
+            // It means we can not find exact sale, so return null.
+            // Used at lest for:
+            //  - temporary actions, when in-memory action is matched against an in-memory plan.
+            return false;
+        }
 
         if ($type === 'certificate') {
             $target_id = new CallExpression('class_id', ['certificate']);
