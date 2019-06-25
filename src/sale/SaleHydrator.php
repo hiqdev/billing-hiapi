@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\sale;
 use DateTimeImmutable;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 
@@ -27,7 +28,9 @@ class SaleHydrator extends GeneratedHydrator
     {
         $data['target']     = $this->hydrator->hydrate($data['target'], Target::class);
         $data['customer']   = $this->hydrator->hydrate($data['customer'], Customer::class);
-        $data['plan']       = $this->hydrator->hydrate($data['plan'], Plan::class);
+        $data['plan']       = $data['plan'] instanceof PlanInterface
+            ? $data['plan']
+            : $this->hydrator->hydrate($data['plan'], Plan::class);
         $data['time']       = $this->hydrator->hydrate((array) $data['time'], DateTimeImmutable::class);
 
         return parent::hydrate($data, $object);
