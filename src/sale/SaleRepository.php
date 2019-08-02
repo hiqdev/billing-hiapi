@@ -92,21 +92,19 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
         return $this->findOne($spec);
     }
 
-    protected function buildTargetCond($target_id, CustomerInterface $client)
+    protected function buildTargetCond($target_id, CustomerInterface $buyer)
     {
-        $client_id = $client->getId();
+        $condition = ['target-id' => $target_id];
+
+        $client_id = $buyer->getId();
         if ($client_id) {
-            $seller_id = null;
+            $condition['customer-id'] = $client_id;
+            $condition['seller-id_ne'] = $client_id;
         } else {
-            $seller_id = $client->getSeller()->getId();
-            $client_id = $seller_id;
+            $condition['customer-id'] = $condition['seller-id'] = $buyer->getSeller()->getId();
         }
 
-        return array_filter([
-            'target-id'     => $target_id,
-            'customer-id'   => $client_id,
-            'seller-id'     => $seller_id,
-        ]);
+        return $condition;
     }
 
     protected function joinPlans(&$rows)
