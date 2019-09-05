@@ -70,6 +70,11 @@ $singletons = [
     \hiqdev\php\billing\tools\MergerInterface::class => [
         '__class' => \hiqdev\billing\hiapi\tools\Merger::class,
     ],
+    \hiqdev\billing\hiapi\tools\Merger::class => [
+        '__construct()' => [
+            \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\tools\Merger::class),
+        ],
+    ],
     \hiqdev\php\billing\charge\GeneralizerInterface::class => [
         '__class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
     ],

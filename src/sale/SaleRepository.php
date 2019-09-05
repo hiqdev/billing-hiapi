@@ -76,7 +76,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             $target_id = new CallExpression('class_id', ['certificate']);
         } elseif ($type === 'domain' || $type === 'feature') {
             $target_id = new CallExpression('class_id', ['zone']);
-        } elseif ($type === 'server') {
+        } elseif ($type === 'server' || $type === 'device') {
             $target_id = $action->getTarget()->getId();
         } elseif ($type === 'serverConfig') {
             $target_id = $action->getTarget()->getId();
