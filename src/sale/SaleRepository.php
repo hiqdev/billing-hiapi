@@ -80,6 +80,13 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             $target_id = $action->getTarget()->getId();
         } elseif ($type === 'serverConfig') {
             $target_id = $action->getTarget()->getId();
+        } elseif ($type === 'part') {
+            // Crutch. Actions for specific parts are currently used at least in
+            // - DeviceMonthlyEstimateMux
+            //
+            // For regular billing, all actions are created for the whole server
+            // but have type monthly,hardware.
+            return false;
         } else {
             throw new \Exception('not implemented for: ' . $type);
         }
