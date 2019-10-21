@@ -7,10 +7,11 @@ use hiqdev\php\billing\type\TypeInterface;
 
 final class TypeSemantics
 {
-    private const MONTHLY = 'monthly';
-    private const OVERUSE = 'overuse';
+    private const MONTHLY  = 'monthly';
+    private const OVERUSE  = 'overuse';
     private const DISCOUNT = 'discount';
-    private const DEPOSIT = 'deposit';
+    private const DEPOSIT  = 'deposit';
+    private const HARDWARE = 'hardware';
 
     /**
      * // TODO: Probably not the best place for this method
@@ -29,6 +30,15 @@ final class TypeSemantics
     public function isMonthly(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::MONTHLY;
+    }
+
+    /**
+     * @param TypeInterface $type
+     * @return bool
+     */
+    public function isHardware(TypeInterface $type): bool
+    {
+        return $this->localName($type) === self::HARDWARE;
     }
 
     /**
