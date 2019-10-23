@@ -77,7 +77,9 @@ class ChargeRepository extends BaseRepository
             'time'          => $charge->getAction()->getTime()->format('c'),
             'is_finished'   => $charge->isFinished(),
             'label'         => $charge->getComment(),
-        ]));
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH));
         $call = new CallExpression('set_charge', [$hstore]);
         $command = (new Query())->select($call);
         $charge->setId($command->scalar($this->db));
