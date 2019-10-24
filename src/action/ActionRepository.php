@@ -33,7 +33,9 @@ class ActionRepository extends BaseRepository
             'sale_id'   => $sale ? $this->em->findId($sale) : null,
             'state'     => $action->getState() ? $action->getState()->getName() : null,
             'time'      => $time ? $time->format('c') : null,
-        ]));
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH));
         $call = new CallExpression('set_action', [$hstore]);
         $command = (new Query())->select($call);
         $action->setId($command->scalar($this->db));

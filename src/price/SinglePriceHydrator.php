@@ -10,6 +10,8 @@
 
 namespace hiqdev\billing\hiapi\price;
 
+use hiqdev\php\billing\plan\Plan;
+
 /**
  * SinglePrice Hydrator.
  *
@@ -26,6 +28,8 @@ class SinglePriceHydrator extends PriceHydrator
         return array_merge(parent::extract($object), array_filter([
             'prepaid'       => $this->hydrator->extract($object->getPrepaid()),
             'price'         => $this->hydrator->extract($object->getPrice()),
-        ]));
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH));
     }
 }

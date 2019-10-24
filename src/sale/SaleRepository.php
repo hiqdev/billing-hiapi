@@ -39,7 +39,9 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             'buyer_id'  => $sale->getCustomer()->getId(),
             'object_id' => $sale->getTarget()->getId(),
             'tariff_id' => $sale->getPlan()->getId(),
-        ]));
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH));
         $call = new CallExpression('sale_id', [$hstore]);
         $command = (new Query())->select($call);
 

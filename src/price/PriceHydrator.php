@@ -55,13 +55,13 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['prepaid']['unit'])) {
             $row['unit'] = Unit::create($row['prepaid']['unit']);
         }
-        if (isset($row['unit']) && isset($row['prepaid']['quantity'])) {
+        if (isset($row['unit'], $row['prepaid']['quantity'])) {
             $row['prepaid'] = Quantity::create($row['unit'], $row['prepaid']['quantity']);
         }
         if (isset($row['price']['currency'])) {
             $row['currency'] = new Currency(strtoupper($row['price']['currency']));
         }
-        if (isset($row['currency']) && isset($row['price']['amount'])) {
+        if (isset($row['currency'], $row['price']['amount'])) {
             $row['price'] = new Money($row['price']['amount'], $row['currency']);
         }
         if (!empty($row['plan'])) {
@@ -70,7 +70,7 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
-        if (isset($data['formula']) && !empty($data['formula'])) {
+        if (!empty($data['formula'])) {
             $row['modifier'] = $this->hydrator->hydrate([$data['formula']], FormulaInterface::class);
         }
 

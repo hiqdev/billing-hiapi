@@ -34,9 +34,9 @@ class MoneyHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        return array_filter([
+        return [
             'currency'  => $object->getCurrency()->getCode(),
             'amount'    => $object->getAmount(),
-        ]);
+        ];
     }
 }

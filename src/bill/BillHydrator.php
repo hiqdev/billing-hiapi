@@ -90,6 +90,8 @@ class BillHydrator extends GeneratedHydrator
             'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
             'charges'       => $this->hydrator->extractAll($object->getCharges()),
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
-        ]);
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }

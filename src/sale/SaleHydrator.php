@@ -48,6 +48,8 @@ class SaleHydrator extends GeneratedHydrator
             'customer'  => $this->hydrator->extract($object->getCustomer()),
             'plan'      => $this->hydrator->extract($object->getPlan()),
             'time'      => $object->getTime() ? $this->hydrator->extract($object->getTime()) : null,
-        ]);
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }

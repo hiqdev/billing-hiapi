@@ -78,7 +78,9 @@ class ChargeHydrator extends GeneratedHydrator
             'bill'          => $object->getBill() ? $this->hydrator->extract($object->getBill()) : null,
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
             'comment'       => $object->getComment(),
-        ]);
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH);
 
         return $result;
     }

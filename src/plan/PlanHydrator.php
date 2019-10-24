@@ -67,7 +67,9 @@ class PlanHydrator extends GeneratedHydrator
             'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
             'is_grouping'   => $object instanceof GroupingPlan,
-        ]);
+        ], static function ($value): bool {
+            return $value !== null;
+        }, ARRAY_FILTER_USE_BOTH);
 
         return $result;
     }
