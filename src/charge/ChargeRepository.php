@@ -50,11 +50,11 @@ class ChargeRepository extends BaseRepository
         $tariff_id = null;
         if ($action->hasSale($action)) {
             $tariff_id = $action->getSale()->getPlan()->getId();
-            if ($action instanceof TemporaryAction) {
-                $this->em->save($action->getParent());
-            } else {
-                $this->em->save($action);
+            while ($action instanceof TemporaryAction) {
+                $action = $action->getParent();
             }
+
+            $this->em->save($action);
         }
 
         $hstore = new HstoreExpression(array_filter([
