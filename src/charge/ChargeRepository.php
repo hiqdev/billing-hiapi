@@ -50,8 +50,12 @@ class ChargeRepository extends BaseRepository
         $tariff_id = null;
         if ($action->hasSale($action)) {
             $tariff_id = $action->getSale()->getPlan()->getId();
+            $i = 0;
             while ($action instanceof TemporaryAction) {
                 $action = $action->getParent();
+                if ($i++ > 10) {
+                    throw new \RuntimeException('Temporary action nesting limit has been exceeded.');
+                }
             }
 
             $this->em->save($action);
@@ -61,9 +65,7 @@ class ChargeRepository extends BaseRepository
             'id'            => $charge->getId(),
             'object_id'     => $charge->getTarget()->getId(),
             'tariff_id'     => $tariff_id,
-            'action_id'     => $action instanceof TemporaryAction
-                                ? $action->getParent()->getId()
-                                : $action->getId(),
+            'action_id'     => $action->getId(),
             'buyer_id'      => $action->getCustomer()->getId(),
             'buyer'         => $action->getCustomer()->getLogin(),
             'type_id'       => $charge->getType()->getId(),
