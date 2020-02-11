@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\Exception\EntityNotFoundException;
 use hiqdev\php\billing\order\OrderInterface;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
@@ -73,5 +74,15 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
         $prices = $this->getRepository(PriceInterface::class)->queryAll($spec);
         $bucket->fill($prices, 'plan.id', 'id');
         $bucket->pour($rows, 'prices');
+    }
+
+    public function getById(int $id): PlanInterface
+    {
+        $plans = $this->findByIds([$id]);
+        if (count($plans) === 0) {
+            throw new EntityNotFoundException(sprintf('Could not find Plan %s', $id));
+        }
+
+        return reset($plans);
     }
 }
