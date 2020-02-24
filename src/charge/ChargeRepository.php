@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
+use hiqdev\php\billing\action\ActionInterface;
 use hiqdev\php\billing\action\TemporaryAction;
 use hiqdev\php\billing\charge\Charge;
 use hiqdev\php\billing\charge\ChargeInterface;
@@ -50,15 +51,7 @@ class ChargeRepository extends BaseRepository
         $tariff_id = null;
         if ($action->hasSale($action)) {
             $tariff_id = $action->getSale()->getPlan()->getId();
-            $i = 0;
-            while ($action instanceof TemporaryAction) {
-                $action = $action->getParent();
-                if ($i++ > 10) {
-                    throw new \RuntimeException('Temporary action nesting limit has been exceeded.');
-                }
-            }
-
-            $this->em->save($action);
+            $this->saveRealAction($action);
         }
 
         $hstore = new HstoreExpression(array_filter([
@@ -89,6 +82,19 @@ class ChargeRepository extends BaseRepository
         if (!empty($events)) {
             $this->emitter->emitBatch($events);
         }
+    }
+
+    private function saveRealAction(ActionInterface $action): void
+    {
+        $i = 0;
+        while ($action instanceof TemporaryAction) {
+            $action = $action->getParent();
+            if ($i++ > 10) {
+                throw new \RuntimeException('Temporary action nesting limit has been exceeded.');
+            }
+        }
+
+        $this->em->save($action);
     }
 
     protected function joinParent(&$rows)
