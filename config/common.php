@@ -104,6 +104,15 @@ $singletons = [
         '__class' => \hiqdev\php\billing\sale\SaleFactory::class,
     ],
     \hiqdev\billing\hiapi\type\TypeSemantics::class,
+
+    \hiapi\Core\Endpoint\EndpointRepository::class => [
+        '__construct()' => [
+            'endpoints' => [
+                'CalculateValue'    => \hiqdev\billing\hiapi\action\Calculate\ActionCalculateValue::class,
+                'BillsSearch'       => \hiqdev\billing\hiapi\bill\Search\BillBulkSearch::class,
+            ],
+        ],
+    ],
 ];
 
 return class_exists(\Yiisoft\Factory\Definitions\Reference::class)
