@@ -16,7 +16,6 @@ use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
-use hiqdev\yii\DataMapper\query\Specification;
 use yii\db\ArrayExpression;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;

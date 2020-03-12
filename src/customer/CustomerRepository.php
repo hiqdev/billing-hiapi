@@ -14,6 +14,9 @@ use hiqdev\php\billing\customer\CustomerInterface;
 
 class CustomerRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository
 {
+    /** {@inheritdoc} */
+    public $queryClass = CustomerQuery::class;
+
     public function save(CustomerInterface $customer)
     {
         throw new \Exception('not implemented ' . __METHOD__);
