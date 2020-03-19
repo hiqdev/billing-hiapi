@@ -20,6 +20,7 @@ final class BillBulkSearch
         return $build->endpoint(self::class)
             ->exportTo(Tenant::ALL)
             ->take(BillSearchCommand::class)
+            ->checkPermission('bill.read')
             ->middlewares(
                 $build->call(BillBulkSearchAction::class)
             )
