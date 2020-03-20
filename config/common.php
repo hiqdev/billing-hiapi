@@ -108,8 +108,23 @@ $singletons = [
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__construct()' => [
             'endpoints' => [
-                'CalculateValue'    => \hiqdev\billing\hiapi\action\Calculate\ActionCalculateValue::class,
+                'PlansSearch'       => \hiqdev\billing\hiapi\plan\Search\PlanBulkSearch::class,
+
+                'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\SaleBulkSearch::class,
+                'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\SaleCreate::class,
+                'SaleClose'         => \hiqdev\billing\hiapi\sale\Create\SaleClose::class,
+
+                'MethodsSearch'     => \hiqdev\billing\hiapi\method\Search\MethodBulkSearch::class,
+                'MethodCreate'      => \hiqdev\billing\hiapi\method\Create\MethodCreate::class,
+                'MethodDelete'      => \hiqdev\billing\hiapi\method\Delete\MethodDelete::class,
+                'MethodVerify'      => \hiqdev\billing\hiapi\method\Verify\MethodVerify::class,
+
+                'ProvidersSearch'   => \hiqdev\billing\hiapi\provider\Search\ProviderBulkSearch::class,
+                'ProviderPay'       => \hiqdev\billing\hiapi\provider\Pay\ProviderPay::class,
+
                 'BillsSearch'       => \hiqdev\billing\hiapi\bill\Search\BillBulkSearch::class,
+
+                'CalculateValue'    => \hiqdev\billing\hiapi\action\Calculate\ActionCalculateValue::class,
             ],
         ],
     ],
