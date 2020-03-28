@@ -31,7 +31,7 @@ class BillHydrator extends GeneratedHydrator
 {
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param object|Bill $object
      */
     public function hydrate(array $row, $object)
     {
@@ -75,7 +75,7 @@ class BillHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param object|Bill $object
      */
     public function extract($object)
     {
