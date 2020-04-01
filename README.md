@@ -16,8 +16,12 @@ Uses:
 - [php-billing]
 - [hiapi]
 
+Also see [tests README].
+
 [php-billing]: https://github.com/hiqdev/php-billing
 [hiapi]: https://github.com/hiqdev/hiapi
+[tests README]: tests/README.md
+
 
 ## Installation
 
