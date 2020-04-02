@@ -112,7 +112,7 @@ $singletons = [
 
                 'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\SaleBulkSearch::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\SaleCreate::class,
-                'SaleClose'         => \hiqdev\billing\hiapi\sale\Create\SaleClose::class,
+                'SaleClose'         => \hiqdev\billing\hiapi\sale\Close\SaleClose::class,
 
                 'MethodsSearch'     => \hiqdev\billing\hiapi\method\Search\MethodBulkSearch::class,
                 'MethodCreate'      => \hiqdev\billing\hiapi\method\Create\MethodCreate::class,

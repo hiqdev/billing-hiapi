@@ -132,15 +132,27 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
      */
     public function save(SaleInterface $sale)
     {
+        $call = new CallExpression('sale_object', [$this->prepareHstore($sale)]);
+        $command = (new Query())->select($call);
+        $sale->setId($command->scalar($this->db));
+    }
+
+    public function delete(SaleInterface $sale)
+    {
+        $call = new CallExpression('unsale_object', [$this->prepareHstore($sale)]);
+        $command = (new Query())->select($call);
+        $command->scalar($this->db);
+    }
+
+    private function prepareHstore(SaleInterface $sale)
+    {
         $time = $sale->getTime();
-        $hstore = new HstoreExpression([
+
+        return new HstoreExpression([
             'object_id'     => $sale->getTarget()->getId(),
             'contact_id'    => $sale->getCustomer()->getId(),
             'tariff_id'     => $sale->getPlan() ? $sale->getPlan()->getId() : null,
             'time'          => $time ? $time->format('c') : null,
         ]);
-        $call = new CallExpression('sale_object', [$hstore]);
-        $command = (new Query())->select($call);
-        $sale->setId($command->scalar($this->db));
     }
 }
