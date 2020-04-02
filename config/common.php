@@ -120,11 +120,13 @@ $singletons = [
                 'MethodVerify'      => \hiqdev\billing\hiapi\method\Verify\MethodVerify::class,
 
                 'ProvidersSearch'   => \hiqdev\billing\hiapi\provider\Search\ProviderBulkSearch::class,
-                'ProviderPay'       => \hiqdev\billing\hiapi\provider\Pay\ProviderPay::class,
+                'ProviderPrepare'   => \hiqdev\billing\hiapi\provider\Prepare\ProviderPrepare::class,
+                'ProvidersPrepare'  => \hiqdev\billing\hiapi\provider\Prepare\ProviderBulkPrepare::class,
 
                 'BillsSearch'       => \hiqdev\billing\hiapi\bill\Search\BillBulkSearch::class,
 
-                'CalculateValue'    => \hiqdev\billing\hiapi\action\Calculate\ActionCalculateValue::class,
+                'ActionCalculate'   => \hiqdev\billing\hiapi\action\Calculate\ActionCalculate::class,
+                'ActionsCalculate'  => \hiqdev\billing\hiapi\action\Calculate\ActionBulkCalculate::class,
             ],
         ],
     ],
