@@ -16,7 +16,9 @@ We have tests of different levels:
 
 - insert all the needed billing data:
     - customers and targets - with DB-migrations
+        - all billable targets to be covered!
     - plans, sales and resource consumption - through API (tests API)
+        - all used plan types to be covered!
 - check everything is calculated properly
     - check ad-hoc calculations - through API
     - run billing calculation - throuh CLI (in prod run with CRON)
