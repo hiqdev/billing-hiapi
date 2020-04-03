@@ -6,10 +6,7 @@ use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
-use hiqdev\php\billing\sale\Sale;
-use hiqdev\billing\hiapi\customer\CustomerLoader;
-use hiqdev\billing\hiapi\plan\PlanLoader;
-use hiqdev\billing\hiapi\target\TargetLoader;
+use hiqdev\php\billing\action\Action;
 
 final class ActionCalculate
 {
@@ -25,11 +22,8 @@ final class ActionCalculate
                      ->take(ActionCalculateCommand::class)
                      ->checkPermission('action.calculate')
                      ->middlewares(
-                         CustomerLoader::class,
-                         PlanLoader::class,
-                         TargetLoader::class,
-                         $build->call(SaleCreateAction::class)
+                         $build->call(ActionCalculateAction::class)
                      )
-                     ->return(Sale::class);
+                     ->return(Action::class);
     }
 }
