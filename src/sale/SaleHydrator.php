@@ -14,6 +14,7 @@ use DateTimeImmutable;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\target\Target;
 use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
 

@@ -21,7 +21,7 @@ class SaleCloseCommand extends BaseCommand
 
     public $target;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['customer_id'], IdValidator::class],

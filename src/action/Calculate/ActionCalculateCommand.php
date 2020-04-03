@@ -6,4 +6,8 @@ use hiapi\commands\BaseCommand;
 
 class ActionCalculateCommand extends BaseCommand
 {
+    public function rules(): array
+    {
+        return [];
+    }
 }

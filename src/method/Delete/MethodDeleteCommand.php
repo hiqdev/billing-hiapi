@@ -6,4 +6,8 @@ use hiapi\commands\BaseCommand;
 
 class MethodDeleteCommand extends BaseCommand
 {
+    public function rules(): array
+    {
+        return [];
+    }
 }
