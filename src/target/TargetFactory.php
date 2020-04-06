@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\target;
 
 use hiqdev\billing\hiapi\target\certificate\CertificateTarget;
+use hiqdev\billing\hiapi\target\client\ClientTarget;
 use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\device\SwitchTarget;
@@ -116,7 +117,7 @@ class TargetFactory implements TargetFactoryInterface
                 '*' => TariffTarget::class,
             ],
             'client' => [
-                '*' => ServerTarget::class,
+                '*' => ClientTarget::class,
             ],
             'account' => [
                 '*' => ServerTarget::class,
