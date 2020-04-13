@@ -56,7 +56,8 @@
     },
     "autoload": {
         "psr-4": {
-            "hiqdev\\billing\\hiapi\\": "src"
+            "hiqdev\\billing\\hiapi\\": "src",
+            "hiqdev\\billing\\hiapi\\tests\\": "tests"
         }
     },
     "extra": {
