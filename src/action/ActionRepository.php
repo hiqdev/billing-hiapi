@@ -11,14 +11,22 @@
 namespace hiqdev\billing\hiapi\action;
 
 use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\action\ActionQuery;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use hiqdev\yii\DataMapper\query\Specification;
 use yii\db\Query;
 
 class ActionRepository extends BaseRepository
 {
+    public $queryClass = ActionQuery::class;
+
+    public function findAggregatedConsumptions(Specification $specification)
+    {
+        $query = yii::createObject(AggregatedConsumptionsQuery::class);
+        var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $query);die;
+    }
+
     public function save(ActionInterface $action)
     {
         $sale = $action->getSale();
