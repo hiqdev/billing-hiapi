@@ -18,6 +18,7 @@ final class BillBulkSearch
     public function create(BuilderFactory $build): EndpointBuilder
     {
         return $build->endpoint(self::class)
+            ->description('Searches for Bills')
             ->exportTo(Tenant::ALL)
             ->take(BillSearchCommand::class)
             ->checkPermission('bill.read')
