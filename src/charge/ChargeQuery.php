@@ -33,6 +33,7 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             'target' => [
                 'id' => 'zh.object_id',
                 'type' => 'tt.name',
+                'name' => 'tj.name',
             ],
             'action' => [
                 'id' => 'zh.action_id',
@@ -73,7 +74,7 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             ->leftJoin('zref        py', 'py.obj_id = hp.currency_id')
             ->leftJoin('unit        hu', 'hu.obj_id = zh.unit_id')
             ->leftJoin('action      ha', 'ha.id = zh.action_id')
-            ->leftJoin('obj         tj', 'tj.obj_id = zh.object_id')
+            ->leftJoin('target      tj', 'tj.obj_id = zh.object_id')
             ->leftJoin('zref        tt', 'tt.obj_id = tj.class_id')
             ->leftJoin('gref        ht', 'ht.obj_id = zh.type_id');
     }

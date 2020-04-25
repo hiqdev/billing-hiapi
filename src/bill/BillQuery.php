@@ -33,6 +33,7 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
             'target' => [
                 'id' => 'zb.object_id',
                 'type' => 'tt.name',
+                'name' => 'tj.name',
             ],
             'customer' => [
                 'id' => 'zc.obj_id',
@@ -58,7 +59,7 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
     {
         return $this->from('zbill   zb')
             ->leftJoin('gref        bt', 'bt.obj_id = zb.type_id')
-            ->leftJoin('obj         tj', 'tj.obj_id = zb.object_id')
+            ->leftJoin('target      tj', 'tj.obj_id = zb.object_id')
             ->leftJoin('zref        tt', 'tt.obj_id = tj.class_id')
             ->leftJoin('purse       bp', 'bp.obj_id = zb.purse_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = bp.client_id')
