@@ -17,6 +17,13 @@ class CustomerRepository extends \hiqdev\yii\DataMapper\repositories\BaseReposit
     /** {@inheritdoc} */
     public $queryClass = CustomerQuery::class;
 
+    public function findByUsername(string $username): CustomerInterface
+    {
+        $spec = $this->createSpecification()->where(['login' => $username]);
+
+        return $this->findOne($spec);
+    }
+
     public function save(CustomerInterface $customer)
     {
         throw new \Exception('not implemented ' . __METHOD__);
