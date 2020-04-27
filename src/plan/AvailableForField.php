@@ -17,7 +17,7 @@ class AvailableForField implements FieldInterface
 {
     public $name = 'available_for';
 
-    public function canBeSelected()
+    public function canBeSelected(): bool
     {
         return false;
     }
