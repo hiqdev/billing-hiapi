@@ -38,11 +38,7 @@ class CustomerLoader implements Middleware
 
     private function findCustomer($command): Customer
     {
-        if (empty($command->customer_id)) {
-            return $this->getCurrentCustomer();
-        }
-
-        $res = $this->repo->findById($command->customer_id);
+        $res = $this->findCustomerByCommand($command);
         if (empty($res)) {
             return $this->getCurrentCustomer();
         }
@@ -50,8 +46,21 @@ class CustomerLoader implements Middleware
         return $res;
     }
 
+    private function findCustomerByCommand($command): ?Customer
+    {
+        if (!empty($command->customer_id)) {
+            return $this->repo->findById($command->customer_id);
+        }
+        if (!empty($command->customer_username)) {
+            return $this->repo->findByUsername($command->customer_username);
+        }
+
+        return null;
+    }
+
     private function getCurrentCustomer(): Customer
     {
-        return new Customer($this->user->id, $this->user->getIdentity()->username);
+        $identity = $this->user->getIdentity();
+        return new Customer($identity->id, $identity->username ?: $identity->email);
     }
 }
