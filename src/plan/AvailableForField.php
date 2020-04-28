@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
+use hiqdev\yii\DataMapper\query\attributes\AttributeInterface;
 use hiqdev\yii\DataMapper\query\FieldInterface;
 use yii\db\Expression;
 
@@ -22,17 +23,19 @@ class AvailableForField implements FieldInterface
         return false;
     }
 
-    public function isApplicable($key)
-    {
-        return strcasecmp($this->name, $key) === 0;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getAttribute(): AttributeInterface
+    {
+        throw new \Exception('not implemented ' . __METHOD__);
+    }
+
+    public function getSql()
+    {
+        throw new \Exception('not implemented ' . __METHOD__);
     }
 
     public function buildCondition($key, $value)
