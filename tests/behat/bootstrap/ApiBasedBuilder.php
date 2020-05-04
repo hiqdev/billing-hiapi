@@ -2,21 +2,14 @@
 
 namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
-use Dotenv\Dotenv;
-use hiqdev\hiart\guzzle\Request;
-use hipanel\hiart\Connection;
-use hiqdev\hiart\RequestInterface;
-use Yii;
-use yii\di\Container;
-use yii\web\Application;
 use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 use hiqdev\php\billing\tests\behat\bootstrap\BuilderInterface;
 
 class ApiBasedBuilder implements BuilderInterface
 {
-    private Connection $connection;
+    private ApiClient $client;
 
-    private Application $application;
+    protected SimpleFactory $factory;
 
     protected string $reseller;
 
@@ -36,27 +29,10 @@ class ApiBasedBuilder implements BuilderInterface
 
     protected array $sale;
 
-    protected SimpleFactory $factory;
-
     public function __construct()
     {
-        $this->bootstrap();
-        $application = $this->application ?? $this->mockApplication();
-        $this->connection = new Connection($application);
-        $this->connection->requestClass = Request::class;
-        $this->connection->baseUri = $_ENV['HIART_BASEURI'];
+        $this->client = new ApiClient();
         $this->factory = new SimpleFactory();
-    }
-
-    private function bootstrap(): void
-    {
-        $dir = dirname(__DIR__, 6);
-        $pathToYii = $dir . '/vendor/yiisoft/yii2/Yii.php';
-        require_once $pathToYii;
-        (new Dotenv($dir))->load();
-        if (empty($_ENV['HIART_BASEURI'])) {
-            throw new \Exception('HIART_BASEURI must be set in environment');
-        }
     }
 
     public function buildReseller(string $login): void
@@ -191,45 +167,6 @@ class ApiBasedBuilder implements BuilderInterface
         ]);
     }
 
-    protected function makeAsReseller(string $command, array $payload = []): array
-    {
-        return $this->make($command, $payload, $this->reseller);
-    }
-
-    protected function makeAsManager(string $command, array $payload = []): array
-    {
-        return $this->make($command, $payload, $this->manager);
-    }
-
-    protected function makeAsCustomer(string $command, array $payload = []): array
-    {
-        return $this->make($command, $payload, $this->customer);
-    }
-
-    protected function makeAsAdmin(string $command, array $payload = []): array
-    {
-        return $this->make($command, $payload, $this->admin);
-    }
-
-    protected function makeAsRoot(string $command, array $payload = []): array
-    {
-        return $this->make($command, $payload, $this->root);
-    }
-
-    protected function make(string $command, array $payload, string $performer): array
-    {
-        $res = $this->buildRequest($command, $payload, $performer ?? $this->reseller)->send()->getData();
-        if (!is_array($res)) {
-            throw new \Exception('API return not array: ' . $res);
-        }
-        if (!empty($res['_error'])) {
-            // var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);
-            throw new \Exception('API return error: ' . $res['_error']);
-        }
-
-        return $res;
-    }
-
     protected function isAssigned(int $planId, string $login): bool
     {
         $assignments = $this->makeAsManager('client-get-tariffs', ['client' => $login]);
@@ -238,38 +175,28 @@ class ApiBasedBuilder implements BuilderInterface
         return in_array($planId, $tariffIds, true);
     }
 
-    private function buildRequest(string $command, array $body = [], ?string $performer = null): RequestInterface
+    protected function makeAsReseller(string $command, array $payload = []): array
     {
-        $auth_login = $performer;
-        $auth_password = 'random';
-
-        return $this->connection->callWithDisabledAuth(
-            function () use ($command, $body, $auth_login, $auth_password) {
-                $request = $this->connection
-                    ->createCommand()
-                    ->db
-                    ->getQueryBuilder()
-                    ->perform(
-                        $command,
-                        null,
-                        array_merge($body, compact('auth_login', 'auth_password'))
-                    );
-                $request->build();
-
-                return $request;
-            }
-        );
+        return $this->client->make($command, $payload, $this->reseller);
     }
 
-    private function mockApplication(): Application
+    protected function makeAsManager(string $command, array $payload = []): array
     {
-        Yii::$container = new Container();
-        return new Application(
-            [
-                'id'         => 'behat-test-application',
-                'basePath'   => __DIR__,
-                'vendorPath' => __DIR__ . '../../../../../',
-            ]
-        );
+        return $this->client->make($command, $payload, $this->manager);
+    }
+
+    protected function makeAsCustomer(string $command, array $payload = []): array
+    {
+        return $this->client->make($command, $payload, $this->customer);
+    }
+
+    protected function makeAsAdmin(string $command, array $payload = []): array
+    {
+        return $this->client->make($command, $payload, $this->admin);
+    }
+
+    protected function makeAsRoot(string $command, array $payload = []): array
+    {
+        return $this->client->make($command, $payload, $this->root);
     }
 }
