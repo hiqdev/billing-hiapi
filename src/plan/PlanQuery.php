@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Plan;
+use transmedia\hiapi\modules\content\conditions\HideUsedInCampaignsCondition;
 
 class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -36,8 +37,15 @@ class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
                 ],
             ],
             'is_grouping' => 'zt.is_grouping',
-            'available_for' => new AvailableForField(),
         ];
+    }
+
+    public function getFields()
+    {
+        return array_merge(parent::getFields(), [
+            AvailableFor::seller('available_for_seller'),
+            AvailableFor::client_id('available_for_client_id'),
+        ]);
     }
 
     public function initFrom()
