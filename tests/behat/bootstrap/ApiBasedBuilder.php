@@ -148,6 +148,7 @@ class ApiBasedBuilder implements BuilderInterface
         $rows = $this->makeAsCustomer('BillsSearch', [
             'with' => ['charges'],
             'where' => [
+                'customer-login' => 'hipanel_test_user',  /// XXX to be removed!
                 'type-name' => $params['type'],
                 'target-type' => $target->getType(),
                 'target-name' => $target->getName(),
