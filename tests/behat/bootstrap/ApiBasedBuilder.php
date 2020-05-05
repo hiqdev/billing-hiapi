@@ -89,6 +89,11 @@ class ApiBasedBuilder implements BuilderInterface
             $price['quantity'] = $price['quantity'] ?? 0;
             $price['currency'] = strtolower($price['currency']);
             $price['object'] = $price['target'] ?? null;
+            if (isset($price['sums'])) {
+                $price['sums'] = array_map(fn($price) => (int)((float)$price * 100), $price['sums']);
+                $price['price'] = 0;
+                $price['class'] = 'CertificatePrice';
+            }
             $this->makeAsReseller('price-create', $price);
         }
     }
