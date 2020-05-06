@@ -142,6 +142,11 @@ class ApiBasedBuilder implements BuilderInterface
         }
     }
 
+    public function buildPurchase(string $target, string $plan, string $time): void
+    {
+
+    }
+
     public function findBills(array $params): array
     {
         $target = $this->factory->get('target', $params['target']);
