@@ -4,6 +4,8 @@ namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
 use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 use hiqdev\php\billing\tests\behat\bootstrap\BuilderInterface;
+use hiqdev\php\units\Quantity;
+use hiqdev\php\units\Unit;
 
 class ApiBasedBuilder implements BuilderInterface
 {
@@ -164,12 +166,20 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function setConsumption(string $type, int $amount, string $unit, string $target, string $time): void
     {
+        $convertMap = [
+            'GB' => Unit::byte(),
+        ];
+        if (isset($convertMap[$unit])) {
+            $amount = Quantity::create(Unit::create($unit), $amount);
+            if ($amount->isConvertible($convertMap[$unit])) {
+                $amount = $amount->convert($convertMap[$unit])->getQuantity();
+            }
+        }
         $this->makeAsManager('use-set', [
             'object' => $target,
-            'type'   => $type,
-            'time'   => $time,
+            'type' => $type,
+            'time' => $time,
             'amount' => $amount,
-            'unit'   => $unit,
         ]);
     }
 
