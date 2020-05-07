@@ -86,7 +86,11 @@ class ApiBasedBuilder implements BuilderInterface
         $plan = static::$plans[$name];
         foreach ($this->prices as &$price) {
             $price['plan_id'] = $plan['id'] ?? null;
-            $price['quantity'] = $price['quantity'] ?? 0;
+            if (isset($price['prepaid'])) {
+                $price['quantity'] = filter_var($price['prepaid'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            } else {
+                $price['quantity'] = $price['quantity'] ?? 0;
+            }
             $price['currency'] = strtolower($price['currency']);
             $price['object'] = $price['target'] ?? null;
             if (isset($price['sums'])) {
