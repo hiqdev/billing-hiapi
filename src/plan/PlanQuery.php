@@ -11,7 +11,6 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Plan;
-use transmedia\hiapi\modules\content\conditions\HideUsedInCampaignsCondition;
 
 class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
 {
