@@ -11,6 +11,8 @@
 namespace hiqdev\billing\hiapi\bill;
 
 use hiqdev\billing\hiapi\models\Bill;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthCondition;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\AuthCondition;
 
 class BillQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -53,6 +55,13 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
             ],
             'time' => 'zb.time',
         ];
+    }
+
+    public function getFields()
+    {
+        return array_merge(parent::getFields(), [
+            AuthCondition::byColumn('bp.client_id')
+        ]);
     }
 
     public function initFrom()
