@@ -8,8 +8,7 @@ use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\php\billing\plan\Plan;
 
-
-final class PlanBulkSearch
+final class BulkBuilder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -20,10 +19,10 @@ final class PlanBulkSearch
     {
         return $build->endpoint(self::class)
                      ->exportTo(Tenant::ALL)
-                     ->take(PlanSearchCommand::class)
+                     ->take(Command::class)
                      ->checkPermission('plan.read')
                      ->middlewares(
-                         $build->call(PlanBulkSearchAction::class)
+                         $build->call(BulkAction::class)
                      )
                      ->return($build->many(Plan::class));
     }

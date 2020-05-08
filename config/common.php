@@ -108,7 +108,7 @@ $singletons = [
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__construct()' => [
             'endpoints' => [
-                'PlansSearch'       => \hiqdev\billing\hiapi\plan\Search\PlanBulkSearch::class,
+                'PlansSearch'       => \hiqdev\billing\hiapi\plan\Search\BulkBuilder::class,
 
                 'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\SaleBulkSearch::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\SaleCreate::class,
