@@ -12,7 +12,6 @@ namespace hiqdev\billing\hiapi\bill;
 
 use hiqdev\billing\hiapi\models\Bill;
 use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthCondition;
-use hiqdev\billing\mrdp\Infrastructure\Database\Condition\AuthCondition;
 
 class BillQuery extends \hiqdev\yii\DataMapper\query\Query
 {
