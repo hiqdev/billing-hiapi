@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\billing\hiapi\models\Plan;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthCondition;
 
 class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -42,8 +43,9 @@ class PlanQuery extends \hiqdev\yii\DataMapper\query\Query
     public function getFields()
     {
         return array_merge(parent::getFields(), [
-            AvailableFor::seller('available_for_seller'),
-            AvailableFor::client_id('available_for_client_id'),
+            AuthCondition::byColumn('zt.client_id'),
+            AvailableFor::seller(AvailableFor::SELLER_FIELD),
+            AvailableFor::client_id(AvailableFor::CLIENT_ID_FIELD),
         ]);
     }
 

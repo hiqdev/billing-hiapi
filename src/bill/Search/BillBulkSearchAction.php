@@ -21,8 +21,7 @@ class BillBulkSearchAction
     public function __invoke(BillSearchCommand $command): ArrayCollection
     {
         $res = $this->repo->findAll(
-            $command->getSpecification()
-                    ->authCond(AuthRule::currentUser())
+            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
         );
 
         return new ArrayCollection($res);

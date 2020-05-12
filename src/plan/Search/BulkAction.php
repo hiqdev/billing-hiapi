@@ -3,7 +3,9 @@
 namespace hiqdev\billing\hiapi\plan\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use hiqdev\billing\hiapi\plan\AvailableFor;
 use hiqdev\billing\hiapi\plan\PlanRepository;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
 
 class BulkAction
 {
@@ -19,7 +21,13 @@ class BulkAction
 
     public function __invoke(Command $command): ArrayCollection
     {
-        $res = $this->repo->findAll($command->getSpecification());
+        $spec = $command->getSpecification();
+        if (empty($command->where[AvailableFor::SELLER_FIELD]) &&
+            empty($command->where[AvailableFor::CLIENT_ID_FIELD])
+        ) {
+            AuthRule::currentUser()->applyToSpecification($spec);
+        }
+        $res = $this->repo->findAll($spec);
 
         return new ArrayCollection($res);
     }

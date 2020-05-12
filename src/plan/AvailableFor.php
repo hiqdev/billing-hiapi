@@ -21,6 +21,9 @@ final class AvailableFor implements FieldInterface, FieldConditionBuilderInterfa
     private const SELLER = 0;
     private const CLIENT_ID = 1;
 
+    public const SELLER_FIELD = 'available_for_seller';
+    public const CLIENT_ID_FIELD = 'available_for_client_id';
+
     private string $fieldName;
     private int    $type;
 
