@@ -11,10 +11,10 @@
 namespace hiqdev\billing\hiapi\tests\unit\target;
 
 use hiqdev\billing\hiapi\target\device\ServerTarget;
+use hiqdev\billing\hiapi\target\domain\DomainTarget;
+use hiqdev\billing\hiapi\target\Remote\AnycastCdnTarget;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
 use hiqdev\billing\hiapi\target\TargetFactory;
-use hiqdev\billing\hiapi\target\Remote\AnycastCdnTarget;
-use hiqdev\billing\hiapi\target\domain\DomainTarget;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -78,7 +78,7 @@ class TargetFactoryTest extends \PHPUnit\Framework\TestCase
 
     private function createDto(array $data)
     {
-        $dto = new RemoteTargetCreationDto;
+        $dto = new RemoteTargetCreationDto();
         foreach ($data as $key => $value) {
             $dto->{$key} = $value;
         }
