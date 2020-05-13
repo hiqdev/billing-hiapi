@@ -7,7 +7,6 @@
 [![Build Status](https://img.shields.io/travis/hiqdev/billing-hiapi.svg)](https://travis-ci.org/hiqdev/billing-hiapi)
 [![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/hiqdev/billing-hiapi.svg)](https://scrutinizer-ci.com/g/hiqdev/billing-hiapi/)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/billing-hiapi.svg)](https://scrutinizer-ci.com/g/hiqdev/billing-hiapi/)
-[![Dependency Status](https://www.versioneye.com/php/hiqdev:billing-hiapi/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:billing-hiapi/dev-master)
 
 Billing API.
 
