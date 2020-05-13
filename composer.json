@@ -49,7 +49,9 @@
         "hoa/ruler": "^2.17"
     },
     "require-dev": {
-        "yiisoft/yii2": "^3.0@dev",
+        "yiisoft/yii2": "dev-master",
+        "lcobucci/content-negotiation-middleware": "^2.1",
+        "laminas/laminas-diactoros": "^2.1",
         "hiqdev/hidev": "dev-master",
         "hiqdev/hidev-php": "dev-master",
         "hiqdev/hidev-hiqdev": "dev-master"
