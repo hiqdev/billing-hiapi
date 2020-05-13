@@ -15,7 +15,6 @@ use hiqdev\billing\hiapi\target\client\ClientTarget;
 use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\device\SwitchTarget;
-use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
 use hiqdev\billing\hiapi\target\domain\DomainTarget;
 use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
@@ -50,7 +49,12 @@ class TargetFactory implements TargetFactoryInterface
             $dto->type = $this->shortenType($dto->type);
         }
 
-        return new $class($dto->id, $dto->type, $dto->name);
+        $target = new $class($dto->id, $dto->type, $dto->name);
+        if ($target instanceof RemoteTarget && !empty($dto->remoteid)) {
+            $target->remoteid = $dto->remoteid;
+        }
+
+        return $target;
     }
 
     /**
@@ -77,8 +81,8 @@ class TargetFactory implements TargetFactoryInterface
     {
         $map = [
             'device' => [
-                'cdn' => VideoCdnTarget::class,
-                'cloudservice' => VideoCdnTarget::class,
+                'cdn' => device\VideoCdnTarget::class,
+                'cloudservice' => device\VideoCdnTarget::class,
                 'cdnpix' => PixCdnTarget::class,
                 'net' => SwitchTarget::class,
                 'rack' => SwitchTarget::class,
@@ -136,6 +140,12 @@ class TargetFactory implements TargetFactoryInterface
             ],
             'zone' => [
                 '*' => DomainZoneTarget::class,
+            ],
+            'anycastcdn' => [
+                '*' => Remote\AnycastCdnTarget::class,
+            ],
+            'videocdn' => [
+                '*' => Remote\VideoCdnTarget::class,
             ],
         ];
 
