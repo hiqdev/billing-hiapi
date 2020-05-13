@@ -5,13 +5,12 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\action;
 
 use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\action\ActionQuery;
 use hiqdev\yii\DataMapper\expressions\CallExpression;
 use hiqdev\yii\DataMapper\expressions\HstoreExpression;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;

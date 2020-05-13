@@ -1,15 +1,23 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\sale\Close;
 
-use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
-use hiqdev\php\billing\sale\Sale;
+use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\billing\hiapi\customer\CustomerLoader;
 use hiqdev\billing\hiapi\plan\PlanLoader;
 use hiqdev\billing\hiapi\target\TargetLoader;
+use hiqdev\php\billing\sale\Sale;
 
 final class SaleBulkClose
 {
@@ -30,7 +38,6 @@ final class SaleBulkClose
                 $build->repeat(TargetLoader::class),
                 $build->repeat(SaleCloseAction::class)
             )
-            ->return($build->many(Sale::class))
-        ;
+            ->return($build->many(Sale::class));
     }
 }

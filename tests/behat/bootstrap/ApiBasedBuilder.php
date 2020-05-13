@@ -1,9 +1,17 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
-use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 use hiqdev\php\billing\tests\behat\bootstrap\BuilderInterface;
+use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 
 class ApiBasedBuilder implements BuilderInterface
 {
@@ -90,7 +98,7 @@ class ApiBasedBuilder implements BuilderInterface
             $price['currency'] = strtolower($price['currency']);
             $price['object'] = $price['target'] ?? null;
             if (isset($price['sums'])) {
-                $price['sums'] = array_map(fn($price) => (int)((float)$price * 100), $price['sums']);
+                $price['sums'] = array_map(fn ($price) => (int) ((float) $price * 100), $price['sums']);
                 $price['price'] = 0;
                 $price['class'] = 'CertificatePrice';
             }
@@ -144,7 +152,6 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function buildPurchase(string $target, string $plan, string $time): void
     {
-
     }
 
     public function findBills(array $params): array

@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\target;
@@ -16,15 +16,15 @@ use hiqdev\billing\hiapi\target\device\PixCdnTarget;
 use hiqdev\billing\hiapi\target\device\ServerTarget;
 use hiqdev\billing\hiapi\target\device\SwitchTarget;
 use hiqdev\billing\hiapi\target\device\VideoCdnTarget;
-use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\domain\DomainTarget;
+use hiqdev\billing\hiapi\target\domain\DomainZoneTarget;
 use hiqdev\billing\hiapi\target\modelGroup\ModelGroupTarget;
 use hiqdev\billing\hiapi\target\part\PartTarget;
 use hiqdev\billing\hiapi\target\ref\RefTarget;
-use hiqdev\billing\hiapi\target\tariff\PcdnTariffTarget;
-use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\DomainTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\PcdnTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\SwitchTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
@@ -41,9 +41,6 @@ class TargetFactory implements TargetFactoryInterface
         return Target::class;
     }
 
-    /**
-     * @return Target|null
-     */
     public function create(TargetCreationDto $dto): ?Target
     {
         if (!isset($dto->type)) {

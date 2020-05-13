@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\bill;
@@ -59,7 +59,7 @@ class BillQuery extends \hiqdev\yii\DataMapper\query\Query
     public function getFields()
     {
         return array_merge(parent::getFields(), [
-            AuthCondition::byColumn('bp.client_id')
+            AuthCondition::byColumn('bp.client_id'),
         ]);
     }
 

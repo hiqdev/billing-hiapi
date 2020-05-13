@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\charge;
@@ -62,7 +62,7 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
 
             if ($saleMonth > $actionMonth) {
                 $amount = 0;
-            } else if ($actionMonth > $saleMonth) {
+            } elseif ($actionMonth > $saleMonth) {
                 $amount = 1;
             } else {
                 $saleDay = $action->getSale()->getTime()->format('d');
@@ -125,8 +125,8 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
             '' => ++$i,
         ];
 
-        $lhs = $order[(string)$first->getType()] ?? 0;
-        $rhs = $order[(string)$other->getType()] ?? 0;
+        $lhs = $order[(string) $first->getType()] ?? 0;
+        $rhs = $order[(string) $other->getType()] ?? 0;
 
         return $lhs > $rhs;
     }

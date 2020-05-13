@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\plan;
@@ -18,7 +18,6 @@ use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\yii\DataMapper\models\relations\Bucket;
-use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
 
 class PlanRepository extends BaseRepository implements PlanRepositoryInterface
@@ -27,7 +26,6 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     public $queryClass = PlanQuery::class;
 
     /**
-     * @param ActionInterface $action
      * @return PlanInterface
      */
     public function findByAction(ActionInterface $action)
@@ -50,7 +48,6 @@ class PlanRepository extends BaseRepository implements PlanRepositoryInterface
     }
 
     /**
-     * @param OrderInterface $order
      * @return Plan[]|PlanInterface[]
      */
     public function findByOrder(OrderInterface $order)

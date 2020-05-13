@@ -1,13 +1,13 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 /**
  * API for Billing
  *
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\plan;
@@ -30,8 +30,6 @@ final class AvailableFor implements FieldInterface, FieldConditionBuilderInterfa
     /**
      * AvailableFor constructor.
      *
-     * @param string $fieldName
-     * @param int $type
      * @psalm-param self::SELLER|self::CLIENT_ID $type
      */
     public function __construct(string $fieldName, int $type)
@@ -61,7 +59,7 @@ final class AvailableFor implements FieldInterface, FieldConditionBuilderInterfa
 
         switch ($this->type) {
             case self::SELLER:
-                $params[':available_for_seller'] = (string)$value;
+                $params[':available_for_seller'] = (string) $value;
                 $ids_sql = "
                     SELECT      dst_id
                     FROM        tie
@@ -70,7 +68,7 @@ final class AvailableFor implements FieldInterface, FieldConditionBuilderInterfa
                 ";
                 break;
             case self::CLIENT_ID:
-                $params[':available_for_client_id'] = (int)$value;
+                $params[':available_for_client_id'] = (int) $value;
                 $ids_sql = '
                     SELECT      tariff_id
                     FROM        client2tariff

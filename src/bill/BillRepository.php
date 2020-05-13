@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\bill;
@@ -25,13 +25,10 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
     /** {@inheritdoc} */
     public $queryClass = BillQuery::class;
 
-    /**
-     * @param BillInterface $bill
-     */
     public function save(BillInterface $bill)
     {
         $hstore = $this->prepareHstore($bill);
-        $this->db->transaction(function() use ($bill, $hstore) {
+        $this->db->transaction(function () use ($bill, $hstore) {
             $chargeIds = [];
             $call = new CallExpression('set_bill', [$hstore]);
             $command = (new Query())->select($call);
@@ -62,8 +59,6 @@ class BillRepository extends \hiqdev\yii\DataMapper\repositories\BaseRepository 
 
     /**
      * undocumented function
-     *
-     * @return HstoreExpression
      */
     protected function prepareHstore(BillInterface $bill): HstoreExpression
     {

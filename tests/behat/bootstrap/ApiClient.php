@@ -1,15 +1,22 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
 use Dotenv\Dotenv;
-use hiqdev\hiart\guzzle\Request;
 use hipanel\hiart\Connection;
+use hiqdev\hiart\guzzle\Request;
 use hiqdev\hiart\RequestInterface;
 use Yii;
 use yii\di\Container;
 use yii\web\Application;
-use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 
 class ApiClient
 {
@@ -77,6 +84,7 @@ class ApiClient
     private function mockApplication(): Application
     {
         Yii::$container = new Container();
+
         return new Application(
             [
                 'id'         => 'behat-test-application',

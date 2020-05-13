@@ -1,4 +1,12 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\type;
 
@@ -15,63 +23,37 @@ final class TypeSemantics
 
     /**
      * // TODO: Probably not the best place for this method
-     *
-     * @return TypeInterface
      */
     public function createMonthlyType(): TypeInterface
     {
         return new Type(null, self::MONTHLY . ',' . self::MONTHLY);
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return bool
-     */
     public function isMonthly(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::MONTHLY;
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return bool
-     */
     public function isHardware(TypeInterface $type): bool
     {
         return $this->localName($type) === self::HARDWARE;
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return bool
-     */
     public function isDiscount(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::DISCOUNT;
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return bool
-     */
     public function isOveruse(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::OVERUSE;
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return bool
-     */
     public function isDeposit(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::DEPOSIT;
     }
 
-    /**
-     * @param TypeInterface $type
-     * @return string
-     */
     public function groupName(TypeInterface $type): string
     {
         $name = $type->getName();

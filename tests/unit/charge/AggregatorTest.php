@@ -1,4 +1,12 @@
 <?php
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
 
 namespace hiqdev\billing\hiapi\tests\unit\charge;
 
@@ -7,8 +15,8 @@ use hiqdev\billing\hiapi\type\TypeSemantics;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\order\Order;
 use hiqdev\php\billing\target\Target;
-use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\tools\Aggregator;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 
 class AggregatorTest extends \hiqdev\php\billing\tests\unit\tools\AggregatorTest

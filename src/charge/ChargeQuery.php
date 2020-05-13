@@ -5,7 +5,7 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2018, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
 namespace hiqdev\billing\hiapi\charge;
@@ -61,7 +61,7 @@ class ChargeQuery extends \hiqdev\yii\DataMapper\query\Query
             ],
             'parent' => [
                 'id' => 'zh.parent_id',
-            ]
+            ],
         ];
     }
 
