@@ -13,7 +13,6 @@ namespace hiqdev\billing\hiapi\tests\unit\vo;
 use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
 use Money\Currency;
 use Money\Money;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -31,7 +30,7 @@ class MoneyHydratorTest extends BaseHydratorTest
         'currency'  => self::CURRENCY1,
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->hydrator = $this->getHydrator();
     }

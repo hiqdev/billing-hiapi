@@ -12,7 +12,6 @@ namespace hiqdev\billing\hiapi\tests\unit\customer;
 
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -34,7 +33,7 @@ class CustomerHydratorTest extends BaseHydratorTest
         ],
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->hydrator = $this->getHydrator();
     }

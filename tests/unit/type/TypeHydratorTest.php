@@ -12,7 +12,6 @@ namespace hiqdev\billing\hiapi\tests\unit\type;
 
 use hiqdev\php\billing\type\Type;
 use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -30,7 +29,7 @@ class TypeHydratorTest extends BaseHydratorTest
         'name'      => self::NAME1,
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->hydrator = $this->getHydrator();
     }

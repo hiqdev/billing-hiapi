@@ -14,7 +14,7 @@ class TypeSemanticsTest extends \PHPUnit\Framework\TestCase
     /** @var TypeSemantics */
     protected $semantics;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->semantics = new TypeSemantics();
     }

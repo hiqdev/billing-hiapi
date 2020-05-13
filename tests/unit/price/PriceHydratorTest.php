@@ -21,7 +21,6 @@ use hiqdev\yii\DataMapper\tests\unit\BaseHydratorTest;
 use Money\Currency;
 use Money\Money;
 use yii\helpers\Json;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
@@ -85,7 +84,7 @@ class PriceHydratorTest extends BaseHydratorTest
         2 => self::ID2,
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->hydrator = $this->getHydrator();
         $this->dataEnumPrice['data'] = Json::encode(['sums' => $this->sums]);

@@ -16,7 +16,7 @@ class AggregatorTest extends \hiqdev\php\billing\tests\unit\tools\AggregatorTest
     /** @var Aggregator */
     protected $aggregator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
