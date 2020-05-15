@@ -61,6 +61,9 @@ $singletons = [
     \hiqdev\php\billing\sale\SaleRepositoryInterface::class => [
         '__class' => \hiqdev\billing\hiapi\sale\SaleRepository::class,
     ],
+    \hiqdev\php\billing\target\TargetRepositoryInterface::class => [
+        '__class' => \hiqdev\billing\hiapi\target\TargetRepository::class,
+    ],
     \hiqdev\php\billing\order\CalculatorInterface::class => [
         '__class' => \hiqdev\php\billing\order\Calculator::class,
     ],
@@ -109,6 +112,9 @@ $singletons = [
         '__construct()' => [
             'endpoints' => [
                 'PlansSearch'       => \hiqdev\billing\hiapi\plan\Search\BulkBuilder::class,
+
+                'TargetPurchase'    => \hiqdev\billing\hiapi\target\Purchase\Builder::class,
+                'TargetsPurchase'   => \hiqdev\billing\hiapi\target\Purchase\BulkBuilder::class,
 
                 'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\SaleBulkSearch::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\SaleCreate::class,
