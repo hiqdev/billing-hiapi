@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\target\Target;
 
 /**
@@ -18,9 +19,19 @@ use hiqdev\php\billing\target\Target;
 class RemoteTarget extends Target
 {
     /**
+     * @var CustomerInterface
+     */
+    public $customer;
+
+    /**
      * @var string
      */
     public $remoteid;
+
+    public function getCustomer(): ?CustomerInterface
+    {
+        return $this->customer;
+    }
 
     public function getRemoteId(): ?string
     {

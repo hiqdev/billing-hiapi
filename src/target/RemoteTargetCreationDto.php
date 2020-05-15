@@ -15,6 +15,11 @@ use hiqdev\php\billing\target\TargetCreationDto;
 class RemoteTargetCreationDto extends TargetCreationDto
 {
     /**
+     * @var CustomerInterface
+     */
+    public $customer;
+
+    /**
      * @var string
      */
     public $remoteid;

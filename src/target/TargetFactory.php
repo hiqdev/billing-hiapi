@@ -50,11 +50,22 @@ class TargetFactory implements TargetFactoryInterface
         }
 
         $target = new $class($dto->id, $dto->type, $dto->name);
-        if ($target instanceof RemoteTarget && !empty($dto->remoteid)) {
-            $target->remoteid = $dto->remoteid;
+        if ($target instanceof RemoteTarget) {
+            $this->initRemoteTarget($target, $dto);
         }
 
         return $target;
+    }
+
+    // XXX tmp solution TODO redo better
+    protected function initRemoteTarget($target, TargetCreationDto $dto): void
+    {
+        if (!empty($dto->customer)) {
+            $target->customer = $dto->customer;
+        }
+        if (!empty($dto->remoteid)) {
+            $target->remoteid = $dto->remoteid;
+        }
     }
 
     /**
