@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\billing\hiapi\models\Customer;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthCondition;
 
 class CustomerQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -35,5 +36,12 @@ class CustomerQuery extends \hiqdev\yii\DataMapper\query\Query
     {
         return $this->from('zclient zc')
             ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id');
+    }
+
+    public function getFields()
+    {
+        return array_merge(parent::getFields(), [
+            AuthCondition::byColumn('zc.obj_id'),
+        ]);
     }
 }
