@@ -13,6 +13,8 @@ namespace hiqdev\billing\hiapi\customer;
 use hiqdev\php\billing\customer\Customer;
 use League\Tactician\Middleware;
 use yii\web\User;
+use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
 
 class CustomerLoader implements Middleware
 {
@@ -48,13 +50,17 @@ class CustomerLoader implements Middleware
     private function findCustomerByCommand($command): ?Customer
     {
         if (!empty($command->customer_id)) {
-            return $this->repo->findById($command->customer_id);
+            $where = ['id' => $command->customer_id];
+        } elseif (!empty($command->customer_username)) {
+            $where = ['login' => $command->customer_username];
+        } else {
+            return null;
         }
-        if (!empty($command->customer_username)) {
-            return $this->repo->findByUsername($command->customer_username);
-        }
+        $spec = AuthRule::currentUser()->applyToSpecification(
+            (new Specification)->where($where)
+        );
 
-        return null;
+        return $this->repo->findOne($spec) ?: null;
     }
 
     private function getCurrentCustomer(): Customer
