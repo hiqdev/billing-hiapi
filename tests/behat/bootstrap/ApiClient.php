@@ -52,7 +52,8 @@ class ApiClient
         }
         if (!empty($res['_error'])) {
             // var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);
-            throw new \Exception('API return error: ' . $res['_error']);
+            $error = is_array($res['_error']) ? reset($res['_error']) : (string)$res['_error'];
+            throw new \Exception("API return error: $error");
         }
 
         return $res;
