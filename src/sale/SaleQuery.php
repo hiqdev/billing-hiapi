@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\sale;
 
 use hiqdev\billing\hiapi\models\Sale;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthCondition;
 
 class SaleQuery extends \hiqdev\yii\DataMapper\query\Query
 {
@@ -54,5 +55,12 @@ class SaleQuery extends \hiqdev\yii\DataMapper\query\Query
             ->leftJoin('ztariff     zt', 'zt.obj_id = zs.tariff_id')
             ->leftJoin('zclient     zc', 'zc.obj_id = zs.buyer_id')
             ->leftJoin('zclient     cr', 'cr.obj_id = zc.seller_id');
+    }
+
+    public function getFields()
+    {
+        return array_merge(parent::getFields(), [
+            AuthCondition::byColumn('zs.buyer_id'),
+        ]);
     }
 }

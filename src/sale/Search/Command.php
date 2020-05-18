@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\sale\Search;
 use hiapi\commands\SearchCommand;
 use hiqdev\php\billing\sale\Sale;
 
-class SaleSearchCommand extends SearchCommand
+class Command extends SearchCommand
 {
     public function getEntityClass(): string
     {

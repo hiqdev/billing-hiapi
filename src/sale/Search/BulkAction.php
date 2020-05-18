@@ -11,23 +11,26 @@
 namespace hiqdev\billing\hiapi\sale\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use hiqdev\billing\hiapi\sale\SaleRepository;
+use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
+use hiqdev\php\billing\sale\SaleRepositoryInterface;
 
-class SaleBulkSearchAction
+class BulkAction
 {
     /**
-     * @var SaleRepository
+     * @var SaleRepositoryInterface
      */
     private $repo;
 
-    public function __construct(SaleRepository $repo)
+    public function __construct(SaleRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
 
-    public function __invoke(SaleSearchCommand $command): ArrayCollection
+    public function __invoke(Command $command): ArrayCollection
     {
-        $res = $this->repo->findAll($command->getSpecification());
+        $res = $this->repo->findAll(
+            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
+        );
 
         return new ArrayCollection($res);
     }

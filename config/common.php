@@ -116,7 +116,7 @@ $singletons = [
                 'TargetPurchase'    => \hiqdev\billing\hiapi\target\Purchase\Builder::class,
                 'TargetsPurchase'   => \hiqdev\billing\hiapi\target\Purchase\BulkBuilder::class,
 
-                'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\SaleBulkSearch::class,
+                'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\BulkBuilder::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\SaleCreate::class,
                 'SaleClose'         => \hiqdev\billing\hiapi\sale\Close\SaleClose::class,
 

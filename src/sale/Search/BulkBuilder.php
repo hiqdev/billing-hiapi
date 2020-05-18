@@ -16,7 +16,7 @@ use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\php\billing\sale\Sale;
 
-final class SaleBulkSearch
+final class BulkBuilder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -26,11 +26,12 @@ final class SaleBulkSearch
     public function create(BuilderFactory $build): EndpointBuilder
     {
         return $build->endpoint(self::class)
+                     ->description('Search sales')
                      ->exportTo(Tenant::ALL)
-                     ->take(SaleSearchCommand::class)
+                     ->take(Command::class)
                      ->checkPermission('sale.read')
                      ->middlewares(
-                         $build->call(SaleBulkSearchAction::class)
+                         $build->call(BulkAction::class)
                      )
                      ->return($build->many(Sale::class));
     }

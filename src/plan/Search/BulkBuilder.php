@@ -26,6 +26,7 @@ final class BulkBuilder
     public function create(BuilderFactory $build): EndpointBuilder
     {
         return $build->endpoint(self::class)
+                     ->description('Search bills')
                      ->exportTo(Tenant::ALL)
                      ->take(Command::class)
                      ->checkPermission('plan.read')
