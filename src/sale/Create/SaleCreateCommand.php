@@ -12,10 +12,13 @@ namespace hiqdev\billing\hiapi\sale\Create;
 
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
+use hiapi\validators\UsernameValidator;
 
 class SaleCreateCommand extends BaseCommand
 {
     public $customer_id;
+
+    public $customer_username;
 
     public $plan_id;
 
@@ -33,6 +36,7 @@ class SaleCreateCommand extends BaseCommand
     {
         return [
             [['customer_id'], IdValidator::class],
+            [['customer_username'], UsernameValidator::class],
 
             [['plan_id'], IdValidator::class],
             [['plan_id'], 'required'],
