@@ -50,7 +50,7 @@ class Command extends BaseCommand
 
             [['remoteid'], 'trim'],
 
-            [['time'], 'datetime'],
+            [['time'], 'datetime', 'format' => 'php:Y-m-d'],
         ];
     }
 }
