@@ -155,6 +155,14 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function buildPurchase(string $target, string $plan, string $time): void
     {
+        $target = $this->factory->get('target', $target);
+        $plan = static::$plans[$plan];
+        $this->makeAsCustomer('TargetPurchase', [
+            'type' => $target->getType(),
+            'name' => $target->getName(),
+            'plan_id' => $plan['id'],
+            'time' => $time,
+        ]);
     }
 
     public function findBills(array $params): array
