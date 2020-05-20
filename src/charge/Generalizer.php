@@ -70,7 +70,7 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
                 $amount = 1 - (($saleDay - 1) / $daysInMonth);
             }
 
-            return Quantity::create('days', $amount);
+            return Quantity::create('items', $amount);
         }
 
         return parent::generalizeQuantity($charge);
