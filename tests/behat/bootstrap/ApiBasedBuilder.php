@@ -73,9 +73,12 @@ class ApiBasedBuilder implements BuilderInterface
         $this->prices[] = $data;
     }
 
-    public function performBilling(): void
+    public function performBilling(string $time): void
     {
-        $this->makeAsReseller('client-perform-billing', ['client' => $this->customer]);
+        $this->makeAsReseller('client-perform-billing', [
+            'client' => $this->customer,
+            'time' => $time,
+        ]);
     }
 
     public function recreatePlan(string $name): void
