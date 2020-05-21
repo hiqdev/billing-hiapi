@@ -175,6 +175,7 @@ class ApiBasedBuilder implements BuilderInterface
                 'type-name' => $params['type'],
                 'target-type' => $target->getType(),
                 'target-name' => $target->getName(),
+                'time' => $params['time'] ?? null,
             ],
         ]);
         $res = [];
