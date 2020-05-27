@@ -63,7 +63,7 @@ final class MonthlyBillQuantityFixer
         $res = null;
         foreach ($bill->getCharges() as $charge) {
             $amount = $this->generalizer->generalizeQuantity($charge);
-            if (!$amount->getUnit()->isConvertible(Unit::days())) {
+            if (!$amount->getUnit()->isConvertible(Unit::items())) {
                 continue;
             }
             if ($res === null || $amount->compare($res)>0) {
@@ -71,6 +71,6 @@ final class MonthlyBillQuantityFixer
             }
         }
 
-        return $res ?? Quantity::create('days', 1);
+        return $res ?? Quantity::create('items', 1);
     }
 }
