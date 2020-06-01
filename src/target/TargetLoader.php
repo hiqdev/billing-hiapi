@@ -10,14 +10,15 @@
 
 namespace hiqdev\billing\hiapi\target;
 
-use hiqdev\php\billing\target\Target;
+use hiqdev\php\billing\target\TargetInterface;
+use hiqdev\php\billing\target\TargetRepositoryInterface;
 use League\Tactician\Middleware;
 
 class TargetLoader implements Middleware
 {
     private $repo;
 
-    public function __construct(TargetRepository $repo)
+    public function __construct(TargetRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
@@ -31,7 +32,7 @@ class TargetLoader implements Middleware
         return $next($command);
     }
 
-    private function findTarget($command): ?Target
+    private function findTarget($command): ?TargetInterface
     {
         if (empty($command->target_id)) {
             return null;

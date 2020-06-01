@@ -12,17 +12,17 @@ namespace hiqdev\billing\hiapi\plan\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use hiqdev\billing\hiapi\plan\AvailableFor;
-use hiqdev\billing\hiapi\plan\PlanRepository;
+use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
 
 class BulkAction
 {
     /**
-     * @var PlanRepository
+     * @var PlanRepositoryInterface
      */
     private $repo;
 
-    public function __construct(PlanRepository $repo)
+    public function __construct(PlanRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }

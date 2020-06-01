@@ -10,14 +10,15 @@
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use League\Tactician\Middleware;
 
 class PlanLoader implements Middleware
 {
     private $repo;
 
-    public function __construct(PlanRepository $repo)
+    public function __construct(PlanRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
@@ -31,7 +32,7 @@ class PlanLoader implements Middleware
         return $next($command);
     }
 
-    private function findPlan($command): ?Plan
+    private function findPlan($command): ?PlanInterface
     {
         if (empty($command->plan_id)) {
             return null;

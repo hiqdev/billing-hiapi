@@ -12,14 +12,12 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiqdev\yii\DataMapper\query\FieldConditionBuilderInterface;
 use hiqdev\yii\DataMapper\query\FieldInterface;
-use yii\db\Expression;
 
-final class AvailableFor implements FieldInterface, FieldConditionBuilderInterface
+final class AvailableFor implements FieldInterface
 {
-    private const SELLER = 0;
-    private const CLIENT_ID = 1;
+    public const SELLER = 0;
+    public const CLIENT_ID = 1;
 
     public const SELLER_FIELD = 'available_for_seller';
     public const CLIENT_ID_FIELD = 'available_for_client_id';
@@ -53,32 +51,8 @@ final class AvailableFor implements FieldInterface, FieldConditionBuilderInterfa
         return $this->fieldName;
     }
 
-    public function buildCondition(string $operator, string $attributeName, $value)
+    public function getType(): int
     {
-        $params = [];
-
-        switch ($this->type) {
-            case self::SELLER:
-                $params[':available_for_seller'] = (string) $value;
-                $ids_sql = "
-                    SELECT      dst_id
-                    FROM        tie
-                    WHERE       src_id=client_id(:available_for_seller)
-                            AND tag_id=ztype_id('tariff')
-                ";
-                break;
-            case self::CLIENT_ID:
-                $params[':available_for_client_id'] = (int) $value;
-                $ids_sql = '
-                    SELECT      tariff_id
-                    FROM        client2tariff
-                    WHERE       client_id=:available_for_client_id
-                ';
-                break;
-            default:
-                $ids_sql = '0';
-        }
-
-        return new Expression("zt.obj_id IN ($ids_sql)", $params);
+        return $this->type;
     }
 }

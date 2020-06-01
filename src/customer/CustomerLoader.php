@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\customer\CustomerRepositoryInterface;
 use League\Tactician\Middleware;
 use yii\web\User;
 use hiqdev\yii\DataMapper\query\Specification;
@@ -22,7 +23,7 @@ class CustomerLoader implements Middleware
 
     private $user;
 
-    public function __construct(User $user, CustomerRepository $repo)
+    public function __construct(User $user, CustomerRepositoryInterface $repo)
     {
         $this->user = $user;
         $this->repo = $repo;

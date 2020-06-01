@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\bill\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use hiqdev\billing\hiapi\bill\BillRepository;
+use hiqdev\billing\mrdp\Bill\BillRepository;
 use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
 
 class BillBulkSearchAction
