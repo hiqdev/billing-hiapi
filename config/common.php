@@ -14,7 +14,7 @@ $singletons = [
             \DateTimeImmutable::class => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
         ],
     ],
-    \hiqdev\DataMapper\Hydrator\ConfigurableAggregateHydrator::class => [
+    \hiqdev\DataMapper\Hydrator\ConfigurableHydrator::class => [
         'hydrators' => [
             \hiqdev\php\billing\customer\Customer::class        => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
             \hiqdev\php\billing\formula\FormulaInterface::class => \hiqdev\billing\hiapi\formula\FormulaHydrator::class,
