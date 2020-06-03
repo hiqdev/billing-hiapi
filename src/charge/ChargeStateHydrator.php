@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\charge;
 
 use hiqdev\php\billing\charge\ChargeState;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
  * ChargeState Hydrator.

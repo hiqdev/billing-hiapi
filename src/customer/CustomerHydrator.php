@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\php\billing\customer\Customer;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
  * Class CustomerHydrator.

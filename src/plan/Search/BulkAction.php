@@ -11,9 +11,9 @@
 namespace hiqdev\billing\hiapi\plan\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use hiapi\Core\Auth\AuthRule;
 use hiqdev\billing\hiapi\plan\AvailableFor;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
-use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
 
 class BulkAction
 {

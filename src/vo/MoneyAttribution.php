@@ -8,18 +8,16 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\models;
+namespace hiqdev\billing\hiapi\vo;
 
-use hiqdev\yii\DataMapper\models\AbstractModel;
-use hiqdev\yii\DataMapper\query\attributes\IntegerAttribute;
-use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
+use hiqdev\DataMapper\Attribution\AbstractAttribution;
+use hiqdev\DataMapper\Attribute\IntegerAttribute;
+use hiqdev\DataMapper\Attribute\StringAttribute;
 
 /**
- * Class Quantity.
- *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class Money extends AbstractModel
+class MoneyAttribution extends AbstractAttribution
 {
     public function attributes()
     {

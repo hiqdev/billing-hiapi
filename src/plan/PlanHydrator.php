@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\plan;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\price\PriceInterface;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
  * Class PlanHydrator.

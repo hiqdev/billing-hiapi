@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\bill;
 
 use hiqdev\php\billing\bill\BillState;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
  * BillState Hydrator.

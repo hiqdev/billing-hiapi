@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\sale\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
+use hiapi\Core\Auth\AuthRule;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 
 class BulkAction

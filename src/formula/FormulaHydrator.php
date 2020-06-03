@@ -12,7 +12,7 @@ namespace hiqdev\billing\hiapi\formula;
 
 use hiqdev\php\billing\formula\FormulaEngine;
 use hiqdev\php\billing\formula\FormulaEngineInterface;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Zend\Hydrator\HydratorInterface;
 
 /**

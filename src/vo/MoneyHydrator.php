@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\vo;
 
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Money\Currency;
 use Money\Money;
 

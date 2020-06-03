@@ -9,12 +9,12 @@
  */
 
 $singletons = [
-    \hiqdev\yii\DataMapper\components\EntityManagerInterface::class => [
+    \hiqdev\DataMapper\Repository\EntityManagerInterface::class => [
         'repositories' => [
-            \DateTimeImmutable::class                           => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
+            \DateTimeImmutable::class => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
         ],
     ],
-    \hiqdev\yii\DataMapper\hydrator\ConfigurableAggregateHydrator::class => [
+    \hiqdev\DataMapper\Hydrator\ConfigurableAggregateHydrator::class => [
         'hydrators' => [
             \hiqdev\php\billing\customer\Customer::class        => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
             \hiqdev\php\billing\formula\FormulaInterface::class => \hiqdev\billing\hiapi\formula\FormulaHydrator::class,

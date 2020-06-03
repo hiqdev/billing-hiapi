@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\action;
 
 use hiqdev\php\billing\action\ActionState;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
  * ActionState Hydrator.

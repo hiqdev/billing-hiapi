@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\models;
+namespace hiqdev\billing\hiapi\vo;
 
-use hiqdev\yii\DataMapper\models\AbstractModel;
-use hiqdev\yii\DataMapper\query\attributes\FloatAttribute;
-use hiqdev\yii\DataMapper\query\attributes\StringAttribute;
+use hiqdev\DataMapper\Attribution\AbstractAttribution;
+use hiqdev\DataMapper\Attribute\FloatAttribute;
+use hiqdev\DataMapper\Attribute\StringAttribute;
 
-class Quantity extends AbstractModel
+class QuantityAttribution extends AbstractAttribution
 {
     public function attributes()
     {

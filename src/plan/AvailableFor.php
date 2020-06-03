@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\plan;
 
-use hiqdev\yii\DataMapper\query\FieldInterface;
+use hiqdev\DataMapper\Query\Field\FieldInterface;
 
 final class AvailableFor implements FieldInterface
 {

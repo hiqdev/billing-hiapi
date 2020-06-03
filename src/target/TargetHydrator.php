@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\target;
 use hiqdev\billing\hiapi\models\Target;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\TargetInterface;
-use hiqdev\yii\DataMapper\hydrator\GeneratedHydrator;
+use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Zend\Hydrator\HydratorInterface;
 
 /**

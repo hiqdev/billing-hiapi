@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\vo;
 
 use DateTimeImmutable;
-use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use hiqdev\DataMapper\Repository\BaseRepository;
 
 class DateTimeImmutableRepository extends BaseRepository
 {

@@ -14,8 +14,8 @@ use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\customer\CustomerRepositoryInterface;
 use League\Tactician\Middleware;
 use yii\web\User;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\billing\mrdp\Infrastructure\Database\Condition\Auth\AuthRule;
+use hiqdev\DataMapper\Query\Specification;
+use hiapi\Core\Auth\AuthRule;
 
 class CustomerLoader implements Middleware
 {
