@@ -12,16 +12,16 @@ namespace hiqdev\billing\hiapi\bill\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Auth\AuthRule;
-use hiqdev\billing\mrdp\Bill\BillRepository;
+use hiqdev\php\billing\bill\BillRepositoryInterface;
 
 class BillBulkSearchAction
 {
     /**
-     * @var BillRepository
+     * @var BillRepositoryInterface
      */
     private $repo;
 
-    public function __construct(BillRepository $repo)
+    public function __construct(BillRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }

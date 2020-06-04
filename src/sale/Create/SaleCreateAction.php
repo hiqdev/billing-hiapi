@@ -11,17 +11,17 @@
 namespace hiqdev\billing\hiapi\sale\Create;
 
 use hiapi\exceptions\domain\RequiredInputException;
-use hiqdev\billing\hiapi\sale\SaleRepository;
+use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\sale\Sale;
 
 class SaleCreateAction
 {
     /**
-     * @var SaleRepository
+     * @var SaleRepositoryInterface
      */
     private $repo;
 
-    public function __construct(SaleRepository $repo)
+    public function __construct(SaleRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }

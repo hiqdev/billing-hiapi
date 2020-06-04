@@ -10,18 +10,18 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\bill;
 
-use hiqdev\billing\hiapi\bill\BillRepository;
 use hiqdev\php\billing\bill\Bill;
+use hiqdev\php\billing\bill\BillRepositoryInterface;
 use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 
 class BillRepositoryTest extends BaseRepositoryTest
 {
     public function testDI()
     {
-        $this->assertInstanceOf(BillRepository::class, $this->getRepo());
+        $this->assertInstanceOf(BillRepositoryInterface::class, $this->getRepo());
     }
 
-    protected function getRepo(): BillRepository
+    protected function getRepo(): BillRepositoryInterface
     {
         return $this->getRepository(Bill::class);
     }
