@@ -11,7 +11,7 @@
 namespace hiqdev\billing\hiapi\sale\Close;
 
 use hiapi\exceptions\domain\RequiredInputException;
-use hiqdev\billing\hiapi\sale\SaleRepository;
+use hiqdev\billing\mrdp\Sale\SaleRepository;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\sale\Sale;
 

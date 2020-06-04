@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\plan;
 
-use hiqdev\billing\hiapi\plan\PlanRepository;
+use hiqdev\billing\mrdp\Plan\PlanRepository;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 

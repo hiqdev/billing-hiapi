@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\sale;
 
-use hiqdev\billing\hiapi\sale\SaleRepository;
+use hiqdev\billing\mrdp\Sale\SaleRepository;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 
