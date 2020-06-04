@@ -10,18 +10,18 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\sale;
 
-use hiqdev\billing\mrdp\Sale\SaleRepository;
 use hiqdev\php\billing\sale\Sale;
+use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 
 class SaleRepositoryTest extends BaseRepositoryTest
 {
     public function testDI()
     {
-        $this->assertInstanceOf(SaleRepository::class, $this->getRepo());
+        $this->assertInstanceOf(SaleRepositoryInterface::class, $this->getRepo());
     }
 
-    protected function getRepo(): SaleRepository
+    protected function getRepo(): SaleRepositoryInterface
     {
         return $this->getRepository(Sale::class);
     }

@@ -10,18 +10,18 @@
 
 namespace hiqdev\billing\hiapi\tests\unit\plan;
 
-use hiqdev\billing\mrdp\Plan\PlanRepository;
 use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use hiqdev\yii\DataMapper\tests\unit\BaseRepositoryTest;
 
 class PlanRepositoryTest extends BaseRepositoryTest
 {
     public function testDI()
     {
-        $this->assertInstanceOf(PlanRepository::class, $this->getRepo());
+        $this->assertInstanceOf(PlanRepositoryInterface::class, $this->getRepo());
     }
 
-    protected function getRepo(): PlanRepository
+    protected function getRepo(): PlanRepositoryInterface
     {
         return $this->getRepository(Plan::class);
     }
