@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\plan;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use League\Tactician\Middleware;
+use hiqdev\DataMapper\Query\Specification;
 
 class PlanLoader implements Middleware
 {
@@ -34,10 +35,16 @@ class PlanLoader implements Middleware
 
     private function findPlan($command): ?PlanInterface
     {
-        if (empty($command->plan_id)) {
+        $cond = [];
+        if (!empty($command->plan_id)) {
+            $cond['id'] = $command->plan_id;
+        } elseif (!empty($command->plan_name) && !empty($command->plan_seller)) {
+            $cond['name'] = $command->plan_name;
+            $cond['seller'] = $command->plan_seller;
+        } else {
             return null;
         }
 
-        return $this->repo->findById($command->plan_id);
+        return $this->repo->findOne((new Specification)->where($cond));
     }
 }
