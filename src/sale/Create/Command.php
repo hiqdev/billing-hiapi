@@ -13,14 +13,23 @@ namespace hiqdev\billing\hiapi\sale\Create;
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
+use hiapi\validators\RefValidator;
 
-class SaleCreateCommand extends BaseCommand
+class Command extends BaseCommand
 {
     public $customer_id;
 
     public $customer_username;
 
+    public $plan_name;
+
+    public $plan_seller;
+
     public $plan_id;
+
+    public $target_name;
+
+    public $target_type;
 
     public $target_id;
 
@@ -38,11 +47,13 @@ class SaleCreateCommand extends BaseCommand
             [['customer_id'], IdValidator::class],
             [['customer_username'], UsernameValidator::class],
 
+            [['plan_name'], RefValidator::class],
+            [['plan_seller'], UsernameValidator::class],
             [['plan_id'], IdValidator::class],
-            [['plan_id'], 'required'],
 
+            [['target_name'], RefValidator::class],
+            [['target_type'], RefValidator::class],
             [['target_id'], IdValidator::class],
-            [['target_id'], 'required'],
 
             [['time'], 'datetime'],
         ];

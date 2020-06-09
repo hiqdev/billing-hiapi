@@ -19,7 +19,7 @@ use hiqdev\billing\hiapi\plan\PlanLoader;
 use hiqdev\billing\hiapi\target\TargetLoader;
 use hiqdev\php\billing\sale\Sale;
 
-final class SaleBulkCreate
+final class BulkBuilder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -30,13 +30,13 @@ final class SaleBulkCreate
     {
         return $build->endpoint(self::class)
             ->exportTo(Tenant::ALL)
-            ->take($build->many(SaleCreateCommand::class))
+            ->take($build->many(Command::class))
             // XXX anybody can purchase? ->checkPermission('object.buy')
             ->middlewares(
                 $build->repeat(CustomerLoader::class),
                 $build->repeat(PlanLoader::class),
                 $build->repeat(TargetLoader::class),
-                $build->repeat(SaleCreateAction::class)
+                $build->repeat(Action::class)
             )
             ->return($build->many(Sale::class));
     }

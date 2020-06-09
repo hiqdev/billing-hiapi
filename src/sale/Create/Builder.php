@@ -19,7 +19,7 @@ use hiqdev\billing\hiapi\plan\PlanLoader;
 use hiqdev\billing\hiapi\target\TargetLoader;
 use hiqdev\php\billing\sale\Sale;
 
-final class SaleCreate
+final class Builder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -30,13 +30,13 @@ final class SaleCreate
     {
         return $build->endpoint(self::class)
             ->exportTo(Tenant::ALL)
-            ->take(SaleCreateCommand::class)
+            ->take(Command::class)
             // XXX anybody can purchase? ->checkPermission('object.buy')
             ->middlewares(
                 CustomerLoader::class,
                 PlanLoader::class,
                 TargetLoader::class,
-                $build->call(SaleCreateAction::class)
+                $build->call(Action::class)
             )
             ->return(Sale::class);
     }

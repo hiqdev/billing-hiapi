@@ -14,7 +14,7 @@ use hiapi\exceptions\domain\RequiredInputException;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\sale\Sale;
 
-class SaleCreateAction
+class Action
 {
     /**
      * @var SaleRepositoryInterface
@@ -26,7 +26,7 @@ class SaleCreateAction
         $this->repo = $repo;
     }
 
-    public function __invoke(SaleCreateCommand $command): Sale
+    public function __invoke(Command $command): Sale
     {
         $this->checkRequiredInput($command);
         $sale = new Sale(null, $command->target, $command->customer, $command->plan, $command->time);
@@ -35,7 +35,7 @@ class SaleCreateAction
         return $sale;
     }
 
-    protected function checkRequiredInput(SaleCreateCommand $command)
+    protected function checkRequiredInput(Command $command)
     {
         if (empty($command->customer)) {
             throw new RequiredInputException('customer');
