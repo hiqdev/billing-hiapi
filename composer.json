@@ -46,6 +46,7 @@
     "require": {
         "hiqdev/hiapi": "dev-master",
         "hiqdev/php-billing": "dev-master",
+        "woohoolabs/yin": "^4.1",
         "hoa/ruler": "^2.17"
     },
     "require-dev": {
