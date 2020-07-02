@@ -20,11 +20,6 @@ use hiqdev\DataMapper\Attribute\StringAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
 use hiqdev\php\units\Unit;
 
-/**
- * Class Price.
- *
- * @property Target target
- */
 class PriceAttribution extends AbstractAttribution
 {
     public function attributes()

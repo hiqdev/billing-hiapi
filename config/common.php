@@ -85,6 +85,24 @@ $singletons = [
     ],
     \hiqdev\billing\hiapi\type\TypeSemantics::class,
 
+    \hiapi\jsonApi\ResourceFactory::class => [
+        '__construct()' => [
+            'resourceMap' => [
+                \Money\Money::class                                     => \hiqdev\billing\hiapi\vo\MoneyResource::class,
+                \hiqdev\php\units\QuantityInterface::class              => \hiqdev\billing\hiapi\vo\QuantityResource::class,
+                \hiqdev\php\units\UnitInterface::class                  => \hiqdev\billing\hiapi\vo\UnitResource::class,
+                \hiqdev\php\billing\bill\BillInterface::class           => \hiqdev\billing\hiapi\bill\BillResource::class,
+                \hiqdev\php\billing\charge\ChargeInterface::class       => \hiqdev\billing\hiapi\charge\ChargeResource::class,
+                \hiqdev\php\billing\plan\PlanInterface::class           => \hiqdev\billing\hiapi\plan\PlanResource::class,
+                \hiqdev\php\billing\sale\SaleInterface::class           => \hiqdev\billing\hiapi\sale\SaleResource::class,
+                \hiqdev\php\billing\type\TypeInterface::class           => \hiqdev\billing\hiapi\type\TypeResource::class,
+                \hiqdev\php\billing\target\TargetInterface::class       => \hiqdev\billing\hiapi\target\TargetResource::class,
+                \hiqdev\php\billing\price\PriceInterface::class         => \hiqdev\billing\hiapi\price\PriceResource::class,
+                \hiqdev\php\billing\customer\CustomerInterface::class   => \hiqdev\billing\hiapi\customer\CustomerResource::class,
+            ],
+        ],
+    ],
+
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__construct()' => [
             'endpoints' => [
