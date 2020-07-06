@@ -45,13 +45,13 @@
     ],
     "require": {
         "hiqdev/hiapi": "dev-master",
+        "lcobucci/content-negotiation-middleware": "^3.0",
         "hiqdev/php-billing": "dev-master",
         "woohoolabs/yin": "^4.1",
         "hoa/ruler": "^2.17"
     },
     "require-dev": {
         "yiisoft/yii2": "dev-master",
-        "lcobucci/content-negotiation-middleware": "^2.1",
         "laminas/laminas-diactoros": "^2.1",
         "hiqdev/hidev": "dev-master",
         "hiqdev/hidev-php": "dev-master",
