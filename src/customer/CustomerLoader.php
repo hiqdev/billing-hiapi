@@ -67,7 +67,8 @@ class CustomerLoader implements Middleware
     private function getCurrentCustomer(): Customer
     {
         $identity = $this->user->getIdentity();
+        $seller = new Customer($identity->seller_id, $identity->seller);
 
-        return new Customer($identity->id, $identity->username ?: $identity->email);
+        return new Customer($identity->id, $identity->username ?: $identity->email, $seller);
     }
 }
