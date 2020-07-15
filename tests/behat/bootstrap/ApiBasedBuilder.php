@@ -139,7 +139,7 @@ class ApiBasedBuilder implements BuilderInterface
         ]);
     }
 
-    public function buildSale(string $id, string $target, string $plan, string $time): void
+    public function buildSale(string $target, string $plan, string $time): void
     {
         $planExist = $this->makeAsReseller('plans-search', ['select' => 'column', 'name' => $plan, 'limit' => 1]);
         if (!empty($planExist)) {
