@@ -18,6 +18,6 @@ class GroupingPlan extends Plan
 {
     public function convertToTarget(): TargetInterface
     {
-        return new TariffTarget($this->getId(), 'tariff');
+        return new TariffTarget($this->getId(), 'tariff', $this->getName());
     }
 }
