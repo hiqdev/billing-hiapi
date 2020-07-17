@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\price;
 
 use hiqdev\php\billing\price\EnumPrice;
+use hiqdev\php\billing\price\RatePrice;
 use hiqdev\php\billing\price\SinglePrice;
 
 /**
@@ -23,6 +24,7 @@ class PriceFactory extends \hiqdev\php\billing\price\PriceFactory
     protected $creators = [
         SinglePrice::class => 'createSinglePrice',
         EnumPrice::class => 'createEnumPrice',
+        RatePrice::class => 'createRatePrice',
         TemplatePrice::class => 'createTemplatePrice',
     ];
 
