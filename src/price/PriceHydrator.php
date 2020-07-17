@@ -75,6 +75,7 @@ class PriceHydrator extends GeneratedHydrator
         }
 
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
+        $row['rate'] = $data['rate'] ?? null;
         $row['subprices'] = $data['subprices'] ?? null;
 
         return parent::hydrate($row, $object);
