@@ -98,7 +98,7 @@ class ApiBasedBuilder implements BuilderInterface
         foreach ($this->prices as &$price) {
             $price['plan_id'] = $plan['id'] ?? null;
             $price['quantity'] = $price['prepaid'] ?? 0;
-            $price['currency'] = strtolower($price['currency']);
+            $price['currency'] = $this->preparePriceCurrency($price['currency']);
             $price['object'] = $price['target'] ?? null;
             if (isset($price['sums'])) {
                 $price['sums'] = array_map(fn ($price) => (int) ((float) $price * 100), $price['sums']);
@@ -107,6 +107,15 @@ class ApiBasedBuilder implements BuilderInterface
             }
             $this->makeAsReseller('price-create', $price);
         }
+    }
+
+    private function preparePriceCurrency(?string $currency): ?string
+    {
+        if ($currency === '%') {
+            return null;
+        }
+
+        return strtolower($currency);
     }
 
     public function deletePlan(string $name): void
@@ -142,14 +151,27 @@ class ApiBasedBuilder implements BuilderInterface
     public function buildSale(string $target, string $plan, string $time): void
     {
         $planExist = $this->makeAsReseller('plans-search', ['select' => 'column', 'name' => $plan, 'limit' => 1]);
-        if (!empty($planExist)) {
-            $plan = reset($planExist);
-            if (isset($plan['id'])) {
-                $this->sale = $this->makeAsReseller(
-                    'client-set-tariffs',
-                    ['client' => $this->customer, 'tariff_ids' => [$plan['id']]]
-                );
-            }
+        if (empty($planExist)) {
+            return;
+        }
+        $plan = reset($planExist);
+        if (empty($plan['id'])) {
+            return;
+        }
+
+        [$class, $name] = explode(':', $target);
+        if ($class === 'client') {
+            $this->sale = $this->makeAsReseller('client-sell', [
+                'client' => $this->customer,
+                'subject' => $name,
+                'plan_id' => $plan['id'],
+                'sale_time' => $time,
+            ]);
+        } else {
+            $this->sale = $this->makeAsReseller('client-set-tariffs', [
+                'client' => $this->customer,
+                'tariff_ids' => [$plan['id']],
+            ]);
         }
     }
 
