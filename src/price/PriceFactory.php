@@ -36,6 +36,11 @@ class PriceFactory extends \hiqdev\php\billing\price\PriceFactory
         $this->types['TemplatePrice'] = TemplatePrice::class;
     }
 
+    public function createTemplatePrice(TemplatePriceDto $dto): TemplatePrice
+    {
+        return new TemplatePrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->subprices);
+    }
+
     public function createRateTemplatePrice(RateTemplatePriceDto $dto): RateTemplatePrice
     {
         return new RateTemplatePrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->rate);
