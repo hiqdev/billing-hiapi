@@ -23,6 +23,7 @@ use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\DomainTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\PcdnTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\ReferralTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\SwitchTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
@@ -126,6 +127,7 @@ class TargetFactory implements TargetFactoryInterface
                 'certificate' => CertificateTariffTarget::class,
                 'domain' => DomainTariffTarget::class,
                 'switch' => SwitchTariffTarget::class,
+                'referral' => ReferralTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [

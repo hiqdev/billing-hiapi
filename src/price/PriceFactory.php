@@ -26,6 +26,7 @@ class PriceFactory extends \hiqdev\php\billing\price\PriceFactory
         EnumPrice::class => 'createEnumPrice',
         RatePrice::class => 'createRatePrice',
         TemplatePrice::class => 'createTemplatePrice',
+        RateTemplatePrice::class => 'createRateTemplatePrice',
     ];
 
     public function __construct(array $types = [], $defaultClass = null)
@@ -38,5 +39,10 @@ class PriceFactory extends \hiqdev\php\billing\price\PriceFactory
     public function createTemplatePrice(TemplatePriceDto $dto): TemplatePrice
     {
         return new TemplatePrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->subprices);
+    }
+
+    public function createRateTemplatePrice(RateTemplatePriceDto $dto): RateTemplatePrice
+    {
+        return new RateTemplatePrice($dto->id, $dto->type, $dto->target, $dto->plan, $dto->prepaid, $dto->price, $dto->rate);
     }
 }
