@@ -23,12 +23,17 @@ use hiqdev\billing\hiapi\target\ref\RefTarget;
 use hiqdev\billing\hiapi\target\tariff\CertificateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\DomainTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\PcdnTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\PrivateCloudTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\ReferralTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\ServerTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\SnapshotTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\StorageTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\SwitchTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TariffTarget;
 use hiqdev\billing\hiapi\target\tariff\TemplateTariffTarget;
 use hiqdev\billing\hiapi\target\tariff\VcdnTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\VolumeTariffTarget;
+use hiqdev\billing\hiapi\target\tariff\VpsTariffTarget;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
@@ -128,6 +133,12 @@ class TargetFactory implements TargetFactoryInterface
                 'domain' => DomainTariffTarget::class,
                 'switch' => SwitchTariffTarget::class,
                 'referral' => ReferralTariffTarget::class,
+                'vps' => VpsTariffTarget::class,
+                'snapshot' => SnapshotTariffTarget::class,
+                'volume' => VolumeTariffTarget::class,
+                'storage' => StorageTariffTarget::class,
+                'private_cloud_backup' => PrivateCloudTariffTarget::class,
+                'private_cloud' => PrivateCloudTariffTarget::class,
                 '*' => TariffTarget::class,
             ],
             'client' => [
