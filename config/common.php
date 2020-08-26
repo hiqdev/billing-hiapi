@@ -124,6 +124,9 @@ $singletons = [
             ],
         ],
     ],
+
+    \Psr\Http\Message\ResponseFactoryInterface::class => \Laminas\Diactoros\ResponseFactory::class,
+    \Yiisoft\Router\UrlGeneratorInterface::class => \hiapi\legacy\Http\Route\UrlGenerator::class,
 ];
 
 return class_exists(\Yiisoft\Factory\Definitions\Reference::class)
