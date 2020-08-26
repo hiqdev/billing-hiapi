@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * API for Billing
  *
@@ -10,17 +12,11 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\target\TargetCreationDto;
 
 class RemoteTargetCreationDto extends TargetCreationDto
 {
-    /**
-     * @var CustomerInterface
-     */
-    public $customer;
-
-    /**
-     * @var string
-     */
-    public $remoteid;
+    public ?CustomerInterface $customer;
+    public ?string $remoteid;
 }

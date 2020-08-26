@@ -31,7 +31,7 @@ class CustomerLoader implements Middleware
 
     public function execute($command, callable $next)
     {
-        if (empty($command->customer)) {
+        if ($command->customer === null) {
             $command->customer = $this->findCustomer($command);
         }
 
@@ -40,12 +40,8 @@ class CustomerLoader implements Middleware
 
     private function findCustomer($command): Customer
     {
-        $res = $this->findCustomerByCommand($command);
-        if (empty($res)) {
-            return $this->getCurrentCustomer();
-        }
-
-        return $res;
+        return $this->findCustomerByCommand($command)
+            ?? $this->getCurrentCustomer();
     }
 
     private function findCustomerByCommand($command): ?Customer

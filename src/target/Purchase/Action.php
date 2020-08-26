@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * API for Billing
  *
@@ -10,6 +12,7 @@
 
 namespace hiqdev\billing\hiapi\target\Purchase;
 
+use hiapi\exceptions\NotAuthorizedException;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
@@ -22,23 +25,15 @@ use hiqdev\php\billing\customer\CustomerInterface;
 
 class Action
 {
-    /**
-     * @var TargetRepositoryInterface
-     */
-    private $targetRepo;
+    private TargetRepositoryInterface $targetRepo;
+    private TargetFactoryInterface $targetFactory;
+    private SaleRepositoryInterface $saleRepo;
 
-    /**
-     * @var TargetFactoryInterface
-     */
-    private $targetFactory;
-
-    /**
-     * @var SaleRepositoryInterface
-     */
-    private $saleRepo;
-
-    public function __construct(TargetRepositoryInterface $targetRepo, TargetFactoryInterface $targetFactory, SaleRepositoryInterface $saleRepo)
-    {
+    public function __construct(
+        TargetRepositoryInterface $targetRepo,
+        TargetFactoryInterface $targetFactory,
+        SaleRepositoryInterface $saleRepo
+    ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
         $this->saleRepo = $saleRepo;
@@ -61,7 +56,7 @@ class Action
             'target-id' => $target->getId(),
         ]));
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
-            throw new \Exception('the target belongs to other user');
+            throw new NotAuthorizedException('The target belongs to other client');
         }
     }
 
@@ -78,24 +73,15 @@ class Action
 
     private function createTarget(Command $command): Target
     {
-        $target = $this->targetFactory->create($this->createTargetDto([
-            'type'      => $command->type,
-            'name'      => $command->name,
-            'customer'  => $command->customer,
-            'remoteid'  => $command->remoteid,
-        ]));
+        $dto = new RemoteTargetCreationDto();
+        $dto->type = $command->type;
+        $dto->name = $command->name;
+        $dto->customer = $command->customer;
+        $dto->remoteid = $command->remoteid;
+
+        $target = $this->targetFactory->create($dto);
         $this->targetRepo->save($target);
 
         return $target;
-    }
-
-    private function createTargetDto(array $data): RemoteTargetCreationDto
-    {
-        $dto = new RemoteTargetCreationDto();
-        foreach ($data as $key => $value) {
-            $dto->$key = $value;
-        }
-
-        return $dto;
     }
 }
