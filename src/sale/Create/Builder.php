@@ -17,6 +17,7 @@ use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\billing\hiapi\customer\CustomerLoader;
 use hiqdev\billing\hiapi\plan\PlanLoader;
 use hiqdev\billing\hiapi\target\TargetLoader;
+use hiqdev\billing\hiapi\vo\DateTimeLoader;
 use hiqdev\php\billing\sale\Sale;
 
 final class Builder
@@ -36,6 +37,7 @@ final class Builder
                 CustomerLoader::class,
                 PlanLoader::class,
                 TargetLoader::class,
+                new DateTimeLoader('time'),
                 $build->call(Action::class)
             )
             ->return(Sale::class);

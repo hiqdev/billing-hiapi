@@ -55,7 +55,7 @@ class Command extends BaseCommand
             [['target_type'], RefValidator::class],
             [['target_id'], IdValidator::class],
 
-            [['time'], 'datetime'],
+            [['time'], 'datetime', 'format' => 'php:Y-m-d'],
         ];
     }
 }
