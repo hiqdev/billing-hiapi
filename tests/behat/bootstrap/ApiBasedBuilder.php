@@ -167,6 +167,13 @@ class ApiBasedBuilder implements BuilderInterface
                 'plan_id' => $plan['id'],
                 'sale_time' => $time,
             ]);
+        } elseif ($class === 'class' && $name === 'certificate') {
+            $this->makeAsCustomer('SaleCreate', [
+                'target_type' => $class,
+                'target_name' => $name,
+                'plan_id' => $plan['id'],
+                'time' => $time,
+            ]);
         } else {
             $this->sale = $this->makeAsReseller('client-set-tariffs', [
                 'client' => $this->customer,
