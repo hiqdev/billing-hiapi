@@ -10,6 +10,10 @@
 
 namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
+use hiqdev\billing\hiapi\plan\PlanFactory;
+use hiqdev\billing\hiapi\price\PriceFactory;
+use hiqdev\billing\hiapi\target\TargetFactory;
+use hiqdev\billing\hiapi\type\TypeFactory;
 use hiqdev\php\billing\tests\behat\bootstrap\BuilderInterface;
 use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 
@@ -40,7 +44,12 @@ class ApiBasedBuilder implements BuilderInterface
     public function __construct()
     {
         $this->client = new ApiClient();
-        $this->factory = new SimpleFactory();
+        $this->factory = new SimpleFactory([
+            'plan'      => new PlanFactory(),
+            'price'     => new PriceFactory(),
+            'target'    => new TargetFactory(),
+            'type'      => new TypeFactory(),
+        ]);
     }
 
     public function buildReseller(string $login): void
