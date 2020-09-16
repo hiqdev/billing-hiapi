@@ -58,6 +58,12 @@ $singletons = [
     \hiqdev\php\billing\charge\GeneralizerInterface::class => [
         '__class' => \hiqdev\billing\hiapi\charge\Generalizer::class,
     ],
+    \hiqdev\php\billing\action\ActionFactoryInterface::class => [
+        '__class' => \hiqdev\php\billing\action\ActionFactory::class,
+    ],
+    \hiqdev\php\billing\charge\ChargeFactoryInterface::class => [
+        '__class' => \hiqdev\php\billing\charge\ChargeFactory::class,
+    ],
     \hiqdev\php\billing\type\TypeFactoryInterface::class => [
         '__class' => \hiqdev\billing\hiapi\type\TypeFactory::class,
     ],
@@ -83,6 +89,24 @@ $singletons = [
     \hiqdev\php\billing\sale\SaleFactoryInterface::class => [
         '__class' => \hiqdev\php\billing\sale\SaleFactory::class,
     ],
+    \hiqdev\php\billing\tools\FactoryInterface::class => [
+        '__class' => \hiqdev\php\billing\tools\Factory::class,
+        '__construct()' => [
+            'factories' => [
+                'action'    => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\action\ActionFactoryInterface::class),
+                'bill'      => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\bill\BillFactoryInterface::class),
+                'charge'    => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\charge\ChargeFactoryInterface::class),
+                'customer'  => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\customer\CustomerFactoryInterface::class),
+                'plan'      => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\plan\PlanFactoryInterface::class),
+                'price'     => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\price\PriceFactoryInterface::class),
+                'sale'      => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\sale\SaleFactoryInterface::class),
+                'target'    => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\target\TargetFactoryInterface::class),
+                'type'      => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\type\TypeFactoryInterface::class),
+            ],
+            'remove keys' => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+        ],
+    ],
+
     \hiqdev\billing\hiapi\type\TypeSemantics::class,
 
     \hiapi\jsonApi\ResourceFactory::class => [
