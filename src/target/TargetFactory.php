@@ -39,7 +39,11 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetCreationDto;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\units\exceptions\InvalidConfigException;
+use hiqdev\billing\mrdp\Target\Feature\WhoisProtect;
 
+/**
+ * TODO move to `billling-mrdp` together with targets
+ */
 class TargetFactory implements TargetFactoryInterface
 {
     public function getEntityClassName(): string
@@ -159,6 +163,9 @@ class TargetFactory implements TargetFactoryInterface
             ],
             'feature' => [
                 '*' => Target::class,
+            ],
+            'whois_protect_purchase' => [
+                '*' => WhoisProtect::class,
             ],
             'domain' => [
                 '*' => DomainTarget::class,
