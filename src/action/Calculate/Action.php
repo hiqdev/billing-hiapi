@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * API for Billing
  *
@@ -10,22 +11,19 @@
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
-use hiqdev\billing\hiapi\action\ActionRepository;
-use hiqdev\php\billing\action\Action;
+use hiqdev\php\billing\action\ActionInterface;
+use hiqdev\php\billing\action\ActionRepositoryInterface;
 
-class ActionCalculateAction
+class Action
 {
-    /**
-     * @var ActionRepository
-     */
-    private $repo;
+    private ActionRepositoryInterface $repo;
 
-    public function __construct(ActionRepository $repo)
+    public function __construct(ActionRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
 
-    public function __invoke(ActionCalculateCommand $command): Action
+    public function __invoke(Command $command): ActionInterface
     {
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * API for Billing
  *
@@ -10,9 +11,9 @@
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
-use hiapi\commands\BaseCommand;
+use hiqdev\billing\hiapi\action\Calculate\PaidCommand;
 
-class ActionCalculateCommand extends BaseCommand
+class Command extends PaidCommand
 {
     public function rules(): array
     {

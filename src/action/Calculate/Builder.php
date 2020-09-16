@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * API for Billing
  *
@@ -16,7 +17,7 @@ use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\php\billing\action\Action;
 
-final class ActionCalculate
+final class Builder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
