@@ -9,8 +9,12 @@
  */
 
 use hiqdev\php\billing\price\SinglePrice;
+use hiqdev\php\billing\target\Target;
 
 return [
     'billing-hiapi.price.types' => [],
     'billing-hiapi.price.defaultClass' => SinglePrice::class,
+
+    'billing-hiapi.target.classmap' => [],
+    'billing-hiapi.target.defaultClass' => Target::class,
 ];

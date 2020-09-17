@@ -69,6 +69,10 @@ $singletons = [
     ],
     \hiqdev\php\billing\target\TargetFactoryInterface::class => [
         '__class' => \hiqdev\billing\hiapi\target\TargetFactory::class,
+        '__construct()' => [
+            $params['billing-hiapi.target.classmap'],
+            $params['billing-hiapi.target.defaultClass'],
+        ],
     ],
     \hiqdev\php\billing\bill\BillFactoryInterface::class => [
         '__class' => \hiqdev\php\billing\bill\BillFactory::class,

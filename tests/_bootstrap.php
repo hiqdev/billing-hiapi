@@ -10,8 +10,13 @@
 
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($autoload)) {
+    $autoload = __DIR__ . '/../../../autoload.php';
+}
+
+require_once $autoload;
+require_once dirname($autoload) . '/yiisoft/yii2/Yii.php';
 
 use yii\console\Application;
 use Yiisoft\Composer\Config\Builder;
