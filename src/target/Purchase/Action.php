@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace hiqdev\billing\hiapi\target\Purchase;
 
 use hiapi\exceptions\NotAuthorizedException;
+use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
+use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\target\Target;
@@ -28,22 +30,27 @@ class Action
     private TargetRepositoryInterface $targetRepo;
     private TargetFactoryInterface $targetFactory;
     private SaleRepositoryInterface $saleRepo;
+    private PlanForkerInterface $planForker;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
         TargetFactoryInterface $targetFactory,
-        SaleRepositoryInterface $saleRepo
+        SaleRepositoryInterface $saleRepo,
+        PlanForkerInterface $planForker
     ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
         $this->saleRepo = $saleRepo;
+        $this->planForker = $planForker;
     }
 
     public function __invoke(Command $command): Target
     {
         $target = $this->getTarget($command);
         $this->checkBelongs($target, $command->customer);
-        $sale = new Sale(null, $target, $command->customer, $command->plan, $command->time);
+
+        $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
+        $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
         $this->saleRepo->save($sale);
 
         return $target;
@@ -83,5 +90,14 @@ class Action
         $this->targetRepo->save($target);
 
         return $target;
+    }
+
+    private function forkPlanIfRequired(PlanInterface $plan, CustomerInterface $customer): PlanInterface
+    {
+        if ($this->planForker->checkMustBeForkedOnPurchase($plan)) {
+            return $this->planForker->forkPlan($plan, $customer);
+        }
+
+        return $plan;
     }
 }
