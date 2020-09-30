@@ -73,7 +73,10 @@ class ApiClient
                     ->perform(
                         $command,
                         null,
-                        array_merge($body, compact('auth_login', 'auth_password'))
+                        array_merge($body, [
+                            'auth_login' => $auth_login,
+                            'auth_password' => $auth_password,
+                        ])
                     );
                 $request->build();
                 $request->addHeader('Cookie', 'XDEBUG_SESSION=XDEBUG_ECLIPSE');
