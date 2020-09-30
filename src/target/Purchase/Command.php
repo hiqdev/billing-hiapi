@@ -13,23 +13,21 @@ namespace hiqdev\billing\hiapi\target\Purchase;
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
+use hiapi\validators\RefValidator;
 
 class Command extends BaseCommand
 {
     public $customer_username;
-
     public $customer_id;
 
     public $plan_id;
+    public $plan_name;
+    public $plan_seller;
 
     public $name;
-
     public $type;
-
     public $remoteid;
-
     public $time;
-
     public $customer;
 
     public $plan;
@@ -40,8 +38,9 @@ class Command extends BaseCommand
             [['customer_username'], UsernameValidator::class],
             [['customer_id'], IdValidator::class],
 
+            [['plan_name'], RefValidator::class],
+            [['plan_seller'], UsernameValidator::class],
             [['plan_id'], IdValidator::class],
-            [['plan_id'], 'required'],
 
             [['name'], 'trim'],
 
