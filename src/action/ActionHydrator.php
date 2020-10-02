@@ -30,8 +30,8 @@ class ActionHydrator extends GeneratedHydrator
     /** {@inheritdoc} */
     public function hydrate(array $data, $object)
     {
-        $data['type']       = $this->hydrator->create($data['type'], Type::class);
-        $data['target']     = $this->hydrator->create($data['target'], Target::class);
+        $data['type']       = $this->hydrator->create($data['type'] ?? null, Type::class);
+        $data['target']     = $this->hydrator->create($data['target'] ?? null, Target::class);
         $data['quantity']   = $this->hydrator->create($data['quantity'], Quantity::class);
         $data['customer']   = $this->hydrator->create($data['customer'], Customer::class);
         $data['time']       = $this->hydrator->create($data['time'], DateTimeImmutable::class);

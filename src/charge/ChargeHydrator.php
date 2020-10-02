@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\charge;
 
 use function count;
+use function is_countable;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\charge\Charge;
