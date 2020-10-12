@@ -34,7 +34,10 @@ final class Builder
 #                    ->checkPermission('object.buy')
                      ->middlewares(
                         CustomerLoader::class,
-                        PlanLoader::class,
+                        [
+                            '__class' => PlanLoader::class,
+                            'isRequired' => true,
+                        ],
                         new DateTimeLoader('time'),
                         $build->call(Action::class)
                      )
