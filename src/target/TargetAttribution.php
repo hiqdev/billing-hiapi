@@ -19,9 +19,10 @@ class TargetAttribution extends AbstractAttribution
     public function attributes()
     {
         return [
-            'id'    => IntegerAttribute::class,
-            'name'  => StringAttribute::class,
-            'type'  => StringAttribute::class,
+            'id'        => IntegerAttribute::class,
+            'name'      => StringAttribute::class,
+            'type'      => StringAttribute::class,
+            'remoteid'  => StringAttribute::class,
         ];
     }
 
