@@ -15,15 +15,14 @@ namespace hiqdev\billing\hiapi\target\Purchase;
 use hiapi\exceptions\NotAuthorizedException;
 use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
+use hiqdev\DataMapper\Query\Specification;
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
-use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetFactoryInterface;
-use hiqdev\php\billing\target\TargetRepositoryInterface;
-use hiqdev\DataMapper\Query\Specification;
 use hiqdev\php\billing\target\TargetInterface;
-use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\target\TargetRepositoryInterface;
 
 class Action
 {
@@ -44,11 +43,9 @@ class Action
         $this->planForker = $planForker;
     }
 
-    public function __invoke(Command $command): Target
+    public function __invoke(Command $command): TargetInterface
     {
         $target = $this->getTarget($command);
-        $this->checkBelongs($target, $command->customer);
-
         $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
         $this->saleRepo->save($sale);
@@ -56,7 +53,23 @@ class Action
         return $target;
     }
 
-    private function checkBelongs(TargetInterface $target, CustomerInterface $customer)
+    private function getTarget(Command $command): TargetInterface
+    {
+        $spec = (new Specification)->where([
+            'type' => $command->type,
+            'name' => $command->name,
+        ]);
+        $target = $this->targetRepo->findOne($spec);
+
+        if (empty($target)) {
+            return $this->createTarget($command);
+        }
+        $this->ensureBelongs($target, $command->customer);
+
+        return $target;
+    }
+
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer): void
     {
         $sales = $this->saleRepo->findAll((new Specification)->where([
             'seller-id' => $customer->getSeller()->getId(),
@@ -67,18 +80,7 @@ class Action
         }
     }
 
-    private function getTarget(Command $command): Target
-    {
-        $spec = (new Specification)->where([
-            'type' => $command->type,
-            'name' => $command->name,
-        ]);
-        $target = $this->targetRepo->findOne($spec);
-
-        return $target ?: $this->createTarget($command);
-    }
-
-    private function createTarget(Command $command): Target
+    private function createTarget(Command $command): TargetInterface
     {
         $dto = new RemoteTargetCreationDto();
         $dto->type = $command->type;
