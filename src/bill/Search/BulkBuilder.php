@@ -16,7 +16,7 @@ use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\php\billing\bill\Bill;
 
-final class BillBulkSearch
+final class BulkBuilder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -28,10 +28,10 @@ final class BillBulkSearch
         return $build->endpoint(self::class)
             ->description('Searches for Bills')
             ->exportTo(Tenant::ALL)
-            ->take(BillSearchCommand::class)
+            ->take(Command::class)
             ->checkPermission('bill.read')
             ->middlewares(
-                $build->call(BillBulkSearchAction::class)
+                $build->call(Action::class)
             )
             ->return($build->many(Bill::class));
     }

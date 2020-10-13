@@ -14,19 +14,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Auth\AuthRule;
 use hiqdev\php\billing\bill\BillRepositoryInterface;
 
-class BillBulkSearchAction
+class Action
 {
-    /**
-     * @var BillRepositoryInterface
-     */
-    private $repo;
+    private BillRepositoryInterface $repo;
 
     public function __construct(BillRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
 
-    public function __invoke(BillSearchCommand $command): ArrayCollection
+    public function __invoke(Command $command): ArrayCollection
     {
         $res = $this->repo->findAll(
             AuthRule::currentUser()->applyToSpecification($command->getSpecification())

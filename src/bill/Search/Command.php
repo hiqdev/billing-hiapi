@@ -14,11 +14,11 @@ use hiapi\commands\SearchCommand;
 use hiqdev\php\billing\bill\Bill;
 
 /**
- * Class BillSearchCommand
+ * Bill Search Command
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class BillSearchCommand extends SearchCommand
+class Command extends SearchCommand
 {
     public function getEntityClass(): string
     {
