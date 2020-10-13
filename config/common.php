@@ -149,6 +149,7 @@ $singletons = [
                 'SaleClose'         => \hiqdev\billing\hiapi\sale\Close\SaleClose::class,
 
                 'BillsSearch'       => \hiqdev\billing\hiapi\bill\Search\BulkBuilder::class,
+                'BillGetInfo'       => \hiqdev\billing\hiapi\bill\GetInfo\Builder::class,
 
                 'ActionCalculate'   => \hiqdev\billing\hiapi\action\Calculate\ActionCalculate::class,
                 'ActionsCalculate'  => \hiqdev\billing\hiapi\action\Calculate\ActionBulkCalculate::class,
