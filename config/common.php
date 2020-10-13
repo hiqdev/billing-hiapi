@@ -138,6 +138,7 @@ $singletons = [
                 'PlanGetInfo'       => \hiqdev\billing\hiapi\plan\GetInfo\Builder::class,
 
                 'TargetsSearch'     => \hiqdev\billing\hiapi\target\Search\BulkBuilder::class,
+                'TargetGetInfo'     => \hiqdev\billing\hiapi\target\GetInfo\Builder::class,
                 'TargetPurchase'    => \hiqdev\billing\hiapi\target\Purchase\Builder::class,
                 'TargetsPurchase'   => \hiqdev\billing\hiapi\target\Purchase\BulkBuilder::class,
                 'TargetCreate'      => \hiqdev\billing\hiapi\target\Create\Builder::class,

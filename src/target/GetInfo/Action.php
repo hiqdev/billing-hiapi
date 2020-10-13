@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * API for Billing
  *
@@ -8,13 +10,13 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\target\Search;
+namespace hiqdev\billing\hiapi\target\GetInfo;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Auth\AuthRule;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\php\billing\target\TargetInterface;
 
-class BulkAction
+final class Action
 {
     private TargetRepositoryInterface $repo;
 
@@ -23,12 +25,10 @@ class BulkAction
         $this->repo = $repo;
     }
 
-    public function __invoke(Command $command): ArrayCollection
+    public function __invoke(Command $command): TargetInterface
     {
-        $res = $this->repo->findAll(
+        return $this->repo->findOne(
             AuthRule::currentUser()->applyToSpecification($command->getSpecification())
         );
-
-        return new ArrayCollection($res);
     }
 }
