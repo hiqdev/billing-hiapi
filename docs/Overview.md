@@ -12,18 +12,16 @@ When the command is called with the customer's identity, it returns tariff plans
 
 The command can be also called without authentication, supplied with a query parameter `where[available_for_seller]=$SELLER_LOGIN`. This will show tariff plans, assigned as public by the seller, specified in `$SELLER_LOGIN`.
 
-Each tariff consists of a set of prices and may include some additional information.
+Each tariff consists of a set of prices and may include some additional information. See examples in [PlansSearch](#planssearch-for-plans-and-get-its-prices)
 
-See examples in [PlansSearch](#PlansSearch)
+2. Then purchase a Target with `PurchaseTarget` command.
+This command creates a Sale i.e. connection between user, billed object (named Target) and a (tariff) Plan.
+After running a `PurchaseTarget` command, the billing starts and continues until the sale gets removed with the `SaleClose` command.
 
-Then purchase object with `PurchaseTarget` command.
-This command creates a sale i.e. connection between user, object (target) and tariff.
-After issuing this command billing for the object starts and continues until the sale
-is removed with command `SaleClose`.
-List of current sale can be received with command `SalesSearch`.
+The list of current active sales can be retrieved with command [`SalesSearch`](#salessearch).
 
-Billing charges users with bills (comprised of charges).
-List of bills and charges can be received with `BillsSearch` command.
+3. Billing charges users with Bills. Each bill is comprised of charges, each representing a price, that produced it.
+The list of bills and charges can be received with the [`BillsSearch`](#billssearch) command.
 
 ---
 
