@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
+use hiqdev\billing\mrdp\Action\ActionRepository;
 use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\action\ActionRepositoryInterface;
 
 class Action
 {
-    private ActionRepositoryInterface $repo;
+    private ActionRepository $repo;
 
-    public function __construct(ActionRepositoryInterface $repo)
+    public function __construct(ActionRepository $repo)
     {
         $this->repo = $repo;
     }
