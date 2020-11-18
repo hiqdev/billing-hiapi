@@ -43,7 +43,7 @@ class FormulaHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Money $object
+     * @param object $object
      */
     public function extract($object)
     {

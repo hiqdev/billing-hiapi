@@ -26,10 +26,15 @@ class Command extends BaseCommand
 
     public $name;
     public $type;
+
+    /**
+     * @var string ID of the service instance in the service provider's subsystem,
+     * that uniquely identifies the object or service, being sold.
+     */
     public $remoteid;
+
     public $time;
     public $customer;
-
     public $plan;
 
     public function rules(): array
