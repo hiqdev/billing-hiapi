@@ -14,6 +14,7 @@ use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
 use hiapi\validators\RefValidator;
+use hiqdev\DataMapper\Validator\DateTimeValidator;
 
 class Command extends BaseCommand
 {
@@ -54,7 +55,7 @@ class Command extends BaseCommand
 
             [['remoteid'], 'trim'],
 
-            [['time'], 'datetime', 'format' => 'php:Y-m-d'],
+            [['time'], DateTimeValidator::class]
         ];
     }
 }
