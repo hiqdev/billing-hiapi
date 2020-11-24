@@ -61,7 +61,7 @@ class Action
         ]);
         $target = $this->targetRepo->findOne($spec);
 
-        if (empty($target)) {
+        if ($target === false) {
             return $this->createTarget($command);
         }
         $this->ensureBelongs($target, $command->customer);
