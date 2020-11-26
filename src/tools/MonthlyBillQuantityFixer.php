@@ -19,7 +19,7 @@ use hiqdev\php\units\QuantityInterface;
 use hiqdev\php\units\Unit;
 
 /**
- * Normally, when monthly charges are put in the single bill, the bill quantity
+ * Normally, when multiple charges are put in the single bill, the bill quantity
  * increases accordingly. But it's not the right scenario for monthly bills: all
  * the charges are for the month quantity, but the whole bill is for one month as well.
  *
@@ -66,7 +66,19 @@ final class MonthlyBillQuantityFixer
             if (!$amount->getUnit()->isConvertible(Unit::items())) {
                 continue;
             }
-            if ($res === null || $amount->compare($res)>0) {
+
+            if ($amount === $charge->getUsage()) {
+                /**
+                 * If the amount was NOT generalized, if should not affect the result.
+                 *
+                 * Usually, the charge quantity could not be generalized when the bill
+                 * being processing is loaded from the DBMS and does not contain all the
+                 * relations, required for quantity generalization.
+                 */
+                continue;
+            }
+
+            if ($res === null || $amount->compare($res) > 0) {
                 $res = $amount;
             }
         }
