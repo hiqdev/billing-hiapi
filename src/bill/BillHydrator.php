@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\bill;
 
 use DateTimeImmutable;
 use hiqdev\php\billing\bill\Bill;
+use hiqdev\php\billing\bill\BillRequisite;
 use hiqdev\php\billing\bill\BillState;
 use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\customer\Customer;
@@ -48,6 +49,9 @@ class BillHydrator extends GeneratedHydrator
         }
         if (isset($row['state'])) {
             $row['state']  = $this->hydrator->create($row['state'],   BillState::class);
+        }
+        if (isset($row['requisite'])) {
+            $row['requisite'] = $this->hydrator->create($row['requisite'], BillRequisite::class);
         }
 
         $raw_charges = $row['charges'];
@@ -86,6 +90,7 @@ class BillHydrator extends GeneratedHydrator
             'sum'           => $this->hydrator->extract($object->getSum()),
             'quantity'      => $this->hydrator->extract($object->getQuantity()),
             'customer'      => $this->hydrator->extract($object->getCustomer()),
+            'requisite'     => $object->getRequisite() ? $this->hydrator->extract($object->getRequisite()) : null,
             'target'        => $object->getTarget() ? $this->hydrator->extract($object->getTarget()) : null,
             'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
             'charges'       => $this->hydrator->extractAll($object->getCharges()),
