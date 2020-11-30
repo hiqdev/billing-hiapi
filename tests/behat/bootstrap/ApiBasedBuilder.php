@@ -41,6 +41,8 @@ class ApiBasedBuilder implements BuilderInterface
 
     protected array $sale;
 
+    protected array $actions = [];
+
     public function __construct()
     {
         $this->client = new ApiClient();
@@ -233,6 +235,24 @@ class ApiBasedBuilder implements BuilderInterface
             'amount' => $amount,
             'unit'   => $unit,
         ]);
+    }
+
+    public function setAction(string $type, int $amount, string $unit, string $target, string $time): void
+    {
+        $this->actions[] = [
+            'type'   => $type,
+            'amount' => $amount,
+            'unit'   => $unit,
+            'object' => $target,
+            'time'   => $time,
+
+            'tariff_id' => $this->plan->getId(),
+        ];
+    }
+
+    public function performCalculation(string $time): void
+    {
+        $res = $this->makeAsCustomer('actions-calc-value', $this->actions);
     }
 
     protected function isAssigned(int $planId, string $login): bool
