@@ -250,9 +250,10 @@ class ApiBasedBuilder implements BuilderInterface
         ];
     }
 
-    public function performCalculation(string $time): void
+    public function performCalculation(string $time): array
     {
         $res = $this->makeAsCustomer('actions-calc-value', $this->actions);
+        return $res;
     }
 
     protected function isAssigned(int $planId, string $login): bool
