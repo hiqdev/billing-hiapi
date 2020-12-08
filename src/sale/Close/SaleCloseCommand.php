@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\sale\Close;
 
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
+use hiqdev\DataMapper\Validator\DateTimeValidator;
 
 class SaleCloseCommand extends BaseCommand
 {
@@ -39,7 +40,7 @@ class SaleCloseCommand extends BaseCommand
             [['target_id'], IdValidator::class],
             [['target_id'], 'required'],
 
-            [['time'], 'datetime'],
+            [['time'], DateTimeValidator::class],
         ];
     }
 }
