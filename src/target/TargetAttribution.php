@@ -20,8 +20,9 @@ class TargetAttribution extends AbstractAttribution
     {
         return [
             'id'        => IntegerAttribute::class,
-            'name'      => StringAttribute::class,
             'type'      => StringAttribute::class,
+            'name'      => StringAttribute::class,
+            'label'     => StringAttribute::class,
             'remoteid'  => StringAttribute::class,
         ];
     }
