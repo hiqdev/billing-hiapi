@@ -26,7 +26,7 @@ class TargetLoader implements Middleware
 
     public function execute($command, callable $next)
     {
-        if (empty($command->target)) {
+        if (!isset($command->target)) {
             $command->target = $this->findTarget($command);
         }
 
@@ -38,14 +38,26 @@ class TargetLoader implements Middleware
         if (!empty($command->target_id)) {
             $cond = ['id' => $command->target_id];
         } elseif (!empty($command->target_type) && !empty($command->target_name)) {
-            $cond = [
-                'type' => $command->target_type,
-                'name' => $command->target_name,
-            ];
+            $cond = $this->buildCond($command->target_type, $command->target_name);
+        } elseif (!empty($command->target_fullname)) {
+            $ps = explode(':', $command->target_fullname, 2);
+            if (empty($ps[1])) {
+                return null;
+            }
+
+            $cond = $this->buildCond($ps[0], $ps[1]);
         } else {
             return null;
         }
 
         return $this->repo->findOne((new Specification)->where($cond));
+    }
+
+    private function buildCond(string $type, string $name): array
+    {
+        return [
+            'type' => $type,
+            'name' => $name,
+        ];
     }
 }
