@@ -11,19 +11,22 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
-use hiqdev\billing\mrdp\Action\ActionRepository;
-use hiqdev\php\billing\action\ActionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use hiqdev\php\billing\order\BillingInterface;
 
-class Action
+final class Action
 {
-    private ActionRepository $repo;
+    private BillingInterface $billing;
 
-    public function __construct(ActionRepository $repo)
+    public function __construct(BillingInterface $billing)
     {
-        $this->repo = $repo;
+        $this->billing = $billing;
     }
 
-    public function __invoke(Command $command): ActionInterface
+    public function __invoke(Command $command): ArrayCollection
     {
+        $actions = $command->getActions();
+        $charges = $this->billing->calculateCharges($actions);
+        return new ArrayCollection($charges);
     }
 }

@@ -17,6 +17,7 @@ class Command extends PaidCommand
 {
     public function rules(): array
     {
-        return [];
+        return array_merge(parent::rules(), [
+        ]);
     }
 }

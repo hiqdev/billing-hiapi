@@ -11,26 +11,22 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
-use hiapi\Core\Endpoint\BuilderFactory;
-use hiapi\Core\Endpoint\Endpoint;
-use hiapi\Core\Endpoint\EndpointBuilder;
-use hiapi\endpoints\Module\Multitenant\Tenant;
-use hiqdev\php\billing\action\Action;
+use Doctrine\Common\Collections\ArrayCollection;
+use hiqdev\php\billing\order\BillingInterface;
 
 final class BulkAction
 {
-    public function __invoke(BuilderFactory $build): Endpoint
+    private BillingInterface $billing;
+
+    public function __construct(BillingInterface $billing)
     {
-        return $this->create($build)->build();
+        $this->billing = $billing;
     }
 
-    public function create(BuilderFactory $build): EndpointBuilder
+    public function __invoke($commands): ArrayCollection
     {
-        return $build->endpoint(self::class)
-                     ->exportTo(Tenant::ALL)
-                     ->take($build->many(ActionCalculateCommand::class))
-                     ->checkPermission('action.calculate')
-                     ->middlewares()
-                     ->return($build->many(Action::class));
+        $actions = (new BulkPaidCommand($commands))->getActions();
+        $charges = $this->billing->calculateCharges($actions);
+        return new ArrayCollection($charges);
     }
 }
