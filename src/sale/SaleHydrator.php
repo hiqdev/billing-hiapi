@@ -9,13 +9,12 @@
  */
 
 namespace hiqdev\billing\hiapi\sale;
-
 use DateTimeImmutable;
-use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
-use hiqdev\php\billing\target\Target;
+use hiqdev\php\billing\sale\SaleInterface;
+use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
@@ -27,12 +26,10 @@ class SaleHydrator extends GeneratedHydrator
 {
     public function hydrate(array $data, $object)
     {
-        $data['target']     = $this->hydrator->hydrate($data['target'], Target::class);
-        $data['customer']   = $this->hydrator->hydrate($data['customer'], Customer::class);
-        $data['plan']       = $data['plan'] instanceof PlanInterface
-            ? $data['plan']
-            : $this->hydrator->hydrate($data['plan'], Plan::class);
-        $data['time']       = $this->hydrator->hydrate((array) $data['time'], DateTimeImmutable::class);
+        $data['target']     = $this->hydrateChild($data['target'], TargetInterface::class);
+        $data['customer']   = $this->hydrateChild($data['customer'], CustomerInterface::class);
+        $data['plan']       = $this->hydrateChild($data['plan'], PlanInterface::class);
+        $data['time']       = $this->hydrateChild($data['time'], DateTimeImmutable::class);
 
         return parent::hydrate($data, $object);
     }
@@ -45,12 +42,21 @@ class SaleHydrator extends GeneratedHydrator
     {
         return array_filter([
             'id'        => $object->getId(),
-            'target'    => $this->hydrator->extract($object->getTarget()),
-            'customer'  => $this->hydrator->extract($object->getCustomer()),
-            'plan'      => $this->hydrator->extract($object->getPlan()),
-            'time'      => $object->getTime() ? $this->hydrator->extract($object->getTime()) : null,
+            'target'    => $this->extractChild($object->getTarget()),
+            'customer'  => $this->extractChild($object->getCustomer()),
+            'plan'      => $this->extractChild($object->getPlan()),
+            'time'      => $this->extractChild($object->getTime()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        if ($className === SaleInterface::class) {
+            $className = Sale::class;
+        }
+
+        return parent::createEmptyInstance($className, $data);
     }
 }

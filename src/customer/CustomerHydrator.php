@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\customer;
 
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
 /**
@@ -44,5 +45,14 @@ class CustomerHydrator extends GeneratedHydrator
             'login'         => $object->getLogin(),
             'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
         ];
+    }
+
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        if ($className === CustomerInterface::class) {
+            $className = Customer::class;
+        }
+
+        return parent::createEmptyInstance($className, $data);
     }
 }

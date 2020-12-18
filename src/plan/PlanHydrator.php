@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\price\PriceInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 
@@ -82,6 +83,9 @@ class PlanHydrator extends GeneratedHydrator
     {
         if (isset($data['is_grouping']) && $data['is_grouping'] === true) {
             $className = GroupingPlan::class;
+        }
+        if ($className === PlanInterface::class) {
+            $className = Plan::class;
         }
 
         return parent::createEmptyInstance($className, $data);

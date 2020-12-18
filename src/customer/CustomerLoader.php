@@ -31,14 +31,14 @@ class CustomerLoader implements Middleware
 
     public function execute($command, callable $next)
     {
-        if ($command->customer === null) {
+        if (!isset($command->customer)) {
             $command->customer = $this->findCustomer($command);
         }
 
         return $next($command);
     }
 
-    private function findCustomer($command): Customer
+    public function findCustomer($command): Customer
     {
         return $this->findCustomerByCommand($command)
             ?? $this->getCurrentCustomer();

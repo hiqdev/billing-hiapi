@@ -33,7 +33,7 @@ class TargetLoader implements Middleware
         return $next($command);
     }
 
-    private function findTarget($command): ?TargetInterface
+    public function findTarget($command): ?TargetInterface
     {
         if (!empty($command->target_id)) {
             $cond = ['id' => $command->target_id];

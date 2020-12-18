@@ -31,43 +31,74 @@ class PlanLoader implements Middleware
     public function execute($command, callable $next)
     {
         if (empty($command->plan)) {
-            $command->plan = $this->findPlan($command);
-            if ($this->isRequired && empty($command->plan)) {
-                if (!empty($command->plan_id)) {
-                    throw new ValidationException(
-                        sprintf('Failed to find plan by ID %s: wrong ID or not authorized', $command->plan_id)
-                    );
-                }
-                if (!empty($command->plan_name)) {
-                    throw new ValidationException(
-                        sprintf('Failed to find plan by name "%s": wrong name or not authorized', $command->plan_name)
-                    );
-                }
-
-                throw new RequiredInputException('plan_id or plan_name');
-            }
+            $command->plan = $this->findPlanByCommand($command);
+            $this->validatePlan($command);
         }
 
         return $next($command);
     }
 
-    private function findPlan($command): ?PlanInterface
+    public function findPlanByCommand($command): ?PlanInterface
     {
-        $cond = [];
         if (!empty($command->plan_id)) {
-            $cond['id'] = $command->plan_id;
+            return $this->findPlanById($command->plan_id);
         } elseif (!empty($command->plan_name)) {
-            $cond['name'] = $command->plan_name;
-            $cond['seller'] = $command->plan_seller ?? $this->getSeller($command);
-        } else {
-            return null;
+            return $this->findPlanByName($command->plan_name, $command->plan_seller ?? $this->getSeller($command));
+        } elseif (!empty($command->plan_fullname)) {
+            return $this->findPlanByFullName($command->plan_fullname);
         }
 
+        return null;
+    }
+
+    public function findPlanById($id)
+    {
+        return $this->findPlanByArray(['id' => $id]);
+    }
+
+    public function findPlanByFullName($fullname)
+    {
+        $ps = explode('@', $fullname, 2);
+        if (empty($ps[1])) {
+            return null;
+        }
+        return $this->findPlanByName($ps[0], $ps[1]);
+    }
+
+    public function findPlanByName($name, $seller)
+    {
+        return $this->findPlanByArray([
+            'name' => $name,
+            'seller' => $seller,
+        ]);
+    }
+
+    public function findPlanByArray(array $cond)
+    {
         return $this->repo->findOne((new Specification)->where($cond)) ?: null;
     }
 
     private function getSeller($command): ?string
     {
         return $command->customer->getSeller()->getLogin();
+    }
+
+    private function validatePlan($command): void
+    {
+        if (!$this->isRequired || !empty($command->plan)) {
+            return;
+        }
+        if (!empty($command->plan_id)) {
+            throw new ValidationException(
+                sprintf('Failed to find plan by ID %s: wrong ID or not authorized', $command->plan_id)
+            );
+        }
+        if (!empty($command->plan_name)) {
+            throw new ValidationException(
+                sprintf('Failed to find plan by name "%s": wrong name or not authorized', $command->plan_name)
+            );
+        }
+
+        throw new RequiredInputException('plan_id or plan_name');
     }
 }
