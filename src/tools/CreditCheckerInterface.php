@@ -15,5 +15,5 @@ use hiqdev\php\billing\action\ActionInterface;
 
 interface CreditCheckerInterface
 {
-    public function check(ActionInterface $action);
+    public function check(ActionInterface $action): bool;
 }

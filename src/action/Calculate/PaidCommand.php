@@ -14,7 +14,7 @@ use Zend\Hydrator\HydratorInterface;
 use hiqdev\php\units\QuantityInterface;
 use hiqdev\php\units\Quantity;
 
-class PaidCommand extends BaseCommand
+class PaidCommand extends BaseCommand implements PaidCommandInterface
 {
     public $amount;
     public $type;
