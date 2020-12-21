@@ -129,6 +129,7 @@ Success command run results in creation of a sale, the response contains an `id`
 - GET `/api/v1/clients` - alias to [clientsSearch](http://swagger.hiqdev.com/#/client/post_clientsSearch)
 - GET `/api/v1/client/:id` - alias to [clientGetInfo?id=:id](http://swagger.hiqdev.com/#/client/post_clientGetInfo)
 - GET `/api/v1/plans` - alias to [PlansSearch](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_PlansSearch)
+- GET `/api/v1/plans/public` - alias to [plansGetAvailable](http://swagger.hiqdev.com/#/client/post_plansGetAvailable)
 - GET `/api/v1/plan/:id` - alias to [PlanGetInfo?id=:id](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_PlanGetInfo)
 - GET `/api/v1/targets` - alias to [TargetsSearch](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_TargetsSearch)
 - GET `/api/v1/target/:id` - alias to [TargetGetInfo?id=:id](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_TargetGetInfo)
@@ -138,3 +139,5 @@ Success command run results in creation of a sale, the response contains an `id`
 - DELETE `/api/v1/sales` - alias to [SaleClose](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_SaleClose)
 - GET `/api/v1/bills` - alias to [BillsSearch](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_BillsSearch)
 - GET `/api/v1/bill/:id` - alias to [BillGetInfo?id=:id](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_BillGetInfo)
+- POST `/api/v1/feature/purchase` - alias to [FeaturePurchase](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_FeaturePurchase)
+- POST `/api/v1/feature/cancel` - alias to [FeatureCancel](http://swagger.hiqdev.com/?urls.primaryName=Billing%20API#/default/post_FeatureCancel)
