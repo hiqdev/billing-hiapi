@@ -70,6 +70,8 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
     public function rules(): array
     {
         return array_merge(parent::rules(), [
+            [['target_id'], 'trim'],
+
             [['target_id'], 'string'],
             [['target_type'], 'string'],
             [['target_name'], 'string'],
