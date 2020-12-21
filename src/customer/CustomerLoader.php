@@ -13,15 +13,16 @@ namespace hiqdev\billing\hiapi\customer;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\customer\CustomerRepositoryInterface;
 use League\Tactician\Middleware;
+use RuntimeException;
 use yii\web\User;
 use hiqdev\DataMapper\Query\Specification;
 use hiapi\Core\Auth\AuthRule;
 
 class CustomerLoader implements Middleware
 {
-    private $repo;
+    private CustomerRepositoryInterface $repo;
 
-    private $user;
+    private User $user;
 
     public function __construct(User $user, CustomerRepositoryInterface $repo)
     {
@@ -63,6 +64,10 @@ class CustomerLoader implements Middleware
     private function getCurrentCustomer(): Customer
     {
         $identity = $this->user->getIdentity();
+        if ($identity === null) {
+            throw new RuntimeException('CustomerLoader requires user to be authenticated');
+        }
+
         $seller = new Customer($identity->seller_id, $identity->seller);
 
         return new Customer($identity->id, $identity->username ?: $identity->email, $seller);

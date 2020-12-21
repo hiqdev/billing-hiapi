@@ -119,7 +119,7 @@ $singletons = [
 
     \hiqdev\billing\hiapi\type\TypeSemantics::class,
 
-    \hiapi\jsonApi\ResourceFactory::class => [
+    \hiapi\jsonApi\ResourceDocumentFactory::class => [
         '__construct()' => [
             'resourceMap' => [
                 \Money\Money::class                                     => \hiqdev\billing\hiapi\vo\MoneyResource::class,
@@ -133,6 +133,7 @@ $singletons = [
                 \hiqdev\php\billing\target\TargetInterface::class       => \hiqdev\billing\hiapi\target\TargetResource::class,
                 \hiqdev\php\billing\price\PriceInterface::class         => \hiqdev\billing\hiapi\price\PriceResource::class,
                 \hiqdev\php\billing\customer\CustomerInterface::class   => \hiqdev\billing\hiapi\customer\CustomerResource::class,
+                \hiqdev\billing\hiapi\feature\FeatureInterface::class   => \hiqdev\billing\hiapi\feature\FeatureResource::class,
             ],
         ],
     ],
@@ -149,6 +150,9 @@ $singletons = [
                 'TargetsPurchase'   => \hiqdev\billing\hiapi\target\Purchase\BulkBuilder::class,
                 'TargetCreate'      => \hiqdev\billing\hiapi\target\Create\Builder::class,
                 'TargetsCreate'     => \hiqdev\billing\hiapi\target\Create\BulkBuilder::class,
+
+                'FeaturePurchase'   => \hiqdev\billing\hiapi\feature\Purchase\Builder::class,
+                'FeatureCancel'     => \hiqdev\billing\hiapi\feature\Cancel\Builder::class,
 
                 'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\BulkBuilder::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\Builder::class,

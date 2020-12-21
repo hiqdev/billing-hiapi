@@ -14,6 +14,7 @@ namespace hiqdev\billing\hiapi\plan;
 use hiapi\exceptions\domain\RequiredInputException;
 use hiapi\exceptions\domain\ValidationException;
 use hiqdev\DataMapper\Query\Specification;
+use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use League\Tactician\Middleware;
@@ -41,22 +42,25 @@ class PlanLoader implements Middleware
     public function findPlanByCommand($command): ?PlanInterface
     {
         if (!empty($command->plan_id)) {
-            return $this->findPlanById($command->plan_id);
-        } elseif (!empty($command->plan_name)) {
+            $availabilityFilter = [AvailableFor::CLIENT_ID_FIELD => $command->customer->getId()];
+            return $this->findPlanById($command->plan_id, $availabilityFilter);
+        }
+        if (!empty($command->plan_name)) {
             return $this->findPlanByName($command->plan_name, $command->plan_seller ?? $this->getSeller($command));
-        } elseif (!empty($command->plan_fullname)) {
+        }
+        if (!empty($command->plan_fullname)) {
             return $this->findPlanByFullName($command->plan_fullname);
         }
 
         return null;
     }
 
-    public function findPlanById($id)
+    private function findPlanById($id, array $availabilityFilter)
     {
-        return $this->findPlanByArray(['id' => $id]);
+        return $this->findPlanByArray($availabilityFilter + ['id' => $id]);
     }
 
-    public function findPlanByFullName($fullname)
+    private function findPlanByFullName($fullname)
     {
         $ps = explode('@', $fullname, 2);
         if (empty($ps[1])) {
@@ -65,15 +69,16 @@ class PlanLoader implements Middleware
         return $this->findPlanByName($ps[0], $ps[1]);
     }
 
-    public function findPlanByName($name, $seller)
+    private function findPlanByName($name, $seller)
     {
         return $this->findPlanByArray([
             'name' => $name,
             'seller' => $seller,
+            AvailableFor::SELLER_FIELD => $seller,
         ]);
     }
 
-    public function findPlanByArray(array $cond)
+    private function findPlanByArray(array $cond)
     {
         return $this->repo->findOne((new Specification)->where($cond)) ?: null;
     }

@@ -26,7 +26,7 @@ use Zend\Hydrator\HydratorInterface;
 
 class PaidCommand extends BaseCommand implements PaidCommandInterface
 {
-    private ContainerInterface $di;
+    protected ContainerInterface $di;
     private HydratorInterface $hydrator;
 
     public function __construct(ContainerInterface $di, $config = [])
@@ -51,7 +51,9 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
     public $amount;
     public $unit = 'items';
 
-    /** @var TypeInterface|string */
+    /** @var string */
+    public $type_name;
+    /** @var TypeInterface|null */
     public $type;
     /** @var DateTimeImmutable|string */
     public $time;
@@ -62,11 +64,14 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
     protected ?TargetInterface $target = null;
     protected ?CustomerInterface $customer = null;
 
+    /** @var ActionInterface[] */
     private $actions;
 
     public function rules(): array
     {
         return array_merge(parent::rules(), [
+            [['target_id'], 'trim'],
+
             [['target_id'], 'string'],
             [['target_type'], 'string'],
             [['target_name'], 'string'],
@@ -80,8 +85,8 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
             [['plan_seller'], UsernameValidator::class],
             [['plan_fullname'], 'string'],
 
-            [['amount'], 'number'],
-            [['type'], LongRefValidator::class],
+            ['amount', 'number', 'min' => 0],
+            [['type_name'], LongRefValidator::class],
             [['unit'], RefValidator::class],
 
             [['time'], DateTimeValidator::class],
@@ -137,9 +142,9 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
 
     public function getType(): TypeInterface
     {
-        if (is_string($this->type)) {
+        if ($this->type === null) {
             $this->type = $this->getHydrator()->hydrate([
-                'name' => $this->type,
+                'name' => $this->type_name,
             ], TypeInterface::class);
         }
 
@@ -164,13 +169,14 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
         return $this->actions;
     }
 
-    public function getAction(): ActionInterface
+    protected function getAction(): ActionInterface
     {
         if (!isset($this->action)) {
+            /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
             $this->action = $this->getHydrator()->hydrate(array_filter([
                 'customer' => $this->getCustomer(),
                 'target' => $this->getTarget(),
-                'type' => $this->getType(),
+                'type' => $this->getActionType(),
                 'quantity' => $this->getQuantity(),
                 'sale' => $this->getSale(),
                 'time' => $this->getTime(),
@@ -178,6 +184,11 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
         }
 
         return $this->action;
+    }
+
+    protected function getActionType(): TypeInterface
+    {
+        return $this->getType();
     }
 
     public function getSale(): ?SaleInterface
@@ -196,7 +207,7 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
         return $this->sale;
     }
 
-    private function getHydrator(): HydratorInterface
+    protected function getHydrator(): HydratorInterface
     {
         if (!isset($this->hydrator)) {
             $this->hydrator = $this->di->get(HydratorInterface::class);

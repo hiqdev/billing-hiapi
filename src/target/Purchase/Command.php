@@ -44,7 +44,7 @@ class Command extends BaseCommand
             [['customer_username'], UsernameValidator::class],
             [['customer_id'], IdValidator::class],
 
-            [['plan_name'], RefValidator::class],
+            [['plan_name'], 'trim'],
             [['plan_seller'], UsernameValidator::class],
             [['plan_id'], IdValidator::class],
 
