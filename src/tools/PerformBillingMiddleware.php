@@ -14,18 +14,15 @@ namespace hiqdev\billing\hiapi\tools;
 use hiqdev\billing\hiapi\action\Calculate\PaidCommandInterface;
 use hiqdev\php\billing\order\BillingInterface;
 use League\Tactician\Middleware;
-use Zend\Hydrator\HydratorInterface;
 
 class PerformBillingMiddleware implements Middleware
 {
     private CreditCheckerInterface $checker;
-    private HydratorInterface $hydrator;
     private BillingInterface $billing;
 
-    public function __construct(CreditCheckerInterface $checker, HydratorInterface $hydrator, BillingInterface $billing)
+    public function __construct(CreditCheckerInterface $checker, BillingInterface $billing)
     {
         $this->checker = $checker;
-        $this->hydrator = $hydrator;
         $this->billing = $billing;
     }
 
@@ -36,13 +33,13 @@ class PerformBillingMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        $action = $command->createAction($this->hydrator);
-        $this->checker->check($action);
+        $actions = $command->getActions();
+        $this->checker->check($actions);
         $this->reserveBalanceAmount();
 
         $res = $next($command);
 
-        $this->billing->perform($action);
+        $this->billing->perform($actions);
 
         return $res;
     }

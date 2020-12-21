@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\action\Calculate;
 
-use hiqdev\billing\hiapi\action\Calculate\PaidCommand;
-
 class Command extends PaidCommand
 {
     public function rules(): array
     {
-        return [];
+        return array_merge(parent::rules(), [
+        ]);
     }
 }

@@ -30,7 +30,7 @@ class TargetLoader implements Middleware
 
     public function execute($command, callable $next)
     {
-        if (empty($command->target)) {
+        if (!isset($command->target)) {
             $command->target = $this->findTarget($command);
             if ($this->isRequired && $command->target === null) {
                 throw new ValidationException(sprintf('Failed to find target'));
@@ -40,15 +40,21 @@ class TargetLoader implements Middleware
         return $next($command);
     }
 
-    private function findTarget($command): ?TargetInterface
+    public function findTarget($command): ?TargetInterface
     {
         $cond = [AuthRule::currentUser()];
 
         if (!empty($command->target_id)) {
             $cond['id'] = $command->target_id;
         } elseif (!empty($command->target_type) && !empty($command->target_name)) {
-            $cond['type'] = $command->target_type;
-            $cond['name'] = $command->target_name;
+            $cond += $this->buildCond($command->target_type, $command->target_name);
+        } elseif (!empty($command->target_fullname)) {
+            $ps = explode(':', $command->target_fullname, 2);
+            if (empty($ps[1])) {
+                return null;
+            }
+
+            $cond += $this->buildCond($ps[0], $ps[1]);
         } else {
             return null;
         }
@@ -59,5 +65,13 @@ class TargetLoader implements Middleware
         }
 
         return $target;
+    }
+
+    private function buildCond(string $type, string $name): array
+    {
+        return [
+            'type' => $type,
+            'name' => $name,
+        ];
     }
 }

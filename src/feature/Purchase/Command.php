@@ -3,58 +3,24 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\feature\Purchase;
 
-use DateTimeImmutable;
-use hiapi\commands\BaseCommand;
-use hiapi\validators\IdValidator;
-use hiapi\validators\RefValidator;
-use hiqdev\billing\hiapi\action\Calculate\PaidCommandInterface;
-use hiqdev\php\billing\action\Action;
-use hiqdev\php\billing\action\ActionInterface;
-use hiqdev\php\billing\customer\Customer;
-use hiqdev\php\billing\target\TargetInterface;
+use hiqdev\billing\hiapi\action\Calculate\PaidCommand;
+use hiqdev\billing\hiapi\type\TypeLoader;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\type\TypeInterface;
-use hiqdev\php\units\Quantity;
-use Zend\Hydrator\HydratorInterface;
 
-final class Command extends BaseCommand implements PaidCommandInterface
+final class Command extends PaidCommand
 {
-    public $target_id;
-
-    public $type_name;
-
-    public ?Customer $customer = null;
-
-    public ?TargetInterface $target = null;
-
-    public ?TypeInterface $type = null;
-
-    public float $amount = 1;
-
-    public function rules()
+    public function getType(): TypeInterface
     {
-        return array_merge(parent::rules(), [
-            ['target_id', IdValidator::class],
-            ['type_name', RefValidator::class],
-            ['amount', 'number', 'min' => 0],
-            [['target_id', 'type_name', 'amount'], 'required'],
-        ]);
+        if ($this->type === null) {
+            $this->type = $this->di->get(TypeLoader::class)->findPrefixed('type,feature', $this->type_name);
+        }
+
+        return $this->type;
     }
 
-    public function createAction(HydratorInterface $hydrator): ActionInterface
+    protected function getActionType(): TypeInterface
     {
-        assert($this->customer !== null);
-        assert($this->target !== null);
-        assert($this->type !== null);
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        /** @noinspection PhpParamsInspection */
-        return $hydrator->hydrate([
-            'customer' => $this->customer,
-            'target' => $this->target,
-            'type' => new Type(TypeInterface::ANY, $this->type->getName()),
-            'quantity' => Quantity::create('items', $this->amount),
-            'time' => new DateTimeImmutable('now'),
-        ], Action::class);
+        return new Type(TypeInterface::ANY, $this->getType()->getName());
     }
 }

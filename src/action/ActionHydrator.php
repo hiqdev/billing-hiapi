@@ -70,4 +70,9 @@ class ActionHydrator extends GeneratedHydrator
 
         return $result;
     }
+
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        return parent::createEmptyInstance(Action::class, $data);
+    }
 }

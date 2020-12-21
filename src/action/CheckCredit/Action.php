@@ -24,8 +24,8 @@ class Action
 
     public function __invoke(Command $command): bool
     {
-        $action = $command->createAction($this->hydrator);
-        $this->checker->check($action);
+        $actions = $command->getActions();
+        $this->checker->check($actions);
 
         return true; /// XXX ???
     }

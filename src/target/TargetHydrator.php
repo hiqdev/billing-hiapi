@@ -44,6 +44,7 @@ class TargetHydrator extends GeneratedHydrator
             'id'            => $this->extractNone($object->getId()),
             'type'          => $this->extractNone($object->getType()),
             'name'          => $object->getName(),
+            'label'         => $object->getLabel(),
         ];
     }
 

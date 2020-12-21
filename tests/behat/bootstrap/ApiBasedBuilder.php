@@ -35,8 +35,9 @@ class ApiBasedBuilder implements BuilderInterface
 
     protected array $prices = [];
 
-    protected string $plan;
+    protected array $plan;
 
+    protected static $lastPlan;
     protected static array $plans = [];
 
     protected array $sale;
@@ -147,6 +148,8 @@ class ApiBasedBuilder implements BuilderInterface
         $plan = static::$plans[$name];
         $plan = array_merge($plan, $this->makeAsReseller('plan-create', $plan));
         static::$plans[$name] = $plan;
+        static::$lastPlan = $plan;
+        $this->plan = $plan;
 
         return $plan;
     }
@@ -240,19 +243,23 @@ class ApiBasedBuilder implements BuilderInterface
     public function setAction(string $type, int $amount, string $unit, string $target, string $time): void
     {
         $this->actions[] = [
-            'type'   => $type,
-            'amount' => $amount,
-            'unit'   => $unit,
-            'object' => $target,
-            'time'   => $time,
-
-            'tariff_id' => $this->plan->getId(),
+            'target_fullname'   => $target,
+            'type'              => $type,
+            'amount'            => $amount,
+            'unit'              => $unit,
+            'time'              => $time,
+            'plan_id'           => static::$lastPlan['id'],
         ];
     }
 
     public function performCalculation(string $time): array
     {
-        $res = $this->makeAsCustomer('actions-calc-value', $this->actions);
+        $charges = $this->makeAsCustomer('ActionsCalculate', $this->actions);
+        foreach ($charges as $key =>  $charge) {
+            unset($charge['price']);
+            $res[$key] = $this->factory->get('charge', $charge);
+        }
+
         return $res;
     }
 

@@ -18,13 +18,11 @@ use Zend\Hydrator\HydratorInterface;
 
 class CheckCreditMiddleware implements Middleware
 {
-    private HydratorInterface $hydrator;
     private CreditCheckerInterface $checker;
 
-    public function __construct(CreditCheckerInterface $checker, HydratorInterface $hydrator)
+    public function __construct(CreditCheckerInterface $checker)
     {
         $this->checker = $checker;
-        $this->hydrator = $hydrator;
     }
 
     /**
@@ -34,8 +32,8 @@ class CheckCreditMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        $action = $command->createAction($this->hydrator);
-        $this->checker->check($action);
+        $actions = $command->getActions();
+        $this->checker->check($actions);
 
         $this->reserveBalanceAmount();
         return $next($command);

@@ -15,9 +15,13 @@ use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
+use hiqdev\billing\hiapi\customer\CustomerLoader;
+use hiqdev\billing\hiapi\plan\PlanLoader;
+use hiqdev\billing\hiapi\target\TargetLoader;
+use hiqdev\billing\hiapi\vo\DateTimeLoader;
 use hiqdev\php\billing\charge\Charge;
 
-final class Builder
+final class BulkBuilder
 {
     public function __invoke(BuilderFactory $build): Endpoint
     {
@@ -28,10 +32,10 @@ final class Builder
     {
         return $build->endpoint(self::class)
                      ->exportTo(Tenant::ALL)
-                     ->take(Command::class)
+                     ->take($build->many(Command::class))
                      #->checkPermission('action.calculate')
                      ->middlewares(
-                         $build->call(Action::class)
+                         $build->call(BulkAction::class)
                      )
                      ->return($build->many(Charge::class));
     }

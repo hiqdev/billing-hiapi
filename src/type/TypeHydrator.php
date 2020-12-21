@@ -10,8 +10,9 @@
 
 namespace hiqdev\billing\hiapi\type;
 
-use hiqdev\billing\hiapi\models\Type;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use hiqdev\php\billing\type\Type;
+use hiqdev\php\billing\type\TypeInterface;
 
 /**
  * Class TypeHydrator.
@@ -32,5 +33,14 @@ class TypeHydrator extends GeneratedHydrator
         ]);
 
         return $result;
+    }
+
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        if ($className === TypeInterface::class) {
+            $className = Type::class;
+        }
+
+        return parent::createEmptyInstance($className, $data);
     }
 }
