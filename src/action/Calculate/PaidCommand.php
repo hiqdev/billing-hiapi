@@ -176,7 +176,7 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
                 'time' => $this->getTime(),
             ]), ActionInterface::class);
         }
-        
+
         return $this->action;
     }
 

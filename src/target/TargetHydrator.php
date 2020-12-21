@@ -10,8 +10,8 @@
 
 namespace hiqdev\billing\hiapi\target;
 
-use hiqdev\billing\hiapi\models\Target;
 use hiqdev\php\billing\target\TargetFactoryInterface;
+use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Zend\Hydrator\HydratorInterface;
@@ -71,6 +71,9 @@ class TargetHydrator extends GeneratedHydrator
     {
         if (isset($data['type'])) {
             $className = $this->targetFactory->getClassForType($data['type']);
+        }
+        if ($className === TargetInterface::class) {
+            $className = Target::class;
         }
 
         return parent::createEmptyInstance($className, $data);
