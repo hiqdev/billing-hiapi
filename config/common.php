@@ -41,6 +41,8 @@ $singletons = [
             \hiqdev\php\billing\sale\Sale::class                => \hiqdev\billing\hiapi\sale\SaleHydrator::class,
             \hiqdev\php\billing\sale\SaleInterface::class       => \hiqdev\billing\hiapi\sale\SaleHydrator::class,
             \hiqdev\php\units\Quantity::class                   => \hiqdev\billing\hiapi\vo\QuantityHydrator::class,
+            \hiqdev\billing\hiapi\feature\FeatureInterface::class => \hiqdev\billing\hiapi\feature\FeatureHydrator::class,
+            \hiqdev\billing\hiapi\feature\Feature::class        => \hiqdev\billing\hiapi\feature\FeatureHydrator::class,
             \Money\Money::class                                 => \hiqdev\billing\hiapi\vo\MoneyHydrator::class,
         ],
     ],
@@ -155,6 +157,7 @@ $singletons = [
                 'FeatureCancel'     => \hiqdev\billing\hiapi\feature\Cancel\Builder::class,
 
                 'SalesSearch'       => \hiqdev\billing\hiapi\sale\Search\BulkBuilder::class,
+                'SalesCount'        => \hiqdev\billing\hiapi\sale\Search\CountBuilder::class,
                 'SaleCreate'        => \hiqdev\billing\hiapi\sale\Create\Builder::class,
                 'SaleClose'         => \hiqdev\billing\hiapi\sale\Close\SaleClose::class,
 
