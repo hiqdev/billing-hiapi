@@ -244,7 +244,7 @@ class ApiBasedBuilder implements BuilderInterface
     {
         $this->actions[] = [
             'target_fullname'   => $target,
-            'type'              => $type,
+            'type_name'         => $type,
             'amount'            => $amount,
             'unit'              => $unit,
             'time'              => $time,

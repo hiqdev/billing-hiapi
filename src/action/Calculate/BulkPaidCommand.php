@@ -16,7 +16,7 @@ class BulkPaidCommand implements PaidCommandInterface
     {
         $res = [];
         foreach ($this->commands as $key => $command) {
-            $res[$key] = $command->getAction();
+            $res = array_merge($res, $command->getActions());
         }
 
         return $res;
