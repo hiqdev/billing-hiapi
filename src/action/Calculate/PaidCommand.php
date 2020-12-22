@@ -5,6 +5,7 @@ namespace hiqdev\billing\hiapi\action\Calculate;
 
 use DateTimeImmutable;
 use hiapi\commands\BaseCommand;
+use hiapi\exceptions\domain\ValidationException;
 use hiapi\validators\IdValidator;
 use hiapi\validators\LongRefValidator;
 use hiapi\validators\RefValidator;
@@ -109,8 +110,11 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
 
     public function getTarget(): ?TargetInterface
     {
-        if (!isset($this->target)) {
+        if ($this->target === null) {
             $this->target = $this->di->get(TargetLoader::class)->findTarget($this);
+            if ($this->target === null) {
+                throw new ValidationException(sprintf('Failed to find target'));
+            }
         }
 
         return $this->target;
