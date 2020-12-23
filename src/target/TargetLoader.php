@@ -42,36 +42,43 @@ class TargetLoader implements Middleware
 
     public function findTarget($command): ?TargetInterface
     {
-        $cond = [AuthRule::currentUser()];
-
         if (!empty($command->target_id)) {
-            $cond['id'] = $command->target_id;
-        } elseif (!empty($command->target_type) && !empty($command->target_name)) {
-            $cond += $this->buildCond($command->target_type, $command->target_name);
-        } elseif (!empty($command->target_fullname)) {
-            $ps = explode(':', $command->target_fullname, 2);
-            if (empty($ps[1])) {
-                return null;
-            }
-
-            $cond += $this->buildCond($ps[0], $ps[1]);
-        } else {
-            return null;
+            return $this->findTargetById($command->target_id);
+        }
+        if (!empty($command->target_type) && !empty($command->target_name)) {
+            return $this->findTargetByName($command->target_name, $command->target_type);
+        }
+        if (!empty($command->target_fullname)) {
+            return $this->findTargetByFullName($command->target_fullname);
         }
 
-        $target = $this->repo->findOne((new Specification)->where($cond));
-        if ($target === false) {
-            return null;
-        }
-
-        return $target;
+        return null;
     }
 
-    private function buildCond(string $type, string $name): array
+    private function findTargetById($id)
     {
-        return [
-            'type' => $type,
+        return $this->findTargetByArray(['id' => $id]);
+    }
+
+    private function findTargetByFullName($fullname)
+    {
+        $ps = explode(':', $fullname, 2);
+        if (empty($ps[1])) {
+            return null;
+        }
+        return $this->findTargetByName($ps[1], $ps[0]);
+    }
+
+    private function findTargetByName($name, $type)
+    {
+        return $this->findTargetByArray([
             'name' => $name,
-        ];
+            'type' => $type,
+        ]);
+    }
+
+    private function findTargetByArray(array $cond)
+    {
+        return $this->repo->findOne((new Specification)->where($cond)) ?: null;
     }
 }

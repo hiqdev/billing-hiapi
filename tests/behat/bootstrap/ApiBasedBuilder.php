@@ -70,10 +70,11 @@ class ApiBasedBuilder implements BuilderInterface
     {
         $this->prices = [];
         $plan = [
-            'name'        => $name,
-            'type'        => $type,
-            'is_grouping' => $grouping,
-            'currency'    => 'usd',
+            'name'          => $name,
+            'type'          => $type,
+            'is_grouping'   => $grouping,
+            'currency'      => 'usd',
+            'is_available'  => true,
         ];
         if (empty(static::$plans[$name]) || !empty(array_diff($plan, static::$plans[$name]))) {
             static::$plans[$name] = $plan;

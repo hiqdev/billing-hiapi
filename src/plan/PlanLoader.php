@@ -14,7 +14,6 @@ namespace hiqdev\billing\hiapi\plan;
 use hiapi\exceptions\domain\RequiredInputException;
 use hiapi\exceptions\domain\ValidationException;
 use hiqdev\DataMapper\Query\Specification;
-use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use League\Tactician\Middleware;

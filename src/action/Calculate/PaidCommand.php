@@ -5,7 +5,6 @@ namespace hiqdev\billing\hiapi\action\Calculate;
 
 use DateTimeImmutable;
 use hiapi\commands\BaseCommand;
-use hiapi\exceptions\domain\ValidationException;
 use hiapi\validators\IdValidator;
 use hiapi\validators\LongRefValidator;
 use hiapi\validators\RefValidator;
@@ -71,11 +70,9 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
     public function rules(): array
     {
         return array_merge(parent::rules(), [
-            [['target_id'], 'trim'],
-
-            [['target_id'], 'string'],
-            [['target_type'], 'string'],
-            [['target_name'], 'string'],
+            [['target_id'], IdValidator::class],
+            [['target_type'], RefValidator::class],
+            [['target_name'], RefValidator::class],
             [['target_fullname'], 'string'],
 
             [['customer_id'], IdValidator::class],
@@ -112,9 +109,6 @@ class PaidCommand extends BaseCommand implements PaidCommandInterface
     {
         if ($this->target === null) {
             $this->target = $this->di->get(TargetLoader::class)->findTarget($this);
-            if ($this->target === null) {
-                throw new ValidationException(sprintf('Failed to find target'));
-            }
         }
 
         return $this->target;
