@@ -28,6 +28,7 @@ $singletons = [
             \hiqdev\php\billing\bill\Bill::class                => \hiqdev\billing\hiapi\bill\BillHydrator::class,
             \hiqdev\php\billing\bill\BillState::class           => \hiqdev\billing\hiapi\bill\BillStateHydrator::class,
             \hiqdev\php\billing\bill\BillRequisite::class       => \hiqdev\billing\hiapi\bill\BillRequisiteHydrator::class,
+            \hiqdev\php\billing\statement\Statement::class      => \hiqdev\billing\hiapi\statement\StatementHydrator::class,
             \hiqdev\php\billing\target\Target::class            => \hiqdev\billing\hiapi\target\TargetHydrator::class,
             \hiqdev\php\billing\target\TargetCollection::class  => \hiqdev\billing\hiapi\target\TargetHydrator::class,
             \hiqdev\php\billing\target\TargetInterface::class   => \hiqdev\billing\hiapi\target\TargetHydrator::class,
@@ -135,6 +136,7 @@ $singletons = [
                 \hiqdev\php\billing\target\TargetInterface::class       => \hiqdev\billing\hiapi\target\TargetResource::class,
                 \hiqdev\php\billing\price\PriceInterface::class         => \hiqdev\billing\hiapi\price\PriceResource::class,
                 \hiqdev\php\billing\customer\CustomerInterface::class   => \hiqdev\billing\hiapi\customer\CustomerResource::class,
+                \hiqdev\php\billing\statement\Statement::class          => \hiqdev\billing\hiapi\statement\StatementResource::class,
                 \hiqdev\billing\hiapi\feature\FeatureInterface::class   => \hiqdev\billing\hiapi\feature\FeatureResource::class,
             ],
         ],
@@ -163,6 +165,9 @@ $singletons = [
 
                 'BillsSearch'       => \hiqdev\billing\hiapi\bill\Search\BulkBuilder::class,
                 'BillGetInfo'       => \hiqdev\billing\hiapi\bill\GetInfo\Builder::class,
+
+                'StatementsSearch'  => \hiqdev\billing\hiapi\statement\Search\BulkBuilder::class,
+                'StatementGetInfo'  => \hiqdev\billing\hiapi\statement\GetInfo\Builder::class,
 
                 'ActionCalculate'   => \hiqdev\billing\hiapi\action\Calculate\Builder::class,
                 'ActionsCalculate'  => \hiqdev\billing\hiapi\action\Calculate\BulkBuilder::class,
