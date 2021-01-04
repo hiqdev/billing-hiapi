@@ -27,10 +27,19 @@ class Action
 
     public function __invoke(Command $command): ArrayCollection
     {
-        $res = $this->repo->findAll(
-            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
-        );
+        $res = $this->repo->findAll($this->prepareSpecification($command));
 
         return new ArrayCollection($res);
+    }
+
+    private function prepareSpecification(Command $command)
+    {
+        $spec = $command->getSpecification();
+        $spec = AuthRule::currentUser()->applyToSpecification($spec);
+        if (empty($spec->orderBy)) {
+            $spec->orderBy(['time' => SORT_DESC]);
+        }
+
+        return $spec;
     }
 }
