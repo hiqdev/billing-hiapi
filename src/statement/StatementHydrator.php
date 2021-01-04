@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace hiqdev\billing\hiapi\statement;
 
 use DateTimeImmutable;
-use hiqdev\php\billing\statement\Statement;
-use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use hiqdev\php\billing\charge\ChargeInterface;
+use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\statement\Statement;
 use Money\Money;
 
 /**
@@ -33,6 +34,7 @@ class StatementHydrator extends GeneratedHydrator
     {
         $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
+        $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
 
         $raw_charges = $row['charges'];
         unset($row['charges']);

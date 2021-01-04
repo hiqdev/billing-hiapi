@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\statement;
 
+use hiqdev\billing\hiapi\customer\CustomerAttribution;
 use hiqdev\billing\hiapi\vo\MoneyAttribution;
 use hiqdev\DataMapper\Attribute\DateTimeAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
@@ -29,6 +30,7 @@ class StatementAttribution extends AbstractAttribution
     public function relations()
     {
         return [
+            'customer'  => CustomerAttribution::class,
             'balance'   => MoneyAttribution::class,
         ];
     }
