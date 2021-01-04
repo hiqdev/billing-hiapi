@@ -26,6 +26,7 @@ $singletons = [
             \hiqdev\php\billing\charge\ChargeInterface::class   => \hiqdev\billing\hiapi\charge\ChargeHydrator::class,
             \hiqdev\php\billing\charge\ChargeState::class       => \hiqdev\billing\hiapi\charge\ChargeStateHydrator::class,
             \hiqdev\php\billing\bill\Bill::class                => \hiqdev\billing\hiapi\bill\BillHydrator::class,
+            \hiqdev\php\billing\bill\BillInterface::class       => \hiqdev\billing\hiapi\bill\BillHydrator::class,
             \hiqdev\php\billing\bill\BillState::class           => \hiqdev\billing\hiapi\bill\BillStateHydrator::class,
             \hiqdev\php\billing\bill\BillRequisite::class       => \hiqdev\billing\hiapi\bill\BillRequisiteHydrator::class,
             \hiqdev\php\billing\statement\Statement::class      => \hiqdev\billing\hiapi\statement\StatementHydrator::class,

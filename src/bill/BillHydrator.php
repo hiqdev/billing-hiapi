@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\bill;
 
 use DateTimeImmutable;
 use hiqdev\php\billing\bill\Bill;
+use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillRequisite;
 use hiqdev\php\billing\bill\BillState;
 use hiqdev\php\billing\charge\ChargeInterface;
@@ -98,5 +99,14 @@ class BillHydrator extends GeneratedHydrator
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    public function createEmptyInstance(string $className, array $data = [])
+    {
+        if ($className === BillInterface::class) {
+            $className = Bill::class;
+        }
+
+        return parent::createEmptyInstance($className, $data);
     }
 }
