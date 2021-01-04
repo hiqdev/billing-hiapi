@@ -14,7 +14,7 @@ namespace hiqdev\billing\hiapi\statement;
 
 use DateTimeImmutable;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use hiqdev\php\billing\charge\ChargeInterface;
+use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\statement\Statement;
 use Money\Money;
@@ -36,22 +36,21 @@ class StatementHydrator extends GeneratedHydrator
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
         $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
 
-        $raw_charges = $row['charges'];
-        unset($row['charges']);
+        $raw_bills = $row['bills'];
+        unset($row['bills']);
 
         /** @var Statement $statement */
         $statement = parent::hydrate($row, $object);
 
-        if (\is_array($raw_charges)) {
-            $charges = [];
-            foreach ($raw_charges as $key => $charge) {
-                if ($charge instanceof ChargeInterface) {
-                    $charges[$key] = $charge;
-                } else {
-                    $charges[$key] = $this->hydrator->hydrate($charge, ChargeInterface::class);
+        if (\is_array($raw_bills)) {
+            $bills = [];
+            foreach ($raw_bills as $key => $bill) {
+                if (! $bill instanceof BillInterface) {
+                    $bill = $this->hydrator->hydrate($bill, BillInterface::class);
                 }
+                $bills[$key] = $bill;
             }
-            $statement->setCharges($charges);
+            $statement->setBills($bills);
         }
 
         return $statement;
@@ -67,7 +66,7 @@ class StatementHydrator extends GeneratedHydrator
             'period'        => $object->getPeriod(),
             'time'          => $this->hydrator->extract($object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
-            'charges'       => $this->hydrator->extractAll($object->getCharges()),
+            'bills'       => $this->hydrator->extractAll($object->getBills()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
