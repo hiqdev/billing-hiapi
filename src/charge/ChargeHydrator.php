@@ -43,10 +43,12 @@ class ChargeHydrator extends GeneratedHydrator
             $data['price'] = $this->hydrator->create($data['price'], PriceInterface::class);
         }
         if (isset($data['bill'])) {
-            if (!empty($data['bill']['sum'])) { // If relation is actually populated
-                $data['bill'] = $this->hydrator->create($data['bill'], Bill::class);
+            if ((is_countable($data['bill']) ? count($data['bill']) : 0) === 0) {
+                unset($data['bill']); // If empty array or null
+            } else if (is_array($data['bill']) && !isset($data['bill']['sum'])) {
+                unset($data['bill']); // If array without a "sum"
             } else {
-                unset($data['bill']);
+                $data['bill'] = $this->hydrator->create($data['bill'], Bill::class);
             }
         }
         if (isset($data['state'])) {
