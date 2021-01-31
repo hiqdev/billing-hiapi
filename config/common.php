@@ -117,7 +117,7 @@ $singletons = [
                 'target'    => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\target\TargetFactoryInterface::class),
                 'type'      => \hiqdev\yii\compat\yii::referenceTo(\hiqdev\php\billing\type\TypeFactoryInterface::class),
             ],
-            'remove keys' => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            'remove keys' => new \Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys(),
         ],
     ],
 
