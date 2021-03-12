@@ -24,6 +24,7 @@ class SaleAttribution extends AbstractAttribution
         return [
             'id' => IntegerAttribute::class,
             'time' => DateTimeAttribute::class,
+            'closeTime' => DateTimeAttribute::class,
         ];
     }
 
