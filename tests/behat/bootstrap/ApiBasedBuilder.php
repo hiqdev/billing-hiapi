@@ -157,9 +157,18 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function assignPlan(string $name)
     {
+        $assignedTariffsResponse = $this->makeAsReseller('client-get-tariffs', [
+            'client' => $this->customer,
+        ]);
+
+        $tariff_ids = [];
+        if ($assignedTariffsResponse['tariff_ids'] !== null) {
+            $tariff_ids = explode(',', $assignedTariffsResponse['tariff_ids']);
+        }
+
         $this->makeAsReseller('client-set-tariffs', [
             'client' => $this->customer,
-            'tariff_ids' => [static::$plans[$name]['id']],
+            'tariff_ids' => array_merge($tariff_ids, [static::$plans[$name]['id']]),
         ]);
     }
 
