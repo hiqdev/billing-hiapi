@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\sale\Create;
+namespace hiqdev\billing\hiapi\sale\ChangePlan;
 
 use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
@@ -32,7 +32,7 @@ final class Builder
         return $build->endpoint(self::class)
             ->exportTo(Tenant::ALL)
             ->take(Command::class)
-            // XXX anybody can purchase? ->checkPermission('object.buy')
+            ->checkPermission('sale.create')
             ->middlewares(
                 CustomerLoader::class,
                 PlanLoader::class,
