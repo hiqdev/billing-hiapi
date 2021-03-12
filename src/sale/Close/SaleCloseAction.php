@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\sale\Close;
 
+use DateTime;
 use hiapi\exceptions\domain\RequiredInputException;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\plan\Plan;
@@ -30,9 +31,20 @@ class SaleCloseAction
     public function __invoke(SaleCloseCommand $command): Sale
     {
         $this->checkRequiredInput($command);
-        $plan = new Plan($command->plan_id, null);
-        $sale = new Sale(null, $command->target, $command->customer, $plan, $command->time);
-        $this->repo->delete($sale);
+
+        $saleId = $this->repo->findId(
+            new Sale(
+                null,
+                $command->target,
+                $command->customer,
+                new Plan($command->plan_id, null)
+            )
+        );
+
+        $sale = $this->repo->findById($saleId);
+        $sale->close($command->time);
+
+        $this->repo->save($sale);
 
         return $sale;
     }
