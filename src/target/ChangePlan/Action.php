@@ -1,0 +1,281 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * API for Billing
+ *
+ * @link      https://github.com/hiqdev/billing-hiapi
+ * @package   billing-hiapi
+ * @license   BSD-3-Clause
+ * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ */
+
+namespace hiqdev\billing\hiapi\target\ChangePlan;
+
+use DateTimeImmutable;
+use hiapi\exceptions\NotAuthorizedException;
+use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
+use hiqdev\billing\mrdp\Sale\HistoryAndFutureSaleRepository;
+use hiqdev\DataMapper\Query\Specification;
+use hiqdev\DataMapper\Repository\ConnectionInterface;
+use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\Exception\ConstraintException;
+use hiqdev\php\billing\Exception\InvariantException;
+use hiqdev\php\billing\Exception\RuntimeException;
+use hiqdev\php\billing\plan\PlanInterface;
+use hiqdev\php\billing\sale\Sale;
+use hiqdev\php\billing\sale\SaleInterface;
+use hiqdev\php\billing\target\TargetInterface;
+use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\yii\DataMapper\Repository\Connection;
+use Psr\Log\LoggerInterface;
+use Throwable;
+
+/**
+ * Schedules tariff plan change
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
+class Action
+{
+    /**
+     * @var ConnectionInterface|Connection
+     */
+    private ConnectionInterface $connection;
+    private TargetRepositoryInterface $targetRepo;
+    private HistoryAndFutureSaleRepository $saleRepo;
+    private PlanForkerInterface $planForker;
+    private LoggerInterface $log;
+    private DateTimeImmutable $currentTime;
+
+    public function __construct(
+        TargetRepositoryInterface $targetRepo,
+        HistoryAndFutureSaleRepository $saleRepo,
+        PlanForkerInterface $planForker,
+        ConnectionInterface $connection,
+        LoggerInterface $log,
+        DateTimeImmutable $currentTime
+    ) {
+        $this->targetRepo = $targetRepo;
+        $this->saleRepo = $saleRepo;
+        $this->planForker = $planForker;
+        $this->connection = $connection;
+        $this->log = $log;
+        $this->currentTime = $currentTime;
+    }
+
+    public function __invoke(Command $command): TargetInterface
+    {
+        $target = $this->getTarget($command);
+        $customer = $command->customer;
+        assert($customer !== null);
+        assert($command->time instanceof DateTimeImmutable);
+
+        $activeSale = $this->findActiveSale($target, $customer, $command->time);
+        if ($activeSale === null) {
+            throw new InvariantException('Plan can\'t be changed: the is no active sale at the passed date');
+        }
+
+        $this->ensureNotHappeningInPast($command->time);
+
+        $previousSale = $this->findActiveSale($target, $customer, $command->time->modify('previous month first day 00:00'));
+
+        $target = $this->tryToCancelScheduledPlanChange($activeSale, $previousSale, $command->time, $command->plan);
+        if ($target !== null) {
+            return $target;
+        }
+        $target = $this->tryToChangeScheduledPlanChange($activeSale, $command->time, $command->plan);
+        if ($target !== null) {
+            return $target;
+        }
+
+        return $this->schedulePlanChange($activeSale, $command->time, $command->plan);
+    }
+
+    /**
+     * If there is a scheduled plan change from tariff "A" to "B" at some specific Date "D",
+     * and we receive a new plan change request to change plan to A since Date "D", then:
+     *
+     * 1. Scheduled plan change should be cancelled
+     * 2. Plan A closing should be cancelled
+     *
+     * @param SaleInterface $activeSale
+     * @param null|SaleInterface $previousSale
+     * @param DateTimeImmutable $effectiveDate
+     * @param PlanInterface $newPlan
+     * @return TargetInterface
+     */
+    private function tryToCancelScheduledPlanChange(
+        SaleInterface $activeSale,
+        ?SaleInterface $previousSale,
+        DateTimeImmutable $effectiveDate,
+        PlanInterface $newPlan
+    ): ?TargetInterface {
+        if ($previousSale === null
+            || $activeSale->getTime()->format(DATE_ATOM) !== $effectiveDate->format(DATE_ATOM)
+        ) {
+            return null;
+        }
+
+        if ($previousSale->getPlan()->getId() !== $newPlan->getId()) {
+            return null;
+        }
+
+        $previousSale->cancelClosing();
+        try {
+            $this->connection->transaction(function () use ($activeSale, $previousSale) {
+                $this->saleRepo->delete($activeSale);
+                $this->saleRepo->save($previousSale);
+            });
+        } catch (Throwable $exception) {
+            $this->log->error('Failed to cancel scheduled plan change', ['exception' => $exception]);
+            throw new RuntimeException('Failed to cancel scheduled plan change');
+        }
+
+        return $activeSale->getTarget();
+    }
+
+    private function schedulePlanChange(SaleInterface $activeSale, DateTimeImmutable $effectiveDate, PlanInterface $newPlan): ?TargetInterface
+    {
+        $this->ensureChangeWillHappenInNextBillingPeriod($activeSale, $effectiveDate);
+
+        $activeSale->close($effectiveDate);
+        $plan = $this->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
+
+        $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
+
+        try {
+            $this->connection->transaction(function () use ($activeSale, $sale) {
+                $this->saleRepo->save($activeSale);
+                $this->saleRepo->save($sale);
+            });
+        } catch (InvariantException $exception) {
+            throw $exception;
+        } catch (Throwable $exception) {
+            $this->log->error('Failed to schedule a plan change', ['exception' => $exception]);
+            throw new RuntimeException('Failed to schedule a plan change');
+        }
+
+        return $sale->getTarget();
+    }
+
+    private function tryToChangeScheduledPlanChange(
+        SaleInterface $activeSale,
+        DateTimeImmutable $effectiveDate,
+        ?PlanInterface $newPlan
+    ): ?TargetInterface {
+        if ($activeSale->getTime()->format(DATE_ATOM) !== $effectiveDate->format(DATE_ATOM)) {
+            return null;
+        }
+
+        $newSale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $newPlan, $effectiveDate);
+        try {
+            $this->connection->transaction(function () use ($newSale, $activeSale) {
+                $this->saleRepo->delete($activeSale);
+                $this->saleRepo->save($newSale);
+            });
+        } catch (Throwable $exception) {
+            $this->log->error('Failed to change scheduled plan change', ['exception' => $exception]);
+            throw new RuntimeException('Failed to change scheduled plan change');
+        }
+
+        return $newSale->getTarget();
+    }
+
+
+    private function getTarget(Command $command): TargetInterface
+    {
+        $spec = (new Specification)->where([
+            'type' => $command->type,
+            'name' => $command->name,
+        ]);
+        $target = $this->targetRepo->findOne($spec);
+
+        if ($target === false) {
+            throw new ConstraintException('Target must exist to change its plan');
+        }
+        $this->ensureBelongs($target, $command->customer);
+
+        return $target;
+    }
+
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer): void
+    {
+        $sales = $this->saleRepo->findAll((new Specification)->where([
+            'seller-id' => $customer->getSeller()->getId(),
+            'target-id' => $target->getId(),
+        ]));
+        if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
+            throw new NotAuthorizedException('The target belongs to other client');
+        }
+    }
+
+    private function forkPlanIfRequired(PlanInterface $plan, CustomerInterface $customer): PlanInterface
+    {
+        if ($this->planForker->checkMustBeForkedOnPurchase($plan)) {
+            return $this->planForker->forkPlan($plan, $customer);
+        }
+
+        return $plan;
+    }
+
+    /**
+     * Prevents plan change in the current month
+     *
+     * @param SaleInterface $sale
+     * @param DateTimeImmutable $planChangeTime
+     */
+    private function ensureChangeWillHappenInNextBillingPeriod(SaleInterface $sale, DateTimeImmutable $planChangeTime): void
+    {
+        if (($closeTime = $sale->getCloseTime()) !== null) {
+            $saleCloseMonth = $closeTime->modify('first day of this month 00:00');
+
+            if ($saleCloseMonth->format('Y-m-d') === $planChangeTime->format('Y-m-d')) {
+                // If sale is closed at the first day of month, then the whole month is available
+                $nextPeriodStart = $saleCloseMonth;
+            } else {
+                // Otherwise - next month
+                $nextPeriodStart = $saleCloseMonth->modify('next month');
+            }
+        } else {
+            $nextPeriodStart = $sale->getTime()->modify('next month first day 00:00');
+        }
+
+        if ($planChangeTime < $nextPeriodStart) {
+            throw new ConstraintException(sprintf(
+                'Plan can not be changed earlier than %s',
+                $nextPeriodStart->format(DATE_ATOM)
+            ));
+        }
+    }
+
+    /**
+     * @param TargetInterface $target
+     * @param Customer $customer
+     * @param DateTimeImmutable $time the sale is active at
+     * @return SaleInterface|null
+     */
+    private function findActiveSale(TargetInterface $target, Customer $customer, DateTimeImmutable $time): ?SaleInterface
+    {
+        $spec = (new Specification())->where([
+            'seller-id' => $customer->getSeller()->getId(),
+            'target-id' => $target->getId(),
+        ]);
+
+        /** @var SaleInterface|false $sale */
+        $sale = $this->saleRepo->findOneAsOfDate($spec, $time);
+        if ($sale === false) {
+            return null;
+        }
+
+        return $sale;
+    }
+
+    private function ensureNotHappeningInPast(DateTimeImmutable $time): void
+    {
+        if ($time < $this->currentTime) {
+            throw new ConstraintException('Plan can not be changed in past');
+        }
+    }
+}
