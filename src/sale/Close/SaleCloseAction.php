@@ -10,7 +10,6 @@
 
 namespace hiqdev\billing\hiapi\sale\Close;
 
-use DateTime;
 use hiapi\exceptions\domain\RequiredInputException;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\plan\Plan;
