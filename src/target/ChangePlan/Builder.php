@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * API for Billing
  *
@@ -8,17 +9,16 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\sale\Create;
+namespace hiqdev\billing\hiapi\target\ChangePlan;
 
 use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\billing\hiapi\customer\CustomerLoader;
-use hiqdev\billing\hiapi\plan\PlanLoader;
-use hiqdev\billing\hiapi\target\TargetLoader;
 use hiqdev\billing\hiapi\vo\DateTimeLoader;
-use hiqdev\php\billing\sale\Sale;
+use hiqdev\billing\hiapi\plan\PlanLoader;
+use hiqdev\php\billing\target\Target;
 
 final class Builder
 {
@@ -30,16 +30,18 @@ final class Builder
     public function create(BuilderFactory $build): EndpointBuilder
     {
         return $build->endpoint(self::class)
-            ->exportTo(Tenant::ALL)
-            ->take(Command::class)
-            ->checkPermission('sale.create')
-            ->middlewares(
-                CustomerLoader::class,
-                PlanLoader::class,
-                TargetLoader::class,
-                new DateTimeLoader('time'),
-                $build->call(Action::class)
-            )
-            ->return(Sale::class);
+                    ->exportTo(Tenant::ALL)
+                    ->take(Command::class)
+                    ->checkPermission('have-goods')
+                    ->middlewares(
+                        CustomerLoader::class,
+                        [
+                            '__class' => PlanLoader::class,
+                            'isRequired' => true,
+                        ],
+                        new DateTimeLoader('time'),
+                        $build->call(Action::class)
+                    )
+                    ->return(Target::class);
     }
 }

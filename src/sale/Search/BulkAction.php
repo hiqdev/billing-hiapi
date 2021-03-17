@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\sale\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Auth\AuthRule;
+use hiqdev\billing\mrdp\Sale\HistoryAndFutureSaleRepository;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 
 class BulkAction
@@ -20,17 +21,26 @@ class BulkAction
      * @var SaleRepositoryInterface
      */
     private $repo;
+    /**
+     * @var HistoryAndFutureSaleRepository
+     */
+    private HistoryAndFutureSaleRepository $historyRepo;
 
-    public function __construct(SaleRepositoryInterface $repo)
+    public function __construct(SaleRepositoryInterface $repo, HistoryAndFutureSaleRepository $saleRepository)
     {
         $this->repo = $repo;
+        $this->historyRepo = $saleRepository;
     }
 
     public function __invoke(Command $command): ArrayCollection
     {
-        $res = $this->repo->findAll(
-            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
-        );
+        $specification = AuthRule::currentUser()->applyToSpecification($command->getSpecification());
+
+        if (in_array('history', $command->include, true)) {
+            $res = $this->historyRepo->findAll($specification);
+        } else {
+            $res = $this->repo->findAll($specification);
+        }
 
         return new ArrayCollection($res);
     }

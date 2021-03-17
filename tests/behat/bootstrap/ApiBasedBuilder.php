@@ -14,6 +14,8 @@ use hiqdev\billing\hiapi\plan\PlanFactory;
 use hiqdev\billing\hiapi\price\PriceFactory;
 use hiqdev\billing\hiapi\target\TargetFactory;
 use hiqdev\billing\hiapi\type\TypeFactory;
+use hiqdev\php\billing\sale\SaleFactory;
+use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\tests\behat\bootstrap\BuilderInterface;
 use hiqdev\php\billing\tests\support\tools\SimpleFactory;
 
@@ -52,6 +54,7 @@ class ApiBasedBuilder implements BuilderInterface
             'price'     => new PriceFactory(),
             'target'    => new TargetFactory(),
             'type'      => new TypeFactory(),
+            'sale'      => new SaleFactory(),
         ]);
     }
 
@@ -157,9 +160,18 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function assignPlan(string $name)
     {
+        $assignedTariffsResponse = $this->makeAsReseller('client-get-tariffs', [
+            'client' => $this->customer,
+        ]);
+
+        $tariff_ids = [];
+        if ($assignedTariffsResponse['tariff_ids'] !== null) {
+            $tariff_ids = explode(',', $assignedTariffsResponse['tariff_ids']);
+        }
+
         $this->makeAsReseller('client-set-tariffs', [
             'client' => $this->customer,
-            'tariff_ids' => [static::$plans[$name]['id']],
+            'tariff_ids' => array_merge($tariff_ids, [static::$plans[$name]['id']]),
         ]);
     }
 
@@ -197,6 +209,18 @@ class ApiBasedBuilder implements BuilderInterface
         }
     }
 
+    public function targetChangePlan(string $target, string $planName, string $date)
+    {
+        [$class, $name] = explode(':', $target);
+
+        $this->makeAsCustomer('TargetChangePlan', [
+            'name' => $name,
+            'type' => $class,
+            'plan_name' => $planName,
+            'time' => $date,
+        ]);
+    }
+
     public function buildPurchase(string $target, string $plan, string $time): void
     {
         $target = $this->factory->get('target', $target);
@@ -225,6 +249,40 @@ class ApiBasedBuilder implements BuilderInterface
         $res = [];
         foreach ($rows as $row) {
             $res[] = $this->factory->get('bill', $row);
+        }
+
+        return $res;
+    }
+
+    public function buildTarget(string $name)
+    {
+        /** @var TargetInterface $target */
+        $target = $this->factory->get('target', $name);
+
+        $this->makeAsCustomer('TargetCreate', [
+            'name' => $target->getName(),
+            'type' => $target->getType(),
+            'remoteid' => random_int(111111, 999999),
+        ]);
+    }
+
+    public function findHistoricalSales(array $params)
+    {
+        $target = $this->factory->get('target', $params['target']);
+
+        $res = [];
+
+        $rows = $this->makeAsCustomer('SalesSearch', [
+            'include' => ['history'],
+            'where' => [
+                'target-type' => $target->getType(),
+                'target-name' => $target->getName(),
+                'customer-login' => $this->customer,
+            ],
+        ]);
+
+        foreach ($rows as $key => $row) {
+            $res[$key] = $this->factory->create('sale', $row);
         }
 
         return $res;

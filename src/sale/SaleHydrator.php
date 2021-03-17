@@ -30,6 +30,9 @@ class SaleHydrator extends GeneratedHydrator
         $data['customer']   = $this->hydrateChild($data['customer'], CustomerInterface::class);
         $data['plan']       = $this->hydrateChild($data['plan'], PlanInterface::class);
         $data['time']       = $this->hydrateChild($data['time'], DateTimeImmutable::class);
+        if ($data['closeTime'] !== null) {
+            $data['closeTime']  = $this->hydrateChild($data['closeTime'], DateTimeImmutable::class);
+        }
 
         return parent::hydrate($data, $object);
     }
@@ -46,6 +49,7 @@ class SaleHydrator extends GeneratedHydrator
             'customer'  => $this->extractChild($object->getCustomer()),
             'plan'      => $this->extractChild($object->getPlan()),
             'time'      => $this->extractChild($object->getTime()),
+            'closeTime' => $this->extractChild($object->getCloseTime()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);

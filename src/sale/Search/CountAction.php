@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * API for Billing
  *
@@ -12,22 +13,29 @@ namespace hiqdev\billing\hiapi\sale\Search;
 
 use hiapi\Core\Auth\AuthRule;
 use hiapi\endpoints\Module\InOutControl\VO\Count;
+use hiqdev\billing\mrdp\Sale\HistoryAndFutureSaleRepository;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 
 class CountAction
 {
     private SaleRepositoryInterface $repo;
+    private HistoryAndFutureSaleRepository $historyRepo;
 
-    public function __construct(SaleRepositoryInterface $repo)
+    public function __construct(SaleRepositoryInterface $repo, HistoryAndFutureSaleRepository $historyRepo)
     {
         $this->repo = $repo;
+        $this->historyRepo = $historyRepo;
     }
 
     public function __invoke(Command $command): Count
     {
-        $count = $this->repo->count(
-            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
-        );
+        $specification = AuthRule::currentUser()->applyToSpecification($command->getSpecification());
+
+        if (in_array('history', $command->include, true)) {
+            $count = $this->historyRepo->count($specification);
+        } else {
+            $count = $this->repo->count($specification);
+        }
 
         return Count::is($count);
     }

@@ -155,6 +155,7 @@ $singletons = [
                 'TargetsPurchase'   => \hiqdev\billing\hiapi\target\Purchase\BulkBuilder::class,
                 'TargetCreate'      => \hiqdev\billing\hiapi\target\Create\Builder::class,
                 'TargetsCreate'     => \hiqdev\billing\hiapi\target\Create\BulkBuilder::class,
+                'TargetChangePlan'  => \hiqdev\billing\hiapi\target\ChangePlan\Builder::class,
 
                 'FeaturePurchase'   => \hiqdev\billing\hiapi\feature\Purchase\Builder::class,
                 'FeatureCancel'     => \hiqdev\billing\hiapi\feature\Cancel\Builder::class,

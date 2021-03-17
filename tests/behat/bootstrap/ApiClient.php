@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\tests\behat\bootstrap;
 
 use Dotenv\Dotenv;
+use Exception;
 use hipanel\hiart\Connection;
 use hiqdev\hiart\guzzle\Request;
 use hiqdev\hiart\RequestInterface;
@@ -40,7 +41,7 @@ class ApiClient
         require_once $pathToYii;
         (new Dotenv($dir))->load();
         if (empty($_ENV['HIART_BASEURI'])) {
-            throw new \Exception('HIART_BASEURI must be set in environment');
+            throw new Exception('HIART_BASEURI must be set in environment');
         }
     }
 
@@ -48,12 +49,12 @@ class ApiClient
     {
         $res = $this->buildRequest($command, $payload, $performer ?? $this->reseller)->send()->getData();
         if (!is_array($res)) {
-            throw new \Exception('API return not array: ' . $res);
+            throw new Exception('API returned not array: ' . $res);
         }
         if (!empty($res['_error'])) {
             // var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);
             $error = is_array($res['_error']) ? reset($res['_error']) : (string)$res['_error'];
-            throw new \Exception("API return error: $error");
+            throw new Exception("API returned error: $error");
         }
 
         return $res;
