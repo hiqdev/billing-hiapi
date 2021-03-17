@@ -123,7 +123,7 @@ class Action
         }
 
         $previousSale->cancelClosing();
-        $this->saveTwoSalesInTransaction($activeSale, $previousSale, 'Failed to cancel scheduled plan change');
+        $this->replaceSaleInTransaction($activeSale, $previousSale, 'Failed to cancel scheduled plan change');
 
         return $activeSale->getTarget();
     }
@@ -136,7 +136,17 @@ class Action
         $plan = $this->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
 
         $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
-        $this->saveTwoSalesInTransaction($activeSale, $sale, 'Failed to schedule a plan change');
+        try {
+            $this->connection->transaction(function () use ($activeSale, $sale) {
+                $this->saleRepo->save($activeSale);
+                $this->saleRepo->save($sale);
+            });
+        } catch (InvariantException $exception) {
+            throw $exception;
+        } catch (Throwable $exception) {
+            $this->log->error('Failed to schedule a plan change', ['exception' => $exception]);
+            throw new RuntimeException('Failed to schedule a plan change');
+        }
 
         return $sale->getTarget();
     }
@@ -151,15 +161,7 @@ class Action
         }
 
         $newSale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $newPlan, $effectiveDate);
-        try {
-            $this->connection->transaction(function () use ($newSale, $activeSale) {
-                $this->saleRepo->delete($activeSale);
-                $this->saleRepo->save($newSale);
-            });
-        } catch (Throwable $exception) {
-            $this->log->error('Failed to change scheduled plan change', ['exception' => $exception]);
-            throw new RuntimeException('Failed to change scheduled plan change');
-        }
+        $this->replaceSaleInTransaction($activeSale, $newSale, 'Failed to change scheduled plan change');
 
         return $newSale->getTarget();
     }
@@ -260,17 +262,17 @@ class Action
     }
 
     /**
-     * @param SaleInterface $sale1 sale that will be saved first
-     * @param SaleInterface $sale2 sale the will be saved second
+     * @param SaleInterface $sale1 sale that will be destroyed
+     * @param SaleInterface $sale2 sale the will put instead of it
      * @param string $errorMessage error message for the RuntimeException that describes an error
      * @throws InvariantException when save failed due to business limitations
      * @throws RuntimeException when save failed for other reasons
      */
-    private function saveTwoSalesInTransaction(SaleInterface $sale1, SaleInterface $sale2, string $errorMessage): void
+    private function replaceSaleInTransaction(SaleInterface $sale1, SaleInterface $sale2, string $errorMessage): void
     {
         try {
             $this->connection->transaction(function () use ($sale1, $sale2) {
-                $this->saleRepo->save($sale1);
+                $this->saleRepo->delete($sale1);
                 $this->saleRepo->save($sale2);
             });
         } catch (InvariantException $exception) {
