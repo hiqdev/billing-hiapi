@@ -62,7 +62,7 @@ class PriceHydrator extends GeneratedHydrator
             $row['currency'] = new Currency(strtoupper($row['price']['currency']));
         }
         if (isset($row['currency'], $row['price']['amount'])) {
-            $row['price'] = new Money($row['price']['amount'], $row['currency']);
+            $row['price'] = new Money(round($row['price']['amount']), $row['currency']);
         }
         if (!empty($row['plan'])) {
             $row['plan'] = $this->hydrator->create($row['plan'], Plan::class);
