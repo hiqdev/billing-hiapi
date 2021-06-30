@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\plan\GetInfo;
 
-use hiapi\Core\Auth\AuthRule;
+use hiqdev\billing\hiapi\plan\AvailableFor;
 use hiqdev\php\billing\plan\PlanRepositoryInterface;
 use yii\web\User;
 use hiqdev\php\billing\plan\Plan;
@@ -28,10 +28,16 @@ final class Action
         $this->user = $user;
     }
 
-    public function __invoke(Command $command): Plan
+    public function __invoke(Command $command): ?Plan
     {
-        return $this->repo->findOne(
-            AuthRule::currentUser()->applyToSpecification($command->getSpecification())
-        );
+        $spec = $command->getSpecification();
+        $spec->where[AvailableFor::CLIENT_ID_FIELD] = $this->user->getId();
+
+        $result = $this->repo->findOne($spec);
+        if ($result === false) {
+            return null;
+        }
+
+        return $result;
     }
 }

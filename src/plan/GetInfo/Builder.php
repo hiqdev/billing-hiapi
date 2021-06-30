@@ -35,6 +35,6 @@ final class Builder
                      ->middlewares(
                          $build->call(Action::class)
                      )
-                     ->return(Plan::class);
+                     ->returnNullable(Plan::class);
     }
 }
