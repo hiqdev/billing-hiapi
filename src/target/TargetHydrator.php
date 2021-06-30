@@ -40,12 +40,18 @@ class TargetHydrator extends GeneratedHydrator
      */
     public function extract($object)
     {
-        return [
+        $data = [
             'id'            => $this->extractNone($object->getId()),
             'type'          => $this->extractNone($object->getType()),
             'name'          => $object->getName(),
             'label'         => $object->getLabel(),
         ];
+
+        if ($data instanceof RemoteTarget) {
+            $data['remoteid'] = $data->getRemoteId();
+        }
+
+        return $data;
     }
 
     protected function extractNone($value)
