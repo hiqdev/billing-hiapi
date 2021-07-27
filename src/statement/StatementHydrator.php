@@ -35,6 +35,10 @@ class StatementHydrator extends GeneratedHydrator
         $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
         $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
+        $row['date']        = $this->hydrator->create($row['date'],     DateTimeImmutable::class);
+        $row['total']       = $this->hydrator->create($row['total'],    Money::class);
+        $row['payment']     = $this->hydrator->create($row['payment'],  Money::class);
+        $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
 
         $raw_bills = $row['bills'];
         unset($row['bills']);
@@ -66,6 +70,10 @@ class StatementHydrator extends GeneratedHydrator
             'period'        => $object->getPeriod(),
             'time'          => $this->hydrator->extract($object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
+            'date'          => $this->hydrator->extract($object->getDate()),
+            'total'         => $this->hydrator->extract($object->getTotal()),
+            'payment'       => $this->hidrator->extract($object->getPayment()),
+            'amount'        => $this->hidrator->extract($object->getAmount()),
             'bills'       => $this->hydrator->extractAll($object->getBills()),
         ], static function ($value): bool {
             return $value !== null;
