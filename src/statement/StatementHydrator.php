@@ -72,8 +72,8 @@ class StatementHydrator extends GeneratedHydrator
             'balance'       => $this->hydrator->extract($object->getBalace()),
             'date'          => $this->hydrator->extract($object->getDate()),
             'total'         => $this->hydrator->extract($object->getTotal()),
-            'payment'       => $this->hidrator->extract($object->getPayment()),
-            'amount'        => $this->hidrator->extract($object->getAmount()),
+            'payment'       => $this->hydrator->extract($object->getPayment()),
+            'amount'        => $this->hydrator->extract($object->getAmount()),
             'bills'       => $this->hydrator->extractAll($object->getBills()),
         ], static function ($value): bool {
             return $value !== null;
