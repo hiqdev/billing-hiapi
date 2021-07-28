@@ -14,9 +14,26 @@ namespace hiqdev\billing\hiapi\statement\GetInfo;
 
 use hiapi\commands\GetInfoCommand;
 use hiqdev\php\billing\statement\Statement;
+use hiapi\validators\RefValidator;
 
 class Command extends GetInfoCommand
 {
+    public $month;
+
+    public function getMonth()
+    {
+        return $this->month;
+    }
+
+    public function rules()
+    {
+        return [
+            [['month'], 'date', 'format' => 'php:Y-m-d'],
+            [['month'], 'required'],
+            ['with', 'each', 'rule' => [RefValidator::class]],
+        ];
+    }
+
     public function getEntityClass(): string
     {
         return Statement::class;
