@@ -36,6 +36,6 @@ final class Builder
             ->middlewares(
                 $build->call(Action::class)
             )
-            ->return(Statement::class);
+            ->returnNullable(Statement::class);
     }
 }
