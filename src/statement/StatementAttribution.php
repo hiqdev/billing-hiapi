@@ -24,7 +24,7 @@ class StatementAttribution extends AbstractAttribution
         return [
             'time'      => DateTimeAttribute::class,
             'period'    => DateTimeAttribute::class,
-            'date'      => DateTimeAttribute::class,
+            'month'     => DateTimeAttribute::class,
         ];
     }
 

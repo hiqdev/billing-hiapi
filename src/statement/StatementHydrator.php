@@ -35,7 +35,7 @@ class StatementHydrator extends GeneratedHydrator
         $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
         $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
-        $row['date']        = $this->hydrator->create($row['date'],     DateTimeImmutable::class);
+        $row['month']       = $this->hydrator->create($row['month'],    DateTimeImmutable::class);
         $row['total']       = $this->hydrator->create($row['total'],    Money::class);
         $row['payment']     = $this->hydrator->create($row['payment'],  Money::class);
         $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
@@ -70,7 +70,7 @@ class StatementHydrator extends GeneratedHydrator
             'period'        => $object->getPeriod(),
             'time'          => $this->hydrator->extract($object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
-            'date'          => $this->hydrator->extract($object->getDate()),
+            'month'         => $this->hydrator->extract($object->getMonth()),
             'total'         => $this->hydrator->extract($object->getTotal()),
             'payment'       => $this->hydrator->extract($object->getPayment()),
             'amount'        => $this->hydrator->extract($object->getAmount()),
