@@ -18,6 +18,7 @@ use hiqdev\billing\hiapi\vo\MoneyAttribution;
 use hiqdev\billing\hiapi\vo\QuantityAttribution;
 use hiqdev\DataMapper\Attribute\DateTimeAttribute;
 use hiqdev\DataMapper\Attribute\IntegerAttribute;
+use hiqdev\DataMapper\Attribute\StringAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
 
 class BillAttribution extends AbstractAttribution
@@ -27,6 +28,7 @@ class BillAttribution extends AbstractAttribution
         return [
             'id'        => IntegerAttribute::class,
             'time'      => DateTimeAttribute::class,
+            'from'      => StringAttribute::class,
         ];
     }
 
