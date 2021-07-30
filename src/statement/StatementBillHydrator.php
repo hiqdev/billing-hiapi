@@ -5,14 +5,14 @@
  * @link      https://github.com/hiqdev/billing-hiapi
  * @package   billing-hiapi
  * @license   BSD-3-Clause
- * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
+ * @copyright Copyright (c) 2017-2021, HiQDev (http://hiqdev.com/)
  */
 
-namespace hiqdev\billing\hiapi\bill;
+namespace hiqdev\billing\hiapi\statement;
 
-use DateTimeImmutable;
-use hiqdev\php\billing\bill\Bill;
-use hiqdev\php\billing\bill\BillInterface;
+use hiqdev\php\billing\statement\StatementBill;
+use hiqdev\php\billing\statement\StatementBillInterface;
+use hiqdev\billing\hiapi\bill\BillHydrator;
 use hiqdev\php\billing\bill\BillRequisite;
 use hiqdev\php\billing\bill\BillState;
 use hiqdev\php\billing\charge\ChargeInterface;
@@ -22,14 +22,15 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use DateTimeImmutable;
 use Money\Money;
 
 /**
- * Bill Hydrator.
+ * Statement Bill Hydrator.
  *
- * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @author Yurii Myronchuk <bladeroot@gmail.com>
  */
-class BillHydrator extends GeneratedHydrator
+class StatementBillHydrator extends BillHydrator
 {
     /**
      * {@inheritdoc}
@@ -38,6 +39,7 @@ class BillHydrator extends GeneratedHydrator
     public function hydrate(array $row, $object)
     {
         $row['type']        = $this->hydrator->create($row['type'],     Type::class);
+        $row['month']       = $this->hydrator->create($row['month'],    DateTimeImmutable::class);
         $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
         $row['sum']         = $this->hydrator->create($row['sum'],      Money::class);
         $row['quantity']    = $this->hydrator->create($row['quantity'], Quantity::class);
@@ -80,31 +82,22 @@ class BillHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Bill $object
+     * @param object|StatementBill $object
      */
     public function extract($object)
     {
-        return array_filter([
-            'id'            => $object->getId(),
-            'type'          => $this->hydrator->extract($object->getType()),
-            'time'          => $this->hydrator->extract($object->getTime()),
-            'sum'           => $this->hydrator->extract($object->getSum()),
-            'quantity'      => $this->hydrator->extract($object->getQuantity()),
-            'customer'      => $this->hydrator->extract($object->getCustomer()),
-            'requisite'     => $object->getRequisite() ? $this->hydrator->extract($object->getRequisite()) : null,
-            'target'        => $object->getTarget() ? $this->hydrator->extract($object->getTarget()) : null,
-            'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
-            'charges'       => $this->hydrator->extractAll($object->getCharges()),
-            'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
-        ], static function ($value): bool {
+        return array_filter(array_merge(parent::extract($object), [
+            'month'         => $this->hydrator->extract($object->getMonth()),
+            'from'          => $object->getFrom() ? $this->hydrator->extract($object->getFrom()) : null,
+        ]), static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
     }
 
     public function createEmptyInstance(string $className, array $data = [])
     {
-        if ($className === BillInterface::class) {
-            $className = Bill::class;
+        if ($className === StatementBillInterface::class) {
+            $className = StatementBill::class;
         }
 
         return parent::createEmptyInstance($className, $data);

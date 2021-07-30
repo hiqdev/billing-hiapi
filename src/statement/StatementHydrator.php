@@ -12,11 +12,10 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\statement;
 
-use DateTimeImmutable;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\statement\Statement;
+use DateTimeImmutable;
 use Money\Money;
 
 /**
@@ -49,8 +48,8 @@ class StatementHydrator extends GeneratedHydrator
         if (\is_array($raw_bills)) {
             $bills = [];
             foreach ($raw_bills as $key => $bill) {
-                if (! $bill instanceof BillInterface) {
-                    $bill = $this->hydrator->hydrate($bill, BillInterface::class);
+                if (! $bill instanceof StatementBillInterface) {
+                    $bill = $this->hydrator->hydrate($bill, StatementBillInterface::class);
                 }
                 $bills[$key] = $bill;
             }
