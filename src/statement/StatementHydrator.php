@@ -41,7 +41,8 @@ class StatementHydrator extends GeneratedHydrator
         $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
 
         $raw_bills = $row['bills'];
-        unset($row['bills']);
+        $raw_plans = $row['plans'];
+        unset($row['bills'], $row['plans']);
 
         /** @var Statement $statement */
         $statement = parent::hydrate($row, $object);
@@ -55,6 +56,17 @@ class StatementHydrator extends GeneratedHydrator
                 $bills[$key] = $bill;
             }
             $statement->setBills($bills);
+        }
+
+        if (\is_array($raw_plans)) {
+            $plans = [];
+            foreach ($raw_plans as $key => $plan) {
+                if (! $plan instanceof PlanInterface) {
+                    $plan = $this->hydrator->hydrate($bill, PlanInterface::class);
+                }
+                $plans[$key] = $plan;
+            }
+            $statement->setPlans($plans);
         }
 
         return $statement;
@@ -75,6 +87,7 @@ class StatementHydrator extends GeneratedHydrator
             'payment'       => $this->hydrator->extract($object->getPayment()),
             'amount'        => $this->hydrator->extract($object->getAmount()),
             'bills'         => $this->hydrator->extractAll($object->getBills()),
+            'plans'         => $this->hydrator->extractAll($object->getPlans()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);

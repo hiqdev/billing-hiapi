@@ -44,6 +44,10 @@ class StatementBillHydrator extends BillHydrator
         $row['sum']         = $this->hydrator->create($row['sum'],      Money::class);
         $row['quantity']    = $this->hydrator->create($row['quantity'], Quantity::class);
         $row['customer']    = $this->hydrator->create($row['customer'], Customer::class);
+        $row['price']       = $this->hydrator->create($row['price'],    Money::class);
+        $row['overuse']     = $this->hydrator->create($row['overuse'],  Money::class);
+        $row['prepaid']     = $this->hydrator->create($row['prepaid'],  Quantity::class);
+
         if (isset($row['target'])) {
             $row['target']  = $this->hydrator->create($row['target'],   Target::class);
         }
@@ -89,6 +93,9 @@ class StatementBillHydrator extends BillHydrator
         return array_filter(array_merge(parent::extract($object), [
             'month'         => $this->hydrator->extract($object->getMonth()),
             'from'          => $object->getFrom() ? $this->hydrator->extract($object->getFrom()) : null,
+            'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
+            'overuse'       => $object->getOveruse() ? $this->hydrator->extract($object->getOveruse()) : null,
+            'prepaid'       => $object->getPrepaid() ? $this->hydrator->extract($object->getPrepaid()) : null,
         ]), static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);

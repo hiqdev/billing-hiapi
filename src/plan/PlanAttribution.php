@@ -17,6 +17,7 @@ use hiqdev\DataMapper\Attribute\BooleanAttribute;
 use hiqdev\DataMapper\Attribute\IntegerAttribute;
 use hiqdev\DataMapper\Attribute\StringAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
+use hiqdev\DataMapper\Attribute\DateTimeAttribute;
 
 class PlanAttribution extends AbstractAttribution
 {
@@ -26,6 +27,7 @@ class PlanAttribution extends AbstractAttribution
             'id'          => IntegerAttribute::class,
             'name'        => StringAttribute::class,
             'is_grouping' => BooleanAttribute::class,
+            'month'       => DateTimeAttribute::class,
         ];
     }
 
