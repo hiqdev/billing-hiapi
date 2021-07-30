@@ -14,6 +14,7 @@ namespace hiqdev\billing\hiapi\statement;
 
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\php\billing\statement\Statement;
 use DateTimeImmutable;
 use Money\Money;
