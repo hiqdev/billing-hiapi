@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\statement;
 
-use DateTimeImmutable;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\php\billing\statement\Statement;
+use DateTimeImmutable;
 use Money\Money;
 
 /**
@@ -35,9 +35,14 @@ class StatementHydrator extends GeneratedHydrator
         $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
         $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
+        $row['month']       = $this->hydrator->create($row['month'],    DateTimeImmutable::class);
+        $row['total']       = $this->hydrator->create($row['total'],    Money::class);
+        $row['payment']     = $this->hydrator->create($row['payment'],  Money::class);
+        $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
 
         $raw_bills = $row['bills'];
-        unset($row['bills']);
+        $raw_plans = $row['plans'];
+        unset($row['bills'], $row['plans']);
 
         /** @var Statement $statement */
         $statement = parent::hydrate($row, $object);
@@ -45,12 +50,23 @@ class StatementHydrator extends GeneratedHydrator
         if (\is_array($raw_bills)) {
             $bills = [];
             foreach ($raw_bills as $key => $bill) {
-                if (! $bill instanceof BillInterface) {
-                    $bill = $this->hydrator->hydrate($bill, BillInterface::class);
+                if (! $bill instanceof StatementBillInterface) {
+                    $bill = $this->hydrator->hydrate($bill, StatementBillInterface::class);
                 }
                 $bills[$key] = $bill;
             }
             $statement->setBills($bills);
+        }
+
+        if (\is_array($raw_plans)) {
+            $plans = [];
+            foreach ($raw_plans as $key => $plan) {
+                if (! $plan instanceof PlanInterface) {
+                    $plan = $this->hydrator->hydrate($bill, PlanInterface::class);
+                }
+                $plans[$key] = $plan;
+            }
+            $statement->setPlans($plans);
         }
 
         return $statement;
@@ -66,7 +82,12 @@ class StatementHydrator extends GeneratedHydrator
             'period'        => $object->getPeriod(),
             'time'          => $this->hydrator->extract($object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
-            'bills'       => $this->hydrator->extractAll($object->getBills()),
+            'month'         => $this->hydrator->extract($object->getMonth()),
+            'total'         => $this->hydrator->extract($object->getTotal()),
+            'payment'       => $this->hydrator->extract($object->getPayment()),
+            'amount'        => $this->hydrator->extract($object->getAmount()),
+            'bills'         => $this->hydrator->extractAll($object->getBills()),
+            'plans'         => $this->hydrator->extractAll($object->getPlans()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);

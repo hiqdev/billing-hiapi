@@ -27,14 +27,15 @@ final class Builder
 
     public function create(BuilderFactory $build): EndpointBuilder
     {
+
         return $build->endpoint(self::class)
-                     ->description('Get statement info')
-                     ->exportTo(Tenant::ALL)
-                     ->take(Command::class)
-                     ->checkPermission('bill.read')
-                     ->middlewares(
-                         $build->call(Action::class)
-                     )
-                     ->return(Statement::class);
+            ->description('Get statement info')
+            ->exportTo(Tenant::ALL)
+            ->take(Command::class)
+            ->checkPermission('bill.read')
+            ->middlewares(
+                $build->call(Action::class)
+            )
+            ->returnNullable(Statement::class);
     }
 }

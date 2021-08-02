@@ -24,6 +24,7 @@ class StatementAttribution extends AbstractAttribution
         return [
             'time'      => DateTimeAttribute::class,
             'period'    => DateTimeAttribute::class,
+            'month'     => DateTimeAttribute::class,
         ];
     }
 
@@ -32,6 +33,9 @@ class StatementAttribution extends AbstractAttribution
         return [
             'customer'  => CustomerAttribution::class,
             'balance'   => MoneyAttribution::class,
+            'total'     => MoneyAttribution::class,
+            'payment'   => MoneyAttribution::class,
+            'amount'    => MoneyAttribution::class,
         ];
     }
 }
