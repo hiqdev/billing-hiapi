@@ -15,10 +15,10 @@ use hiqdev\billing\hiapi\target\TargetAttribution;
 use hiqdev\billing\hiapi\type\TypeAttribution;
 use hiqdev\billing\hiapi\vo\MoneyAttribution;
 use hiqdev\billing\hiapi\vo\QuantityAttribution;
+use hiqdev\billing\hiapi\vo\UnitAttribution;
 use hiqdev\DataMapper\Attribute\IntegerAttribute;
 use hiqdev\DataMapper\Attribute\StringAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
-use hiqdev\php\units\Unit;
 
 class PriceAttribution extends AbstractAttribution
 {
@@ -36,7 +36,7 @@ class PriceAttribution extends AbstractAttribution
             'plan' => PlanAttribution::class,
             'target' => TargetAttribution::class,
             'type' => TypeAttribution::class,
-            'unit' => Unit::class,
+            'unit' => UnitAttribution::class,
             'price' => MoneyAttribution::class,
             'prepaid' => QuantityAttribution::class,
         ];
