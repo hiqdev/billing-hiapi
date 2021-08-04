@@ -14,6 +14,8 @@ use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
+use hiqdev\billing\hiapi\customer\CustomerLoader;
+use hiqdev\billing\hiapi\plan\PlanLoader;
 use hiqdev\php\billing\target\Target;
 
 final class BulkBuilder
