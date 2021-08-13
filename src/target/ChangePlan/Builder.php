@@ -40,6 +40,7 @@ final class Builder
                             'isRequired' => true,
                         ],
                         new DateTimeLoader('time'),
+                        new DateTimeLoader('wall_time'),
                         $build->call(Action::class)
                     )
                     ->return(Target::class);

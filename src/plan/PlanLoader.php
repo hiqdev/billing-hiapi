@@ -45,7 +45,8 @@ class PlanLoader implements Middleware
             return $this->findPlanById($command->plan_id, $availabilityFilter);
         }
         if (!empty($command->plan_name)) {
-            return $this->findPlanByName($command->plan_name, $command->plan_seller ?? $this->getSeller($command));
+            return $this->findPlanByName($command->plan_name, $command->plan_seller ?? $this->getSeller($command))
+                ?? $this->findPlanByName($command->plan_name, $command->customer->getLogin());
         }
         if (!empty($command->plan_fullname)) {
             return $this->findPlanByFullName($command->plan_fullname);
