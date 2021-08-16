@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use hiqdev\php\billing\Exception\ConstraintException;
 use hiqdev\php\billing\sale\SaleInterface;
 
-class GeneralPlanChangeStrategy implements PlanChangeStrategyInterface
+final class GeneralPlanChangeStrategy implements PlanChangeStrategyInterface
 {
     public function ensureSaleCanBeClosedForChangeAtTime(SaleInterface $activeSale, DateTimeImmutable $desiredCloseTime): void
     {

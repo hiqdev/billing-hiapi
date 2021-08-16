@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use hiqdev\php\billing\Exception\ConstraintException;
 use hiqdev\php\billing\sale\SaleInterface;
 
-class OncePerMonthPlanChangeStrategy implements PlanChangeStrategyInterface
+final class OncePerMonthPlanChangeStrategy implements PlanChangeStrategyInterface
 {
     /**
      * {@inheritdoc}

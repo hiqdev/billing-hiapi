@@ -5,7 +5,7 @@ namespace hiqdev\billing\hiapi\target\ChangePlan\Strategy;
 
 use hiqdev\php\billing\sale\SaleInterface;
 
-class PlanChangeStrategyProvider implements PlanChangeStrategyProviderInterface
+final class PlanChangeStrategyProvider implements PlanChangeStrategyProviderInterface
 {
     private GeneralPlanChangeStrategy $generalPlanChangeStrategy;
     private OncePerMonthPlanChangeStrategy $oncePerMonthPlanChangeStrategy;
