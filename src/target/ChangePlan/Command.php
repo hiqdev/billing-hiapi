@@ -42,6 +42,7 @@ class Command extends BaseCommand
 
     /** @var DateTimeImmutable */
     public $time;
+
     /**
      * @var ?DateTimeImmutable time, when the tariff plan change was requested.
      * Optional, is used to process events, accumulated in the message broker.
