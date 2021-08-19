@@ -15,6 +15,7 @@ namespace hiqdev\billing\hiapi\target\ChangePlan;
 use DateTimeImmutable;
 use hiapi\exceptions\NotAuthorizedException;
 use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
+use hiqdev\billing\hiapi\target\ChangePlan\Strategy\PlanChangeStrategyProviderInterface;
 use hiqdev\billing\mrdp\Sale\HistoryAndFutureSaleRepository;
 use hiqdev\DataMapper\Query\Specification;
 use hiqdev\DataMapper\Repository\ConnectionInterface;
@@ -28,9 +29,11 @@ use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\php\billing\tools\CurrentDateTimeProviderInterface;
 use hiqdev\yii\DataMapper\Repository\Connection;
 use Psr\Log\LoggerInterface;
 use Throwable;
+use yii\web\User;
 
 /**
  * Schedules tariff plan change
@@ -48,6 +51,9 @@ class Action
     private PlanForkerInterface $planForker;
     private LoggerInterface $log;
     private DateTimeImmutable $currentTime;
+    private User $user;
+    private PlanChangeStrategyProviderInterface $strategyProvider;
+    private Strategy\PlanChangeStrategyInterface $strategy;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
@@ -55,14 +61,18 @@ class Action
         PlanForkerInterface $planForker,
         ConnectionInterface $connection,
         LoggerInterface $log,
-        DateTimeImmutable $currentTime
+        CurrentDateTimeProviderInterface $currentDateTimeProvider,
+        User $user,
+        PlanChangeStrategyProviderInterface $strategyProvider
     ) {
         $this->targetRepo = $targetRepo;
         $this->saleRepo = $saleRepo;
         $this->planForker = $planForker;
         $this->connection = $connection;
         $this->log = $log;
-        $this->currentTime = $currentTime;
+        $this->user = $user;
+        $this->currentTime = $currentDateTimeProvider->dateTimeImmutable();
+        $this->strategyProvider = $strategyProvider;
     }
 
     public function __invoke(Command $command): TargetInterface
@@ -76,11 +86,12 @@ class Action
         if ($activeSale === null) {
             throw new InvariantException('Plan can\'t be changed: the is no active sale at the passed date');
         }
+        $this->strategy = $this->strategyProvider->getBySale($activeSale);
 
-        $this->ensureNotHappeningInPast($command->time);
+        $this->ensureNotHappeningInPast($command->time, $command->wall_time);
 
-        $previousSale = $this->findActiveSale($target, $customer, $command->time->modify('previous month first day 00:00'));
-
+        $timeInPreviousSalePeriod = $this->strategy->calculateTimeInPreviousSalePeriod($activeSale, $command->time);
+        $previousSale = $this->findActiveSale($target, $customer, $timeInPreviousSalePeriod);
         $target = $this->tryToCancelScheduledPlanChange($activeSale, $previousSale, $command->time, $command->plan);
         if ($target !== null) {
             return $target;
@@ -95,7 +106,7 @@ class Action
 
     /**
      * If there is a scheduled plan change from tariff "A" to "B" at some specific Date "D",
-     * and we receive a new plan change request to change plan to A since Date "D", then:
+     * and we receive a new plan change request to change plan to "A" since Date "D", then:
      *
      * 1. Scheduled plan change should be cancelled
      * 2. Plan A closing should be cancelled
@@ -130,7 +141,7 @@ class Action
 
     private function schedulePlanChange(SaleInterface $activeSale, DateTimeImmutable $effectiveDate, PlanInterface $newPlan): ?TargetInterface
     {
-        $this->ensureChangeWillHappenInNextBillingPeriod($activeSale, $effectiveDate);
+        $this->strategy->ensureSaleCanBeClosedForChangeAtTime($activeSale, $effectiveDate);
 
         $activeSale->close($effectiveDate);
         $plan = $this->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
@@ -203,36 +214,6 @@ class Action
     }
 
     /**
-     * Prevents plan change in the current month
-     *
-     * @param SaleInterface $sale
-     * @param DateTimeImmutable $planChangeTime
-     */
-    private function ensureChangeWillHappenInNextBillingPeriod(SaleInterface $sale, DateTimeImmutable $planChangeTime): void
-    {
-        if (($closeTime = $sale->getCloseTime()) !== null) {
-            $saleCloseMonth = $closeTime->modify('first day of this month 00:00');
-
-            if ($saleCloseMonth->format('Y-m-d') === $planChangeTime->format('Y-m-d')) {
-                // If sale is closed at the first day of month, then the whole month is available
-                $nextPeriodStart = $saleCloseMonth;
-            } else {
-                // Otherwise - next month
-                $nextPeriodStart = $saleCloseMonth->modify('next month');
-            }
-        } else {
-            $nextPeriodStart = $sale->getTime()->modify('next month first day 00:00');
-        }
-
-        if ($planChangeTime < $nextPeriodStart) {
-            throw new ConstraintException(sprintf(
-                'Plan can not be changed earlier than %s',
-                $nextPeriodStart->format(DATE_ATOM)
-            ));
-        }
-    }
-
-    /**
      * @param TargetInterface $target
      * @param Customer $customer
      * @param DateTimeImmutable $time the sale is active at
@@ -254,9 +235,20 @@ class Action
         return $sale;
     }
 
-    private function ensureNotHappeningInPast(DateTimeImmutable $time): void
+    private function truncateToMonth(DateTimeImmutable $time): DateTimeImmutable
     {
-        if ($time < $this->currentTime) {
+        return $time->modify('first day of this month midnight');
+    }
+
+    private function ensureNotHappeningInPast(DateTimeImmutable $time, ?DateTimeImmutable $wallTime = null): void
+    {
+        if ($this->user->can('sale.update')) {
+            $currentTime = $this->truncateToMonth($wallTime ?? $this->currentTime);
+        } else {
+            $currentTime = $this->truncateToMonth($this->currentTime);
+        }
+
+        if ($this->truncateToMonth($time) < $currentTime) {
             throw new ConstraintException('Plan can not be changed in past');
         }
     }

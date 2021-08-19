@@ -209,16 +209,21 @@ class ApiBasedBuilder implements BuilderInterface
         }
     }
 
-    public function targetChangePlan(string $target, string $planName, string $date)
+    public function targetChangePlan(string $target, string $planName, string $date, string $wallTime = null)
     {
         [$class, $name] = explode(':', $target);
-
-        $this->makeAsCustomer('TargetChangePlan', [
+        $options = [
             'name' => $name,
             'type' => $class,
             'plan_name' => $planName,
             'time' => $date,
-        ]);
+        ];
+
+        if ($wallTime !== null) {
+            $this->makeAsReseller('TargetChangePlan', array_merge($options, ['wall_time' => $wallTime, 'customer_username' => $this->customer]));
+        } else {
+            $this->makeAsCustomer('TargetChangePlan', $options);
+        }
     }
 
     public function buildPurchase(string $target, string $plan, string $time): void
@@ -286,6 +291,11 @@ class ApiBasedBuilder implements BuilderInterface
         }
 
         return $res;
+    }
+
+    public function flushEntitiesCache(): void
+    {
+        $this->factory->clearEntitiesCache();
     }
 
     public function setConsumption(string $type, int $amount, string $unit, string $target, string $time): void

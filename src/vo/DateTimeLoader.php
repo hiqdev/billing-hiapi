@@ -15,6 +15,8 @@ use League\Tactician\Middleware;
 
 class DateTimeLoader implements Middleware
 {
+    private string $name;
+
     public function __construct(string $name)
     {
         $this->name = $name;

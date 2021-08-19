@@ -43,12 +43,22 @@ class Command extends BaseCommand
     /** @var DateTimeImmutable */
     public $time;
 
+    /**
+     * @var ?DateTimeImmutable time, when the tariff plan change was requested.
+     * Optional, is used to process events, accumulated in the message broker.
+     * Requires higher permissions to be used.
+     */
+    public $wall_time;
+
     public function rules(): array
     {
         return [
             [['plan_name'], 'trim'],
             [['plan_seller'], UsernameValidator::class],
             [['plan_id'], IdValidator::class],
+
+            [['customer_username'], 'trim'],
+            [['customer_username'], UsernameValidator::class],
 
             [['name'], 'trim'],
 
@@ -57,7 +67,8 @@ class Command extends BaseCommand
 
             [['remoteid'], 'trim'],
 
-            [['time'], DateTimeValidator::class]
+            [['time'], DateTimeValidator::class],
+            [['wall_time'], DateTimeValidator::class],
         ];
     }
 }
