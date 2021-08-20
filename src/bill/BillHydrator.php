@@ -31,31 +31,36 @@ use Money\Money;
  */
 class BillHydrator extends GeneratedHydrator
 {
+    protected array $existingAttributes = [
+        'type' => Type::class,
+        'time' => DateTimeImmutable::class,
+        'quantity' => Quantity::class,
+        'customer' => Customer::class,
+    ];
+
+    protected array $issetAttributes = [
+        'target' => Target::class,
+        'plan' => Plan::class,
+        'state' => BillState::class,
+        'requisite' => BillRequisite::class,
+    ];
     /**
      * {@inheritdoc}
      * @param object|Bill $object
      */
     public function hydrate(array $row, $object)
     {
-        $row['type']        = $this->hydrator->create($row['type'],     Type::class);
-        $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
-        $row['sum']         = $this->hydrator->create($row['sum'],      Money::class);
-        $row['quantity']    = $this->hydrator->create($row['quantity'], Quantity::class);
-        $row['customer']    = $this->hydrator->create($row['customer'], Customer::class);
-        if (isset($row['target'])) {
-            $row['target']  = $this->hydrator->create($row['target'],   Target::class);
-        }
-        if (isset($row['plan'])) {
-            $row['plan']    = $this->hydrator->create($row['plan'],     Plan::class);
-        }
-        if (isset($row['state'])) {
-            $row['state']  = $this->hydrator->create($row['state'],   BillState::class);
-        }
-        if (isset($row['requisite'])) {
-            $row['requisite'] = $this->hydrator->create($row['requisite'], BillRequisite::class);
+        foreach ($this->existingAttributes as $attr => $class) {
+            $row[$attr] = $this->hydrator->create($row[$attr], $class);
         }
 
-        $raw_charges = $row['charges'];
+        foreach ($this->issetAttributes as $attr => $class) {
+            if (isset($row[$attr])) {
+                $row[$attr] = $this->hydrator->create($row[$attr], $class);
+            }
+        }
+
+        $raw_charges = $row['charges'] ?? null;
         unset($row['charges']);
 
         /** @var Bill $bill */

@@ -32,56 +32,34 @@ use Money\Money;
  */
 class StatementBillHydrator extends BillHydrator
 {
+    protected array $existingAttributes = [
+        'type' => Type::class,
+        'month' => DateTimeImmutable::class,
+        'time' => DateTimeImmutable::class,
+        'sum' => Money::class,
+        'quantity' => Quantity::class,
+        'customer' => Customer::class,
+        'price' => Money::class,
+        'overuse' => Money::class,
+        'prepaid' => Quantity::class,
+    ];
+
+    protected array $issetAttributes = [
+        'target' => Target::class,
+        'plan' => Plan::class,
+        'state' => BillState::class,
+        'requisite' => BillRequisite::class,
+        'tariff_type' => Type::class,
+    ];
     /**
      * {@inheritdoc}
      * @param object|Bill $object
      */
     public function hydrate(array $row, $object)
     {
-        $row['type']        = $this->hydrator->create($row['type'],     Type::class);
-        $row['month']       = $this->hydrator->create($row['month'],    DateTimeImmutable::class);
-        $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
-        $row['sum']         = $this->hydrator->create($row['sum'],      Money::class);
-        $row['quantity']    = $this->hydrator->create($row['quantity'], Quantity::class);
-        $row['customer']    = $this->hydrator->create($row['customer'], Customer::class);
-        $row['price']       = $this->hydrator->create($row['price'],    Money::class);
-        $row['overuse']     = $this->hydrator->create($row['overuse'],  Money::class);
-        $row['prepaid']     = $this->hydrator->create($row['prepaid'],  Quantity::class);
 
-        if (isset($row['target'])) {
-            $row['target']  = $this->hydrator->create($row['target'],   Target::class);
-        }
-        if (isset($row['plan'])) {
-            $row['plan']    = $this->hydrator->create($row['plan'],     Plan::class);
-        }
-        if (isset($row['state'])) {
-            $row['state']  = $this->hydrator->create($row['state'],   BillState::class);
-        }
-        if (isset($row['requisite'])) {
-            $row['requisite'] = $this->hydrator->create($row['requisite'], BillRequisite::class);
-        }
-
-        $raw_charges = $row['charges'];
-        unset($row['charges']);
-
-        /** @var Bill $bill */
-        $bill = parent::hydrate($row, $object);
-
-        if (\is_array($raw_charges)) {
-            $charges = [];
-            foreach ($raw_charges as $key => $charge) {
-                if ($charge instanceof ChargeInterface) {
-                    $charge->setBill($bill);
-                    $charges[$key] = $charge;
-                } else {
-                    $charge['bill'] = $bill;
-                    $charges[$key] = $this->hydrator->hydrate($charge, ChargeInterface::class);
-                }
-            }
-            $bill->setCharges($charges);
-        }
-
-        return $bill;
+        /** @var StatementBill $bill */
+        return parent::hydrate($row, $object);
     }
 
     /**
@@ -96,6 +74,7 @@ class StatementBillHydrator extends BillHydrator
             'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
             'overuse'       => $object->getOveruse() ? $this->hydrator->extract($object->getOveruse()) : null,
             'prepaid'       => $object->getPrepaid() ? $this->hydrator->extract($object->getPrepaid()) : null,
+            'tariff_type'   => $object->getTariffType() ? $this->hydrator->extract($object->getTariffType()) : null,
         ]), static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
