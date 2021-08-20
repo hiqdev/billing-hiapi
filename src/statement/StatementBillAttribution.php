@@ -37,6 +37,7 @@ class StatementBillAttribution extends AbstractAttribution
     {
         return [
             'type'      => TypeAttribution::class,
+            'tariff_type'=> TypeAttribution::class,
             'target'    => TargetAttribution::class,
             'customer'  => CustomerAttribution::class,
             'plan'      => PlanAttribution::class,
