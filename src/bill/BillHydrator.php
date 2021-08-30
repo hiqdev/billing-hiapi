@@ -35,6 +35,7 @@ class BillHydrator extends GeneratedHydrator
         'type' => Type::class,
         'time' => DateTimeImmutable::class,
         'quantity' => Quantity::class,
+        'sum' => Money::class,
         'customer' => Customer::class,
     ];
 
