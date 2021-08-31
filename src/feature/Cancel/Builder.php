@@ -25,7 +25,6 @@ final class Builder
             ->description('Cancel a feature')
             ->exportTo(Tenant::ALL)
             ->take(Command::class)
-            ->checkPermission('have-goods')
             ->middlewares(
                 CustomerLoader::class,
                 [

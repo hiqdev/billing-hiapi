@@ -32,7 +32,6 @@ final class Builder
         return $build->endpoint(self::class)
                     ->exportTo(Tenant::ALL)
                     ->take(Command::class)
-                    ->checkPermission('have-goods')
                     ->middlewares(
                         CustomerLoader::class,
                         [

@@ -7,6 +7,7 @@ use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
+use hiqdev\billing\hiapi\customer\CustomerLoader;
 use hiqdev\billing\hiapi\feature\Feature;
 use hiqdev\billing\hiapi\tools\PerformBillingMiddleware;
 
@@ -23,8 +24,8 @@ final class Builder
             ->description('Purchase a feature')
             ->exportTo(Tenant::ALL)
             ->take(Command::class)
-            ->checkPermission('have-goods')
             ->middlewares(
+                CustomerLoader::class,
                 PerformBillingMiddleware::class,
                 $build->call(Action::class)
             )
