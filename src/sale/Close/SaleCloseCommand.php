@@ -41,6 +41,7 @@ class SaleCloseCommand extends BaseCommand
             [['target_id'], 'required'],
 
             [['time'], DateTimeValidator::class],
+            [['time'], 'required']
         ];
     }
 }
