@@ -15,6 +15,7 @@ namespace hiqdev\billing\hiapi\target\Purchase;
 use hiapi\exceptions\NotAuthorizedException;
 use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
+use hiqdev\billing\hiapi\tools\PermissionCheckerInterface;
 use hiqdev\DataMapper\Query\Specification;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
@@ -30,21 +31,25 @@ class Action
     private TargetFactoryInterface $targetFactory;
     private SaleRepositoryInterface $saleRepo;
     private PlanForkerInterface $planForker;
+    private PermissionCheckerInterface $permissionChecker;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
         TargetFactoryInterface $targetFactory,
         SaleRepositoryInterface $saleRepo,
-        PlanForkerInterface $planForker
+        PlanForkerInterface $planForker,
+        PermissionCheckerInterface $permissionChecker
     ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
         $this->saleRepo = $saleRepo;
         $this->planForker = $planForker;
+        $this->permissionChecker = $permissionChecker;
     }
 
     public function __invoke(Command $command): TargetInterface
     {
+        $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
         $target = $this->getTarget($command);
         $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);

@@ -9,6 +9,7 @@ use hiqdev\billing\hiapi\feature\FeatureDto;
 use hiqdev\billing\hiapi\feature\FeatureFactoryInterface;
 use hiqdev\billing\hiapi\feature\FeatureInterface;
 use hiqdev\billing\hiapi\feature\FeatureRepositoryInterface;
+use hiqdev\billing\hiapi\tools\PermissionCheckerInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
 
 final class Action
@@ -16,19 +17,23 @@ final class Action
     private FeatureRepositoryInterface $featureRepository;
     private FeatureFactoryInterface $featureFactory;
     private TargetRepositoryInterface $targetRepository;
+    private PermissionCheckerInterface $permissionChecker;
 
     public function __construct(
         FeatureFactoryInterface $featureFactory,
         FeatureRepositoryInterface $featureRepository,
-        TargetRepositoryInterface $targetRepository
+        TargetRepositoryInterface $targetRepository,
+        PermissionCheckerInterface $permissionChecker
     ) {
         $this->featureRepository = $featureRepository;
         $this->featureFactory = $featureFactory;
         $this->targetRepository = $targetRepository;
+        $this->permissionChecker = $permissionChecker;
     }
 
     public function __invoke(Command $command): FeatureInterface
     {
+        $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
         $dto = new FeatureDto();
         $dto->type = $command->type;
         $dto->target = $command->target;
