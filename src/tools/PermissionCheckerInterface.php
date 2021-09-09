@@ -10,7 +10,5 @@ interface PermissionCheckerInterface
 {
     public function checkAccess($clientId, string $permission): bool;
 
-    public function ensureCustomerCan(CustomerInterface $customer, $permission): void;
-
-    public function getRoles($clientId): array;
+    public function ensureCustomerCan(CustomerInterface $customer, string $permission): void;
 }
