@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\php\billing\customer\Customer;
+use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\price\PriceInterface;
@@ -32,6 +33,10 @@ class PlanHydrator extends GeneratedHydrator
     {
         if (!empty($data['seller'])) {
             $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
+        }
+
+        if (!empty($data['type'])) {
+            $data['type'] = $this->hydrator->hydrate($data['type'], Type::class);
         }
         $raw_prices = $data['prices'] ?? [];
         unset($data['prices']);
@@ -68,6 +73,7 @@ class PlanHydrator extends GeneratedHydrator
             'seller'        => $object->getSeller() ? $this->hydrator->extract($object->getSeller()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
             'is_grouping'   => $object instanceof GroupingPlan,
+            'type'          => $object->getType() ? $this->hydrator->extract($object->getType()) : null,
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
