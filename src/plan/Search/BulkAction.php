@@ -12,15 +12,15 @@ namespace hiqdev\billing\hiapi\plan\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use hiqdev\billing\hiapi\plan\AvailableFor;
-use hiqdev\php\billing\plan\PlanRepositoryInterface;
+use hiqdev\billing\hiapi\plan\PlanReadModelRepositoryInterface;
 use yii\web\User;
 
 class BulkAction
 {
-    private PlanRepositoryInterface $repo;
+    private PlanReadModelRepositoryInterface $repo;
     private User $user;
 
-    public function __construct(PlanRepositoryInterface $repo, User $user)
+    public function __construct(PlanReadModelRepositoryInterface $repo, User $user)
     {
         $this->repo = $repo;
         $this->user = $user;
