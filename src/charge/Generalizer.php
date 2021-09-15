@@ -45,7 +45,7 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
             $chargeType = $charge->getPrice()->getType();
         }
 
-        if ($this->typeSemantics->isMonthly($chargeType)) {
+        if ($this->typeSemantics->isSwapToMonthlyAllowed($chargeType)) {
             return $this->typeSemantics->createMonthlyType();
         }
 
