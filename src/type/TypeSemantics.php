@@ -20,6 +20,15 @@ final class TypeSemantics
     private const DISCOUNT = 'discount';
     private const DEPOSIT  = 'deposit';
     private const HARDWARE = 'hardware';
+    private const NOT_ALLOWED_GENERALIZE_ITEMS = [
+        'storage',
+        'private_cloud',
+        'volume_du',
+        'server_ssd',
+        'cdn_traf_max',
+        'cdn_traf95_max',
+        'vps',
+    ];
 
     /**
      * // TODO: Probably not the best place for this method
@@ -32,6 +41,12 @@ final class TypeSemantics
     public function isMonthly(TypeInterface $type): bool
     {
         return $this->groupName($type) === self::MONTHLY;
+    }
+
+    public function isSwapToMonthlyAllowed(TypeInterface $type): bool
+    {
+        return $this->isMonthly($type)
+            && !in_array($this->localName($type), self::NOT_ALLOWED_GENERALIZE_ITEMS, true);
     }
 
     public function isHardware(TypeInterface $type): bool
