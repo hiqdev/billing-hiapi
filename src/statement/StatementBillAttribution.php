@@ -26,26 +26,27 @@ class StatementBillAttribution extends AbstractAttribution
     public function attributes()
     {
         return [
-            'id'        => IntegerAttribute::class,
-            'time'      => DateTimeAttribute::class,
-            'from'      => StringAttribute::class,
-            'month'     => DateTimeAttribute::class,
+            'id'                   => IntegerAttribute::class,
+            'time'                 => DateTimeAttribute::class,
+            'from'                 => StringAttribute::class,
+            'month'                => DateTimeAttribute::class,
+            'unique_objects_count' => IntegerAttribute::class,
         ];
     }
 
     public function relations()
     {
         return [
-            'type'      => TypeAttribution::class,
-            'tariff_type'=> TypeAttribution::class,
-            'target'    => TargetAttribution::class,
-            'customer'  => CustomerAttribution::class,
-            'plan'      => PlanAttribution::class,
-            'sum'       => MoneyAttribution::class,
-            'quantity'  => QuantityAttribution::class,
-            'price'     => MoneyAttribution::class,
-            'overuse'   => MoneyAttribution::class,
-            'prepaid'   => QuantityAttribution::class,
+            'type'        => TypeAttribution::class,
+            'tariff_type' => TypeAttribution::class,
+            'target'      => TargetAttribution::class,
+            'customer'    => CustomerAttribution::class,
+            'plan'        => PlanAttribution::class,
+            'sum'         => MoneyAttribution::class,
+            'quantity'    => QuantityAttribution::class,
+            'price'       => MoneyAttribution::class,
+            'overuse'     => MoneyAttribution::class,
+            'prepaid'     => QuantityAttribution::class,
         ];
     }
 }
