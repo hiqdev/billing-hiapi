@@ -26,11 +26,11 @@ class StatementBillAttribution extends AbstractAttribution
     public function attributes()
     {
         return [
-            'id'         => IntegerAttribute::class,
-            'time'       => DateTimeAttribute::class,
-            'from'       => StringAttribute::class,
-            'month'      => DateTimeAttribute::class,
-            'paid_count' => IntegerAttribute::class,
+            'id'                   => IntegerAttribute::class,
+            'time'                 => DateTimeAttribute::class,
+            'from'                 => StringAttribute::class,
+            'month'                => DateTimeAttribute::class,
+            'unique_objects_count' => IntegerAttribute::class,
         ];
     }
 
