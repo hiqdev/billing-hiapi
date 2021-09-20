@@ -16,6 +16,7 @@ use DateTimeImmutable;
 use hiapi\exceptions\NotAuthorizedException;
 use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
 use hiqdev\billing\hiapi\target\ChangePlan\Strategy\PlanChangeStrategyProviderInterface;
+use hiqdev\billing\hiapi\tools\PermissionCheckerInterface;
 use hiqdev\billing\mrdp\Sale\HistoryAndFutureSaleRepository;
 use hiqdev\DataMapper\Query\Specification;
 use hiqdev\DataMapper\Repository\ConnectionInterface;
@@ -54,6 +55,7 @@ class Action
     private User $user;
     private PlanChangeStrategyProviderInterface $strategyProvider;
     private Strategy\PlanChangeStrategyInterface $strategy;
+    private PermissionCheckerInterface $permissionChecker;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
@@ -63,7 +65,8 @@ class Action
         LoggerInterface $log,
         CurrentDateTimeProviderInterface $currentDateTimeProvider,
         User $user,
-        PlanChangeStrategyProviderInterface $strategyProvider
+        PlanChangeStrategyProviderInterface $strategyProvider,
+        PermissionCheckerInterface $permissionChecker
     ) {
         $this->targetRepo = $targetRepo;
         $this->saleRepo = $saleRepo;
@@ -73,10 +76,12 @@ class Action
         $this->user = $user;
         $this->currentTime = $currentDateTimeProvider->dateTimeImmutable();
         $this->strategyProvider = $strategyProvider;
+        $this->permissionChecker = $permissionChecker;
     }
 
     public function __invoke(Command $command): TargetInterface
     {
+        $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
         $target = $this->getTarget($command);
         $customer = $command->customer;
         assert($customer !== null);
