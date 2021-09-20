@@ -48,7 +48,10 @@ class Action
         $target = $this->getTarget($command);
         $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
-        $this->saleRepo->save($sale);
+        $saleExists = $this->saleRepo->findId($sale);
+        if (!$saleExists) {
+            $this->saleRepo->save($sale);
+        }
 
         return $target;
     }
