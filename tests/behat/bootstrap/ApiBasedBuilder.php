@@ -226,7 +226,7 @@ class ApiBasedBuilder implements BuilderInterface
         }
     }
 
-    public function buildPurchase(string $target, string $plan, string $time): void
+    public function buildPurchase(string $target, string $plan, string $time, ?array $uses = []): void
     {
         $target = $this->factory->get('target', $target);
         $plan = static::$plans[$plan];
@@ -235,6 +235,7 @@ class ApiBasedBuilder implements BuilderInterface
             'name' => $target->getName(),
             'plan_id' => $plan['id'],
             'time' => $time,
+            'initial_uses' => $uses,
         ]);
     }
 
@@ -245,7 +246,7 @@ class ApiBasedBuilder implements BuilderInterface
             'with' => ['charges'],
             'where' => [
                 'customer-login' => 'hipanel_test_user',  /// XXX to be removed!
-                'type-name' => $params['type'],
+                'type-name' => $params['tpe'],
                 'target-type' => $target->getType(),
                 'target-name' => $target->getName(),
                 'time' => $params['time'] ?? null,
@@ -257,6 +258,16 @@ class ApiBasedBuilder implements BuilderInterface
         }
 
         return $res;
+    }
+
+    public function findUsage(string $time, string $targetName, string $typeName): array
+    {
+        return $this->makeAsCustomer('uses-search', [
+            'groupby' => 'server_traf_hour',
+            'type' => $typeName,
+            'time_from' => $time,
+            'time_till' => (new \DateTimeImmutable($time))->modify('+1 second')->format(DATE_ATOM),
+        ]);
     }
 
     public function buildTarget(string $name)

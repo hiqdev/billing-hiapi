@@ -80,7 +80,7 @@ class PlanLoader implements Middleware
 
     private function findPlanByArray(array $cond)
     {
-        return $this->repo->findOne((new Specification)->where($cond)) ?: null;
+        return $this->repo->findOne((new Specification)->with('prices')->where($cond)) ?: null;
     }
 
     private function getSeller($command): ?string

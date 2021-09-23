@@ -13,8 +13,9 @@ namespace hiqdev\billing\hiapi\target\Purchase;
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
-use hiapi\validators\RefValidator;
 use hiqdev\DataMapper\Validator\DateTimeValidator;
+use Throwable;
+use yii\validators\InlineValidator;
 
 class Command extends BaseCommand
 {
@@ -38,6 +39,9 @@ class Command extends BaseCommand
     public $customer;
     public $plan;
 
+    /** @var list<InitialUse> */
+    public $initial_uses = [];
+
     public function rules(): array
     {
         return [
@@ -55,7 +59,36 @@ class Command extends BaseCommand
 
             [['remoteid'], 'trim'],
 
-            [['time'], DateTimeValidator::class]
+            [['time'], DateTimeValidator::class],
+
+            [['initial_uses'],
+                function (string $attribute, ?array $params, InlineValidator $validator, $initial_uses) {
+                    if (!empty($initial_uses) && !is_array($initial_uses)) {
+                        $this->addError('initial_uses must be an array');
+                        return;
+                    }
+
+                    foreach ($initial_uses as &$use) {
+                        $type = $use['type'] ?? null;
+                        $unit = $use['unit'] ?? null;
+                        $amount = $use['amount'] ?? null;
+
+                        if ($type === null || $unit === null || $amount === null) {
+                            $this->addError($attribute, 'Initial use MUST contain `type`, `unit` and `amount` properties');
+                            return;
+                        }
+
+                        try {
+                            $use = InitialUse::fromScalar($type, $unit, $amount);
+                        } catch (Throwable $exception) {
+                            $this->addError($attribute, $exception->getMessage());
+                            return;
+                        }
+                    }
+
+                    $this->initial_uses = $initial_uses;
+                },
+            ],
         ];
     }
 }

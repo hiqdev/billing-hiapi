@@ -18,12 +18,16 @@ use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
 use hiqdev\billing\hiapi\tools\PermissionCheckerInterface;
 use hiqdev\DataMapper\Query\Specification;
 use hiqdev\php\billing\customer\CustomerInterface;
+use hiqdev\php\billing\Exception\ConstraintException;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
+use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\php\billing\usage\Usage;
+use hiqdev\php\billing\usage\UsageRecorderInterface;
 
 class Action
 {
@@ -32,19 +36,22 @@ class Action
     private SaleRepositoryInterface $saleRepo;
     private PlanForkerInterface $planForker;
     private PermissionCheckerInterface $permissionChecker;
+    private UsageRecorderInterface $usageRecorder;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
         TargetFactoryInterface $targetFactory,
         SaleRepositoryInterface $saleRepo,
         PlanForkerInterface $planForker,
-        PermissionCheckerInterface $permissionChecker
+        PermissionCheckerInterface $permissionChecker,
+        UsageRecorderInterface $usageRecorder
     ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
         $this->saleRepo = $saleRepo;
         $this->planForker = $planForker;
         $this->permissionChecker = $permissionChecker;
+        $this->usageRecorder = $usageRecorder;
     }
 
     public function __invoke(Command $command): TargetInterface
@@ -54,9 +61,12 @@ class Action
         $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
         $saleExists = $this->saleRepo->findId($sale);
-        if (!$saleExists) {
-            $this->saleRepo->save($sale);
+        if ($saleExists) {
+            return $target;
         }
+
+        $this->saleRepo->save($sale);
+        $this->saveInitialUses($sale, $command->initial_uses);
 
         return $target;
     }
@@ -109,5 +119,34 @@ class Action
         }
 
         return $plan;
+    }
+
+    /**
+     * @param PlanInterface $plan
+     * @param list<InitialUse> $initialUses
+     */
+    private function saveInitialUses(SaleInterface $sale, array $initialUses): void
+    {
+        $usedTypes = array_map(static fn (InitialUse $use) => $use->type->getName(), $initialUses);
+        if ($usedTypes !== array_unique($usedTypes)) {
+            throw new ConstraintException('The same Initial Use type must be listed only once');
+        }
+
+        $plan = $sale->getPlan();
+        foreach ($initialUses as $use) {
+            foreach ($plan->getPrices() as $price) {
+                if ($price->getType()->matches($use->type)) {
+                    $use->type = $price->getType(); // In order to have Type with ID
+                    continue 2;
+                }
+            }
+            throw new ConstraintException('The Initial Use type must be within Plan Prices types');
+        }
+
+        foreach ($initialUses as $use) {
+            $this->usageRecorder->record(
+                new Usage($sale->getTarget(), $sale->getTime(), $use->type, $use->quantity)
+            );
+        }
     }
 }
