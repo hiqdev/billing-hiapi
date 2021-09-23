@@ -48,6 +48,7 @@ $singletons = [
             \hiqdev\billing\hiapi\feature\FeatureInterface::class => \hiqdev\billing\hiapi\feature\FeatureHydrator::class,
             \hiqdev\billing\hiapi\feature\Feature::class        => \hiqdev\billing\hiapi\feature\FeatureHydrator::class,
             \hiqdev\billing\hiapi\plan\PlanReadModel::class     => \hiqdev\billing\hiapi\plan\PlanReadModelHydrator::class,
+            \hiqdev\php\billing\usage\Usage::class              => \hiqdev\billing\hiapi\usage\UsageHydrator::class,
             \Money\Money::class                                 => \hiqdev\billing\hiapi\vo\MoneyHydrator::class,
         ],
     ],
