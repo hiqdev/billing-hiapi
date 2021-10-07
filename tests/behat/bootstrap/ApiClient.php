@@ -47,12 +47,14 @@ class ApiClient
 
     public function make(string $command, array $payload, string $performer): array
     {
+        //var_dump(compact('command', 'payload', 'performer'));
+
         $res = $this->buildRequest($command, $payload, $performer ?? $this->reseller)->send()->getData();
         if (!is_array($res)) {
             throw new Exception('API returned not array: ' . $res);
         }
         if (!empty($res['_error'])) {
-            // var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);
+            //var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);die;
             $error = is_array($res['_error']) ? reset($res['_error']) : (string)$res['_error'];
             throw new Exception("API returned error: $error");
         }
