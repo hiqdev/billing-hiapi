@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\plan\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use hiapi\Core\Auth\AuthRule;
 use hiqdev\billing\hiapi\plan\AvailableFor;
 use hiqdev\billing\hiapi\plan\PlanReadModelRepositoryInterface;
 use yii\web\User;
@@ -30,8 +31,11 @@ class BulkAction
     {
         $spec = $command->getSpecification();
 
-        if (empty($command->where[AvailableFor::SELLER_FIELD])) {
-            $spec->where[AvailableFor::CLIENT_ID_FIELD] ??= $this->user->id;
+        if (
+            empty($spec->where[AvailableFor::CLIENT_ID_FIELD])
+            && empty($spec->where[AvailableFor::SELLER_FIELD])
+        ) {
+            $spec->where['client_id'] = AuthRule::clientId($this->user->id)->canSeeSellerObjects();
         }
 
         $res = $this->repo->findAll($spec);
