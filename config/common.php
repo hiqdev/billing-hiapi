@@ -152,6 +152,7 @@ $singletons = [
         '__construct()' => [
             'endpoints' => [
                 'PlansSearch'       => \hiqdev\billing\hiapi\plan\Search\BulkBuilder::class,
+                'PlansCount'        => \hiqdev\billing\hiapi\plan\Search\CountBuilder::class,
                 'PlanGetInfo'       => \hiqdev\billing\hiapi\plan\GetInfo\Builder::class,
 
                 'TargetsSearch'     => \hiqdev\billing\hiapi\target\Search\BulkBuilder::class,
