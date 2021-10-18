@@ -14,7 +14,6 @@ use hiapi\Core\Endpoint\BuilderFactory;
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
-use hiqdev\billing\hiapi\customer\CustomerLoader;
 use hiqdev\php\billing\plan\Plan;
 
 final class BulkBuilder
@@ -32,7 +31,6 @@ final class BulkBuilder
                      ->take(Command::class)
                      ->checkPermission('plan.read')
                      ->middlewares(
-                         CustomerLoader::class,
                          $build->call(BulkAction::class)
                      )
                      ->return($build->many(Plan::class));
