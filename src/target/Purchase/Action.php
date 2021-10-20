@@ -60,8 +60,9 @@ class Action
         $target = $this->getTarget($command);
         $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
-        $saleExists = $this->saleRepo->findId($sale);
-        if ($saleExists) {
+
+        $saleId = $this->saleRepo->findId($sale);
+        if ($saleId !== null) {
             return $target;
         }
 
