@@ -28,7 +28,7 @@ class SaleHydrator extends GeneratedHydrator
     {
         $data['target']     = $this->hydrateChild($data['target'] ?? null, TargetInterface::class);
         $data['customer']   = $this->hydrateChild($data['customer'], CustomerInterface::class);
-        $data['plan']       = $this->hydrateChild($data['plan'], PlanInterface::class);
+        $data['plan']       = !empty($data['plan']['id']) ? $this->hydrateChild($data['plan'], PlanInterface::class) : null;
         $data['time']       = $this->hydrateChild($data['time'], DateTimeImmutable::class);
         if (isset($data['closeTime'])) {
             $data['closeTime']  = $this->hydrateChild($data['closeTime'], DateTimeImmutable::class);
