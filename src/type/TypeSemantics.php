@@ -24,7 +24,7 @@ final class TypeSemantics
         'storage',
         'private_cloud',
         'volume_du',
-        'server_ssd',
+        'cdn_cache',
         'cdn_traf_max',
         'cdn_traf95_max',
         'vps',
