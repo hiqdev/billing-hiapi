@@ -16,6 +16,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\php\billing\statement\Statement;
+use hiqdev\php\billing\plan\PlanInterface;
 use DateTimeImmutable;
 use Money\Money;
 
