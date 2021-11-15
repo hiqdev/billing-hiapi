@@ -57,7 +57,7 @@ class BillHydrator extends GeneratedHydrator
 
         foreach ($this->issetAttributes as $attr => $class) {
             if (isset($row[$attr])) {
-                $row[$attr] = $this->hydrator->create($row[$attr], $class);
+                $row[$attr] = !empty(array_filter($row[$attr])) ? $this->hydrator->create($row[$attr], $class) : null;
             }
         }
 
