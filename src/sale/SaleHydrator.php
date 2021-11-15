@@ -30,7 +30,7 @@ class SaleHydrator extends GeneratedHydrator
         $data['customer']   = $this->hydrateChild($data['customer'], CustomerInterface::class);
 
         $data['plan'] = $data['plan'] ?? null;
-        if (is_array($data['plan']) && !empty($data['plan']['id'])) {
+        if (is_array($data['plan']) && !empty($data['plan'])) {
             $data['plan'] = $this->hydrateChild($data['plan'], PlanInterface::class);
         }
 
