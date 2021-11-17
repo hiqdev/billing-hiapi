@@ -41,13 +41,21 @@ class BillHydrator extends GeneratedHydrator
 
     protected array $issetAttributes = [
         'target' => Target::class,
-        'plan' => Plan::class,
         'state' => BillState::class,
         'requisite' => BillRequisite::class,
     ];
+
+    protected array $nullableAttributes = [
+        'plan' => Plan::class,
+    ];
+
     /**
      * {@inheritdoc}
+     * @param array       $row
      * @param object|Bill $object
+     *
+     * @return Bill
+     * @throws \Exception
      */
     public function hydrate(array $row, $object)
     {
@@ -58,6 +66,12 @@ class BillHydrator extends GeneratedHydrator
         foreach ($this->issetAttributes as $attr => $class) {
             if (isset($row[$attr])) {
                 $row[$attr] = $this->hydrator->create($row[$attr], $class);
+            }
+        }
+
+        foreach ($this->nullableAttributes as $attr => $class) {
+            if (isset($row[$attr])) {
+                $row[$attr] = !empty(array_filter($row[$attr])) ? $this->hydrator->create($row[$attr], $class) : null;
             }
         }
 
