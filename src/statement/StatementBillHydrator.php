@@ -70,7 +70,7 @@ class StatementBillHydrator extends BillHydrator
     {
         return array_filter(array_merge(parent::extract($object), [
             'month'         => $this->hydrator->extract($object->getMonth()),
-            'from'          => $object->getFrom() ? $this->hydrator->extract($object->getFrom()) : null,
+            'from'          => $object->getFrom(),
             'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
             'overuse'       => $object->getOveruse() ? $this->hydrator->extract($object->getOveruse()) : null,
             'prepaid'       => $object->getPrepaid() ? $this->hydrator->extract($object->getPrepaid()) : null,
