@@ -76,7 +76,7 @@ class ChargeHydrator extends GeneratedHydrator
             'type'          => $this->hydrator->extract($object->getType()),
             'target'        => $this->hydrator->extract($object->getTarget()),
             'action'        => $this->hydrator->extract($object->getAction()),
-            'price'         => $this->hydrator->extract($object->getPrice()),
+            'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
             'usage'         => $this->hydrator->extract($object->getUsage()),
             'sum'           => $this->hydrator->extract($object->getSum()),
             'bill'          => $object->getBill() ? $this->hydrator->extract($object->getBill()) : null,
