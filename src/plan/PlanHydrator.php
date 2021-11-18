@@ -61,12 +61,17 @@ class PlanHydrator extends GeneratedHydrator
         return $plan;
     }
 
+    private bool $preventNestedCall = false;
     /**
      * {@inheritdoc}
-     * @param Plan $object
+     * @param ?Plan $object
      */
     public function extract($object)
     {
+        if ($this->preventNestedCall) {
+            return null;
+        }
+        $this->preventNestedCall = true;
         $result = array_filter([
             'id'            => $object->getId(),
             'name'          => $object->getName(),
@@ -74,9 +79,11 @@ class PlanHydrator extends GeneratedHydrator
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
             'is_grouping'   => $object instanceof GroupingPlan,
             'type'          => $object->getType() ? $this->hydrator->extract($object->getType()) : null,
+            'prices'        => $this->hydrator->extractAll($object->getPrices()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
+        $this->preventNestedCall = false;
 
         return $result;
     }
