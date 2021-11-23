@@ -23,6 +23,8 @@ use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Money\Money;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Bill Hydrator.
@@ -31,7 +33,7 @@ use Money\Money;
  */
 class BillHydrator extends GeneratedHydrator
 {
-    protected array $existingAttributes = [
+    protected array $requiredAttributes = [
         'type' => Type::class,
         'time' => DateTimeImmutable::class,
         'quantity' => Quantity::class,
@@ -39,7 +41,7 @@ class BillHydrator extends GeneratedHydrator
         'customer' => Customer::class,
     ];
 
-    protected array $issetAttributes = [
+    protected array $optionalAttributes = [
         'target' => Target::class,
         'plan' => Plan::class,
         'state' => BillState::class,
@@ -51,13 +53,17 @@ class BillHydrator extends GeneratedHydrator
      */
     public function hydrate(array $row, $object)
     {
-        foreach ($this->existingAttributes as $attr => $class) {
+        foreach ($this->requiredAttributes as $attr => $class) {
             $row[$attr] = $this->hydrator->create($row[$attr], $class);
         }
 
-        foreach ($this->issetAttributes as $attr => $class) {
+        foreach ($this->optionalAttributes as $attr => $class) {
             if (isset($row[$attr])) {
-                $row[$attr] = $this->hydrator->create($row[$attr], $class);
+                if (is_array($row[$attr]) && $this->isArrayDeeplyEmpty($row[$attr])) {
+                    $row[$attr] = null;
+                } else {
+                    $row[$attr] = $this->hydrator->create($row[$attr], $class);
+                }
             }
         }
 
@@ -82,6 +88,18 @@ class BillHydrator extends GeneratedHydrator
         }
 
         return $bill;
+    }
+
+    private function isArrayDeeplyEmpty(array $array): bool
+    {
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        foreach ($iterator as $value) {
+            if ($value !== null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

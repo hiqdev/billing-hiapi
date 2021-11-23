@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\statement;
 
+use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\statement\StatementBill;
 use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\billing\hiapi\bill\BillHydrator;
@@ -32,7 +33,7 @@ use Money\Money;
  */
 class StatementBillHydrator extends BillHydrator
 {
-    protected array $existingAttributes = [
+    protected array $requiredAttributes = [
         'type' => Type::class,
         'month' => DateTimeImmutable::class,
         'time' => DateTimeImmutable::class,
@@ -44,7 +45,7 @@ class StatementBillHydrator extends BillHydrator
         'prepaid' => Quantity::class,
     ];
 
-    protected array $issetAttributes = [
+    protected array $optionalAttributes = [
         'target' => Target::class,
         'plan' => Plan::class,
         'state' => BillState::class,
