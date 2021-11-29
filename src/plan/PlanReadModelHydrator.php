@@ -45,10 +45,14 @@ class PlanReadModelHydrator extends GeneratedHydrator
         return parent::createEmptyInstance($className, $data);
     }
 
+    /**
+     * @param PlanReadModel $object
+     * @return array
+     */
     public function extract($object)
     {
         return array_merge($this->planHydrator->extract($object), [
-            'customAttributes' => $object->customAttributes
+            'customAttributes' => $object->customAttributes,
         ]);
     }
 }
