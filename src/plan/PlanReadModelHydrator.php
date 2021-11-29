@@ -47,6 +47,8 @@ class PlanReadModelHydrator extends GeneratedHydrator
 
     public function extract($object)
     {
-        return $this->planHydrator->extract($object);
+        return array_merge($this->planHydrator->extract($object), [
+            'customAttributes' => $object->customAttributes
+        ]);
     }
 }
