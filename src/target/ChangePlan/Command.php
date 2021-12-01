@@ -59,6 +59,7 @@ class Command extends BaseCommand
 
             [['customer_username'], 'trim'],
             [['customer_username'], UsernameValidator::class],
+            [['customer_id'], IdValidator::class],
 
             [['name'], 'trim'],
 
