@@ -12,6 +12,7 @@ use hiqdev\php\billing\type\TypeInterface;
 
 final class Command extends BaseCommand
 {
+    public $customer_id;
     public $target_id;
 
     public $type_name;
@@ -24,6 +25,7 @@ final class Command extends BaseCommand
     public function rules()
     {
         return array_merge(parent::rules(), [
+            ['customer_id', IdValidator::class],
             ['target_id', IdValidator::class],
             ['type_name', RefValidator::class],
             [['target_id', 'type_name'], 'required'],
