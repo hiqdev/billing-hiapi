@@ -26,7 +26,7 @@ final class Builder
             ->take(Command::class)
             ->middlewares(
                 CustomerLoader::class,
-                PerformBillingMiddleware::class,
+//                PerformBillingMiddleware::class,
                 $build->call(Action::class)
             )
             ->return(Feature::class);
