@@ -41,9 +41,10 @@ final class Action
     public function __invoke(Command $command): FeatureInterface
     {
         $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
+
         $dto = new FeatureDto();
-        $dto->type = $command->type;
-        $dto->target = $command->target;
+        $dto->type = $command->getType();
+        $dto->target = $command->getTarget();
         $dto->starts = new DateTimeImmutable();
         $dto->amount = $command->amount;
 
