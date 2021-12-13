@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\target\Purchase;
 
-use hiapi\exceptions\NotAuthorizedException;
 use hiapi\legacy\lib\billing\plan\Forker\PlanForkerInterface;
 use hiqdev\billing\hiapi\target\RemoteTargetCreationDto;
 use hiqdev\billing\hiapi\tools\PermissionCheckerInterface;
@@ -28,6 +27,7 @@ use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\billing\usage\UsageRecorderInterface;
+use yii\web\ForbiddenHttpException;
 
 class Action
 {
@@ -95,7 +95,7 @@ class Action
             'target-id' => $target->getId(),
         ]));
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
-            throw new NotAuthorizedException('The target belongs to other client');
+            throw new ForbiddenHttpException('The target belongs to other client');
         }
     }
 
