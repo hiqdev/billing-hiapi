@@ -47,11 +47,12 @@ class PlanHydrator extends GeneratedHydrator
         if (is_array($raw_prices)) {
             $prices = [];
             foreach ($raw_prices as $key => $price) {
+                $withoutPrices = clone $plan;
                 if ($price instanceof PriceInterface) {
-                    $price->setPlan($plan);
+                    $price->setPlan($withoutPrices);
                     $prices[$key] = $price;
                 } else {
-                    $price['plan'] = $plan;
+                    $price['plan'] = $withoutPrices;
                     $prices[$key] = $this->hydrator->hydrate($price, PriceInterface::class);
                 }
             }
