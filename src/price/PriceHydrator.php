@@ -91,7 +91,7 @@ class PriceHydrator extends GeneratedHydrator
             'id'            => $object->getId(),
             'type'          => $this->hydrator->extract($object->getType()),
             'target'        => $this->hydrator->extract($object->getTarget()),
-            'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
+            'plan'          => null,
         ]);
     }
 
