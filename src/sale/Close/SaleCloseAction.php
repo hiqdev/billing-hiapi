@@ -17,10 +17,7 @@ use hiqdev\php\billing\sale\Sale;
 
 class SaleCloseAction
 {
-    /**
-     * @var SaleRepositoryInterface
-     */
-    private $repo;
+    private SaleRepositoryInterface $repo;
 
     public function __construct(SaleRepositoryInterface $repo)
     {

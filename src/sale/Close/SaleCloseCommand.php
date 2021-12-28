@@ -21,6 +21,7 @@ class SaleCloseCommand extends BaseCommand
     public $plan_id;
 
     public $target_id;
+    public $target_fullname;
 
     public $time;
 
@@ -38,7 +39,7 @@ class SaleCloseCommand extends BaseCommand
             [['plan_id'], IdValidator::class],
 
             [['target_id'], IdValidator::class],
-            [['target_id'], 'required'],
+            [['target_fullname'], 'string'],
 
             [['time'], DateTimeValidator::class],
             [['time'], 'required']
