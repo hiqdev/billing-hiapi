@@ -58,7 +58,7 @@ class Action
     {
         $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
         $target = $this->getTarget($command);
-        $plan = $this->forkPlanIfRequired($command->plan, $command->customer);
+        $plan = $this->planForker->forkPlanIfRequired($command->plan, $command->customer);
         $sale = new Sale(null, $target, $command->customer, $plan, $command->time);
 
         $saleId = $this->saleRepo->findId($sale);
@@ -120,15 +120,6 @@ class Action
         $this->targetRepo->save($target);
 
         return $target;
-    }
-
-    private function forkPlanIfRequired(PlanInterface $plan, CustomerInterface $customer): PlanInterface
-    {
-        if ($this->planForker->checkMustBeForkedOnPurchase($plan)) {
-            return $this->planForker->forkPlan($plan, $customer);
-        }
-
-        return $plan;
     }
 
     /**

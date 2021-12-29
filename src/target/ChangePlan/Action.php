@@ -149,7 +149,7 @@ class Action
         $this->strategy->ensureSaleCanBeClosedForChangeAtTime($activeSale, $effectiveDate);
 
         $activeSale->close($effectiveDate);
-        $plan = $this->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
+        $plan = $this->planForker->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
 
         $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
         try {
@@ -207,15 +207,6 @@ class Action
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
             throw new NotAuthorizedException('The target belongs to other client');
         }
-    }
-
-    private function forkPlanIfRequired(PlanInterface $plan, CustomerInterface $customer): PlanInterface
-    {
-        if ($this->planForker->checkMustBeForkedOnPurchase($plan)) {
-            return $this->planForker->forkPlan($plan, $customer);
-        }
-
-        return $plan;
     }
 
     /**
