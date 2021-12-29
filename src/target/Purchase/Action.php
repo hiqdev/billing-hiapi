@@ -81,6 +81,15 @@ class Action
         $target = $this->targetRepo->findOne($spec);
 
         if ($target === false) {
+            $spec = (new Specification)->where([
+                'type' => $command->type,
+                'remoteid' => $command->remoteid,
+                'customer_id' => $command->customer_id,
+            ]);
+            $target = $this->targetRepo->findByRemoteid($spec);
+        }
+
+        if ($target === false) {
             return $this->createTarget($command);
         }
         $this->ensureBelongs($target, $command->customer);
