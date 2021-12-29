@@ -9,16 +9,23 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
 use hiqdev\DataMapper\Query\Specification;
+use hiqdev\php\billing\target\TargetWasCreated;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class Action
 {
     private TargetFactoryInterface $targetFactory;
     private TargetRepositoryInterface $targetRepo;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(TargetRepositoryInterface $targetRepo, TargetFactoryInterface $targetFactory)
-    {
+    public function __construct(
+        TargetRepositoryInterface $targetRepo,
+        TargetFactoryInterface $targetFactory,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Command $command): Target
@@ -54,6 +61,7 @@ final class Action
 
         $target = $this->targetFactory->create($dto);
         $this->targetRepo->save($target);
+        $this->eventDispatcher->dispatch(TargetWasCreated::occurred($target));
 
         return $target;
     }

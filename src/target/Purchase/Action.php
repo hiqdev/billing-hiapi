@@ -26,17 +26,21 @@ use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\php\billing\target\TargetWasCreated;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\billing\usage\UsageRecorderInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class Action
 {
+    protected bool $targetWasCreated = false;
     private TargetRepositoryInterface $targetRepo;
     private TargetFactoryInterface $targetFactory;
     private SaleRepositoryInterface $saleRepo;
     private PlanForkerInterface $planForker;
     private PermissionCheckerInterface $permissionChecker;
     private UsageRecorderInterface $usageRecorder;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         TargetRepositoryInterface $targetRepo,
@@ -44,7 +48,8 @@ class Action
         SaleRepositoryInterface $saleRepo,
         PlanForkerInterface $planForker,
         PermissionCheckerInterface $permissionChecker,
-        UsageRecorderInterface $usageRecorder
+        UsageRecorderInterface $usageRecorder,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->targetRepo = $targetRepo;
         $this->targetFactory = $targetFactory;
@@ -52,10 +57,12 @@ class Action
         $this->planForker = $planForker;
         $this->permissionChecker = $permissionChecker;
         $this->usageRecorder = $usageRecorder;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Command $command): TargetInterface
     {
+        $this->targetWasCreated = false;
         $this->permissionChecker->ensureCustomerCan($command->customer, 'have-goods');
         $target = $this->getTarget($command);
         $plan = $this->planForker->forkPlanIfRequired($command->plan, $command->customer);
@@ -67,6 +74,10 @@ class Action
         }
 
         $this->saleRepo->save($sale);
+
+        if ($this->targetWasCreated) {
+            $this->eventDispatcher->dispatch(TargetWasCreated::occurred($target));
+        }
         $this->saveInitialUses($sale, $command->initial_uses);
 
         return $target;
@@ -118,6 +129,7 @@ class Action
 
         $target = $this->targetFactory->create($dto);
         $this->targetRepo->save($target);
+        $this->targetWasCreated = true;
 
         return $target;
     }
