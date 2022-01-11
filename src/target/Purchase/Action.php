@@ -95,7 +95,7 @@ class Action
             $spec = (new Specification)->where([
                 'type' => $command->type,
                 'remoteid' => $command->remoteid,
-                'customer_id' => $command->customer_id ?? $command->customer->getId(),
+                'customer_id' => $command->customer->getId(),
             ]);
             $target = $this->targetRepo->findByRemoteid($spec);
         }
