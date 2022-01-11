@@ -80,6 +80,7 @@ class StatementHydrator extends GeneratedHydrator
     public function extract($object)
     {
         return array_filter([
+            'customer'      => $this->hydrator->extract($object->getCustomer()),
             'period'        => $object->getPeriod(),
             'time'          => $this->hydrator->extract($object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
