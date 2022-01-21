@@ -11,6 +11,7 @@
 namespace hiqdev\billing\hiapi\bill;
 
 use DateTimeImmutable;
+use hiqdev\billing\hiapi\Http\Serializer\HttpSerializer;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillRequisite;
@@ -25,6 +26,8 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Money\Money;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
+use yii\web\User;
+use Zend\Hydrator\HydratorInterface;
 
 /**
  * Bill Hydrator.
@@ -47,6 +50,15 @@ class BillHydrator extends GeneratedHydrator
         'state' => BillState::class,
         'requisite' => BillRequisite::class,
     ];
+    private HttpSerializer $httpSerializer;
+
+    public function __construct(HydratorInterface $hydrator, HttpSerializer $httpSerializer)
+    {
+        parent::__construct($hydrator);
+
+        $this->httpSerializer = $httpSerializer;
+    }
+
     /**
      * {@inheritdoc}
      * @param object|Bill $object
@@ -118,7 +130,17 @@ class BillHydrator extends GeneratedHydrator
             'requisite'     => $object->getRequisite() ? $this->hydrator->extract($object->getRequisite()) : null,
             'target'        => $object->getTarget() ? $this->hydrator->extract($object->getTarget()) : null,
             'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
-            'charges'       => $this->hydrator->extractAll($object->getCharges()),
+            'charges'       => $this->httpSerializer->ensurePermissionBeforeCall(
+                function (User $user) use ($object) {
+                    $plan = $object->getPlan();
+                    if ($plan && $plan->getType()->getName() === 'server') {
+                        return $user->can('bill.see-server-charges');
+                    }
+
+                    return true;
+                },
+                fn() => $this->hydrator->extractAll($object->getCharges()), []
+            ),
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
         ], static function ($value): bool {
             return $value !== null;
