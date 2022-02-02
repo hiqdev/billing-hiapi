@@ -130,7 +130,7 @@ class BillHydrator extends GeneratedHydrator
             'requisite'     => $object->getRequisite() ? $this->hydrator->extract($object->getRequisite()) : null,
             'target'        => $object->getTarget() ? $this->hydrator->extract($object->getTarget()) : null,
             'plan'          => $object->getPlan() ? $this->hydrator->extract($object->getPlan()) : null,
-            'charges'       => $this->httpSerializer->ensurePermissionBeforeCall(
+            'charges'       => $this->httpSerializer->ensureBeforeCall(
                 function (User $user) use ($object) {
                     $plan = $object->getPlan();
                     if ($plan && $plan->getType()->getName() === 'server') {
