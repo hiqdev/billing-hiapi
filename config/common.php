@@ -9,6 +9,7 @@
  */
 
 $singletons = [
+    \hiqdev\billing\hiapi\Http\Serializer\HttpSerializer::class => \hiqdev\billing\hiapi\Http\Serializer\HttpSerializer::class,
     \hiqdev\DataMapper\Repository\EntityManagerInterface::class => [
         'repositories' => [
             \DateTimeImmutable::class => \hiqdev\billing\hiapi\vo\DateTimeImmutableRepository::class,
