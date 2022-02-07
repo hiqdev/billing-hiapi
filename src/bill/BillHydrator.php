@@ -63,7 +63,7 @@ class BillHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Bill $object
      */
-    public function hydrate(array $row, $object)
+    public function hydrate(array $row, $object): object
     {
         foreach ($this->requiredAttributes as $attr => $class) {
             $row[$attr] = $this->hydrator->create($row[$attr], $class);
@@ -116,9 +116,9 @@ class BillHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Bill $object
+     * @param array
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter([
             'id'            => $object->getId(),

@@ -38,7 +38,7 @@ final class HttpSerializer implements ExtractionInterface
 
     private bool $isRunning = false;
 
-    public function extract($object)
+    public function extract(object $object): array
     {
         $wasRunning = $this->isRunning;
         $this->isRunning = true;

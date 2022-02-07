@@ -24,7 +24,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class SaleHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $data['target']     = $this->hydrateChild($data['target'] ?? null, TargetInterface::class);
         $data['customer']   = $this->hydrateChild($data['customer'], CustomerInterface::class);
@@ -46,7 +46,7 @@ class SaleHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Sale $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter([
             'id'        => $object->getId(),

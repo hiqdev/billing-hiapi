@@ -23,7 +23,7 @@ class SinglePriceHydrator extends PriceHydrator
      * {@inheritdoc}
      * @param object|Plan $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_merge(parent::extract($object), array_filter([
             'prepaid'       => $this->hydrator->extract($object->getPrepaid()),

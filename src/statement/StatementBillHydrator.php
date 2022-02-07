@@ -52,22 +52,12 @@ class StatementBillHydrator extends BillHydrator
         'requisite' => BillRequisite::class,
         'tariff_type' => Type::class,
     ];
-    /**
-     * {@inheritdoc}
-     * @param object|Bill $object
-     */
-    public function hydrate(array $row, $object)
-    {
-
-        /** @var StatementBill $bill */
-        return parent::hydrate($row, $object);
-    }
 
     /**
      * {@inheritdoc}
      * @param object|StatementBill $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter(array_merge(parent::extract($object), [
             'month'         => $this->hydrator->extract($object->getMonth()),

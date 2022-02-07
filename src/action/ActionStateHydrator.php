@@ -20,7 +20,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class ActionStateHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         return ActionState::fromString($data['state'] ?? reset($data));
     }
@@ -28,8 +28,8 @@ class ActionStateHydrator extends GeneratedHydrator
     /**
      * @param ActionState $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
-        return $object->getName();
+        return ['name' => $object->getName()];
     }
 }

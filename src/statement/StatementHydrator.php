@@ -75,9 +75,9 @@ class StatementHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Bill $object
+     * @param object $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter([
             'customer'      => $this->hydrator->extract($object->getCustomer()),

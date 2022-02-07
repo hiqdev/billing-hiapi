@@ -25,7 +25,7 @@ class FeatureHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Feature $object
      */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $data['target'] = $this->hydrator->create($data['target'], Target::class);
         $data['type'] = $this->hydrator->create($data['type'], Type::class);
@@ -41,7 +41,7 @@ class FeatureHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Feature $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return [
             'id'   => $object->getId(),

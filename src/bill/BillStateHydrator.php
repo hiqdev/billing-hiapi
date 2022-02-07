@@ -20,7 +20,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class BillStateHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         return BillState::fromString($data['state'] ?? reset($data));
     }
@@ -29,8 +29,8 @@ class BillStateHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param BillState $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
-        return $object->getName();
+        return ['name' => $object->getName()];
     }
 }

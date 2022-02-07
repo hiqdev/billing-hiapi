@@ -32,7 +32,7 @@ use Money\Money;
 class ChargeHydrator extends GeneratedHydrator
 {
     /** {@inheritdoc} */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $data['type']   = $this->hydrator->create($data['type'], Type::class);
         $data['target'] = $this->hydrator->create($data['target'], Target::class);
@@ -67,9 +67,9 @@ class ChargeHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Charge $object
+     * @param array
      */
-    public function extract($object)
+    public function extract($object): array
     {
         $result = array_filter([
             'id'            => $object->getId(),

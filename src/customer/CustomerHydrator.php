@@ -25,7 +25,7 @@ class CustomerHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Customer $object
      */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         if (!empty($data['seller'])) {
             $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
@@ -38,7 +38,7 @@ class CustomerHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Customer $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return [
             'id'            => $object->getId(),

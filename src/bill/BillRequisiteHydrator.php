@@ -24,7 +24,7 @@ class BillRequisiteHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param BillRequisite $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter([
             'id' => $object->getId(),

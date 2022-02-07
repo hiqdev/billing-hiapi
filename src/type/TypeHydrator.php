@@ -25,7 +25,7 @@ class TypeHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Type $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         $result = array_filter([
             'id'            => $object->getId(),

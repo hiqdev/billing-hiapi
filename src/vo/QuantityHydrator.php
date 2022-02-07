@@ -20,7 +20,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class QuantityHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         return Quantity::create($data['unit'], $data['quantity']);
     }
@@ -29,7 +29,7 @@ class QuantityHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Quantity $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return [
             'unit'      => $object->getUnit()->getName(),

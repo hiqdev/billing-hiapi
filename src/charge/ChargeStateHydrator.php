@@ -20,7 +20,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class ChargeStateHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         return ChargeState::fromString($data['state'] ?? reset($data));
     }

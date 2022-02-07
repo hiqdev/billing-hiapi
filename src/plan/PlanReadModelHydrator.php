@@ -22,7 +22,7 @@ class PlanReadModelHydrator extends GeneratedHydrator
         $this->planHydrator = $planHydrator;
     }
 
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $plan = $this->planHydrator->hydrate($data, $object);
 
@@ -49,7 +49,7 @@ class PlanReadModelHydrator extends GeneratedHydrator
      * @param PlanReadModel $object
      * @return array
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_merge($this->planHydrator->extract($object), [
             'customAttributes' => $object->customAttributes,

@@ -29,7 +29,7 @@ class PlanHydrator extends GeneratedHydrator
      * @param object|Plan $object
      * @throws \Exception
      */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         if (!empty($data['seller'])) {
             $data['seller'] = $this->hydrator->hydrate($data['seller'], Customer::class);
@@ -66,10 +66,11 @@ class PlanHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param ?Plan $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
+        $result = [];
         if ($this->preventNestedCall) {
-            return null;
+            return $result;
         }
         $this->preventNestedCall = true;
         $result = array_filter([

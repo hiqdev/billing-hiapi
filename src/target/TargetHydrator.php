@@ -36,9 +36,9 @@ class TargetHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Target $object
+     * @param object $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         $data = [
             'id'            => $this->extractNone($object->getId()),
@@ -64,7 +64,7 @@ class TargetHydrator extends GeneratedHydrator
     }
 
     /** {@inheritdoc} */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         if (!empty($data['type'])) {
             $data['type'] = $this->targetFactory->shortenType($data['type']);

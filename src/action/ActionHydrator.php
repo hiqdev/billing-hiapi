@@ -28,7 +28,7 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 class ActionHydrator extends GeneratedHydrator
 {
     /** {@inheritdoc} */
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $data['type']       = $this->hydrator->create($data['type'] ?? null, Type::class);
         $data['target']     = $this->hydrator->create($data['target'] ?? null, Target::class);
@@ -50,9 +50,9 @@ class ActionHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Action $object
+     * @param object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         $result = array_filter([
             'id'            => $object->getId(),

@@ -21,7 +21,7 @@ use Money\Money;
  */
 class MoneyHydrator extends GeneratedHydrator
 {
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         $currency = new Currency(strtoupper($data['currency']));
 
@@ -32,7 +32,7 @@ class MoneyHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object|Money $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return [
             'currency'  => $object->getCurrency()->getCode(),

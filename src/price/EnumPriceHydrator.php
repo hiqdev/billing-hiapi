@@ -19,9 +19,9 @@ class EnumPriceHydrator extends PriceHydrator
 {
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param object $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_merge(parent::extract($object), array_filter([
             'unit'          => $this->hydrator->extract($object->getUnit()),

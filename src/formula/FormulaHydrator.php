@@ -35,7 +35,7 @@ class FormulaHydrator extends GeneratedHydrator
         $this->formulaEngine = $formulaEngine;
     }
 
-    public function hydrate(array $data, $object)
+    public function hydrate(array $data, $object): object
     {
         /// XXX actual data setting in createEmptyInstance
         return $object;
@@ -45,7 +45,7 @@ class FormulaHydrator extends GeneratedHydrator
      * {@inheritdoc}
      * @param object $object
      */
-    public function extract($object)
+    public function extract($object): array
     {
         return array_filter([
             'text'  => (string) $object,
