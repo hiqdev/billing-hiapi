@@ -10,7 +10,6 @@
 
 namespace hiqdev\billing\hiapi\target;
 
-use hiapi\Core\Auth\AuthRule;
 use hiapi\exceptions\domain\ValidationException;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
