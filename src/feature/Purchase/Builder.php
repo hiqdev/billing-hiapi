@@ -10,6 +10,7 @@ use hiapi\Core\Endpoint\EndpointBuilder;
 use hiapi\endpoints\Module\Multitenant\Tenant;
 use hiqdev\billing\hiapi\customer\CustomerLoader;
 use hiqdev\billing\hiapi\feature\Feature;
+use hiqdev\billing\hiapi\target\TargetLoader;
 use hiqdev\billing\hiapi\tools\PerformBillingMiddleware;
 
 final class Builder
@@ -27,6 +28,10 @@ final class Builder
                      ->take(Command::class)
                      ->middlewares(
                          CustomerLoader::class,
+                         [
+                             '__class' => TargetLoader::class,
+                             'isRequired' => true,
+                         ],
                          [
                              '__class'     => PerformBillingMiddleware::class,
                              'checkCredit' => false,

@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiapi\Core\Auth\AuthRule;
 use hiapi\exceptions\domain\ValidationException;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
@@ -78,6 +79,8 @@ class TargetLoader implements Middleware
 
     private function findTargetByArray(array $cond)
     {
+        $cond += [AuthRule::currentUser()];
+
         return $this->repo->findOne((new Specification)->where($cond)) ?: null;
     }
 }
