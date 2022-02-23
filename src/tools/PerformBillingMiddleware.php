@@ -17,12 +17,13 @@ use League\Tactician\Middleware;
 
 class PerformBillingMiddleware implements Middleware
 {
-    private CreditCheckerInterface $checker;
+    public bool $checkCredit = true;
+    private CreditCheckerInterface $creditChecker;
     private BillingInterface $billing;
 
-    public function __construct(CreditCheckerInterface $checker, BillingInterface $billing)
+    public function __construct(CreditCheckerInterface $creditChecker, BillingInterface $billing)
     {
-        $this->checker = $checker;
+        $this->creditChecker = $creditChecker;
         $this->billing = $billing;
     }
 
@@ -34,7 +35,9 @@ class PerformBillingMiddleware implements Middleware
     public function execute($command, callable $next)
     {
         $actions = $command->getActions();
-        $this->checker->check($actions);
+        if ($this->checkCredit) {
+            $this->creditChecker->check($actions);
+        }
         $this->reserveBalanceAmount();
 
         $res = $next($command);
