@@ -31,9 +31,12 @@ final class TypeSemantics
         'vps',
     ];
 
-    private const ONCE_PER_MONTH_ITEMS = [
-        'certificate_purchase',
-        'certificate_renewal',
+    private const ONCE_PER_MONTH_TYPES = [
+        'certificate,certificate_purchase',
+        'certificate,certificate_renewal',
+        'domain,dregistration',
+        'domain,drenewal',
+        'domain,dtransfer',
     ];
 
     /**
@@ -57,7 +60,7 @@ final class TypeSemantics
 
     public function isOncePerMonth(TypeInterface $type): bool
     {
-        return in_array($this->localName($type), self::ONCE_PER_MONTH_ITEMS);
+        return in_array($type->getName(), self::ONCE_PER_MONTH_TYPES, true);
     }
 
     public function isHardware(TypeInterface $type): bool
