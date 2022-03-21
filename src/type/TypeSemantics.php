@@ -20,6 +20,7 @@ final class TypeSemantics
     private const DISCOUNT = 'discount';
     private const DEPOSIT  = 'deposit';
     private const HARDWARE = 'hardware';
+
     private const NOT_ALLOWED_GENERALIZE_ITEMS = [
         'storage',
         'private_cloud',
@@ -28,6 +29,11 @@ final class TypeSemantics
         'cdn_traf_max',
         'cdn_traf95_max',
         'vps',
+    ];
+
+    private const ONCE_PER_MONTH_ITEMS = [
+        'certificate_purchase',
+        'certificate_renewal',
     ];
 
     /**
@@ -47,6 +53,11 @@ final class TypeSemantics
     {
         return $this->isMonthly($type)
             && !in_array($this->localName($type), self::NOT_ALLOWED_GENERALIZE_ITEMS, true);
+    }
+
+    public function isOncePerMonth(TypeInterface $type): bool
+    {
+        return in_array($this->localName($type), self::ONCE_PER_MONTH_ITEMS);
     }
 
     public function isHardware(TypeInterface $type): bool
