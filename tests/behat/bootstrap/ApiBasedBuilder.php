@@ -195,7 +195,8 @@ class ApiBasedBuilder implements BuilderInterface
                 'sale_time' => $time,
             ]);
         } elseif ($class === 'class' && $name === 'certificate') {
-            $this->makeAsCustomer('SaleCreate', [
+            $this->makeAsReseller('SaleCreate', [
+                'customer_username' => 'hipanel_test_user',
                 'target_type' => $class,
                 'target_name' => $name,
                 'plan_id' => $plan['id'],
