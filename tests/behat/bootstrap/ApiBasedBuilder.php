@@ -194,8 +194,9 @@ class ApiBasedBuilder implements BuilderInterface
                 'plan_id' => $plan['id'],
                 'sale_time' => $time,
             ]);
-        } elseif ($class === 'class' && $name === 'certificate') {
-            $this->makeAsCustomer('SaleCreate', [
+        } elseif ($class === 'class' && in_array($name, ['zone','certificate'], true)) {
+            $this->makeAsReseller('SaleCreate', [
+                'customer_username' => 'hipanel_test_user',
                 'target_type' => $class,
                 'target_name' => $name,
                 'plan_id' => $plan['id'],
@@ -246,7 +247,7 @@ class ApiBasedBuilder implements BuilderInterface
             'with' => ['charges'],
             'where' => [
                 'customer-login' => 'hipanel_test_user',  /// XXX to be removed!
-                'type-name' => $params['tpe'],
+                'type-name' => $params['type'],
                 'target-type' => $target->getType(),
                 'target-name' => $target->getName(),
                 'time' => $params['time'] ?? null,
@@ -307,6 +308,11 @@ class ApiBasedBuilder implements BuilderInterface
     public function flushEntitiesCache(): void
     {
         $this->factory->clearEntitiesCache();
+    }
+
+    public function flushEntitiesCacheByType(string $type): void
+    {
+        $this->factory->clearEntitiesCacheByType($type);
     }
 
     public function setConsumption(string $type, int $amount, string $unit, string $target, string $time): void

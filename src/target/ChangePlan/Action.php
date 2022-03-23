@@ -147,16 +147,19 @@ class Action
     private function schedulePlanChange(SaleInterface $activeSale, DateTimeImmutable $effectiveDate, PlanInterface $newPlan): ?TargetInterface
     {
         $this->strategy->ensureSaleCanBeClosedForChangeAtTime($activeSale, $effectiveDate);
-
         $activeSale->close($effectiveDate);
-        $plan = $this->planForker->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
 
-        $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
         try {
-            $this->connection->transaction(function () use ($activeSale, $sale) {
+            $sale = $this->connection->transaction(function () use ($activeSale, $newPlan, $effectiveDate) {
+                $plan = $this->planForker->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
+                $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
                 $this->saleRepo->save($activeSale);
                 $this->saleRepo->save($sale);
+
+                return $sale;
             });
+
+            return $sale->getTarget();
         } catch (InvariantException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
@@ -164,7 +167,6 @@ class Action
             throw new RuntimeException('Failed to schedule a plan change');
         }
 
-        return $sale->getTarget();
     }
 
     private function tryToChangeScheduledPlanChange(

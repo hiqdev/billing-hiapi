@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED);
 
 $autoload = __DIR__ . '/../vendor/autoload.php';
 if (!file_exists($autoload)) {

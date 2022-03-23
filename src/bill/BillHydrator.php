@@ -133,7 +133,7 @@ class BillHydrator extends GeneratedHydrator
             'charges'       => $this->httpSerializer->ensureBeforeCall(
                 function (User $user) use ($object) {
                     $plan = $object->getPlan();
-                    if ($plan && $plan->getType()->getName() === 'server') {
+                    if ($plan && $plan->getType() && in_array($plan->getType()->getName(), ['server', 'private_cloud'])) {
                         return $user->can('bill.see-server-charges');
                     }
 

@@ -79,6 +79,8 @@ class TargetLoader implements Middleware
 
     private function findTargetByArray(array $cond)
     {
+        $cond += [AuthRule::currentUser()];
+
         return $this->repo->findOne((new Specification)->where($cond)) ?: null;
     }
 }

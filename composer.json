@@ -44,9 +44,9 @@
         }
     ],
     "require": {
-        "hiqdev/hiapi": "dev-php8",
+        "hiqdev/hiapi": "dev-master",
         "lcobucci/content-negotiation-middleware": "^3.0",
-        "hiqdev/php-billing": "dev-php8",
+        "hiqdev/php-billing": "dev-master",
         "woohoolabs/yin": "^4.1",
         "hoa/ruler": "^2.17"
     },

@@ -33,6 +33,15 @@ class Generalizer extends \hiqdev\php\billing\charge\Generalizer
         $this->typeSemantics = $typeSemantics;
     }
 
+    public function generalizeTime(ChargeInterface $charge): \DateTimeImmutable
+    {
+        $time = $charge->getAction()->getTime();
+        if ($this->typeSemantics->isOncePerMonth($charge->getType())) {
+            $time = $time->modify('first day of this month midnight');
+        }
+        return $time;
+    }
+
     public function generalizeType(ChargeInterface $charge): TypeInterface
     {
         if ($this->typeSemantics->isDeposit($charge->getType())) {
