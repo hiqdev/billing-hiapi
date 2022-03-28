@@ -37,6 +37,10 @@ final class TypeSemantics
         'domain,dregistration',
         'domain,drenewal',
         'domain,dtransfer',
+        'feature,premium_dns_purchase',
+        'feature,premium_dns_renew',
+        'feature,whois_protect_purchase',
+        'feature,whois_protect_renew',
     ];
 
     /**
