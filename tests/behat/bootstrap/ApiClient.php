@@ -39,7 +39,7 @@ class ApiClient
         $dir = dirname(__DIR__, 6);
         $pathToYii = $dir . '/vendor/yiisoft/yii2/Yii.php';
         require_once $pathToYii;
-        (new Dotenv($dir))->load();
+        (Dotenv::createImmutable($dir))->load();
         if (empty($_ENV['HIART_BASEURI'])) {
             throw new Exception('HIART_BASEURI must be set in environment');
         }
