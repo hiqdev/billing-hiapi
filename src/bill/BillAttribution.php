@@ -28,6 +28,7 @@ class BillAttribution extends AbstractAttribution
         return [
             'id'        => IntegerAttribute::class,
             'time'      => DateTimeAttribute::class,
+            'comment'   => StringAttribute::class,
         ];
     }
 
