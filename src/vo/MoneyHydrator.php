@@ -25,7 +25,7 @@ class MoneyHydrator extends GeneratedHydrator
     {
         $currency = new Currency(strtoupper($data['currency']));
 
-        return new Money($data['amount'], $currency);
+        return new Money($data['amount'] ?? '0', $currency);
     }
 
     /**
