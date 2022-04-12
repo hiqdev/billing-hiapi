@@ -23,11 +23,13 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Money\Money;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use yii\web\User;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Bill Hydrator.
@@ -52,11 +54,11 @@ class BillHydrator extends GeneratedHydrator
     ];
     private HttpSerializer $httpSerializer;
 
-    public function __construct(HydratorInterface $hydrator, HttpSerializer $httpSerializer)
+    public function __construct(HttpSerializer $httpSerializer)
     {
-        parent::__construct($hydrator);
-
         $this->httpSerializer = $httpSerializer;
+
+        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
     }
 
     /**
@@ -116,14 +118,14 @@ class BillHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param array
+     * @param object|Bill $object
      */
     public function extract($object): array
     {
         return array_filter([
             'id'            => $object->getId(),
             'type'          => $this->hydrator->extract($object->getType()),
-            'time'          => $this->hydrator->extract($object->getTime()),
+            'time'          => $this->extractValue('time', $object->getTime()),
             'sum'           => $this->hydrator->extract($object->getSum()),
             'quantity'      => $this->hydrator->extract($object->getQuantity()),
             'customer'      => $this->hydrator->extract($object->getCustomer()),
@@ -148,7 +150,7 @@ class BillHydrator extends GeneratedHydrator
         }, ARRAY_FILTER_USE_BOTH);
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if ($className === BillInterface::class) {
             $className = Bill::class;

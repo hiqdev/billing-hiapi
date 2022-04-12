@@ -13,7 +13,7 @@ namespace hiqdev\billing\hiapi\formula;
 use hiqdev\php\billing\formula\FormulaEngine;
 use hiqdev\php\billing\formula\FormulaEngineInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 /**
  * Formula Hydrator.
@@ -27,11 +27,8 @@ class FormulaHydrator extends GeneratedHydrator
      */
     protected $formulaEngine;
 
-    public function __construct(
-        HydratorInterface $hydrator,
-        FormulaEngineInterface $formulaEngine
-    ) {
-        parent::__construct($hydrator);
+    public function __construct(FormulaEngineInterface $formulaEngine)
+    {
         $this->formulaEngine = $formulaEngine;
     }
 

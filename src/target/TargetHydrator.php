@@ -14,7 +14,7 @@ use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 /**
  * Class TargetHydrator.
@@ -28,9 +28,8 @@ class TargetHydrator extends GeneratedHydrator
      */
     private $targetFactory;
 
-    public function __construct(HydratorInterface $hydrator, TargetFactoryInterface $targetFactory)
+    public function __construct(TargetFactoryInterface $targetFactory)
     {
-        parent::__construct($hydrator);
         $this->targetFactory = $targetFactory;
     }
 
@@ -73,7 +72,7 @@ class TargetHydrator extends GeneratedHydrator
         return parent::hydrate($data, $object);
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if (isset($data['type'])) {
             $className = $this->targetFactory->getClassForType($data['type']);

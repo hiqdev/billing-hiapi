@@ -18,6 +18,9 @@ use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\php\billing\statement\Statement;
 use hiqdev\php\billing\plan\PlanInterface;
 use DateTimeImmutable;
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Money\Money;
 
 /**
@@ -27,16 +30,22 @@ use Money\Money;
  */
 class StatementHydrator extends GeneratedHydrator
 {
+    public function __construct()
+    {
+        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        $this->addStrategy('month', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+    }
+
     /**
      * {@inheritdoc}
      * @param object|Statement $object
      */
     public function hydrate(array $row, $object)
     {
-        $row['time']        = $this->hydrator->create($row['time'],     DateTimeImmutable::class);
+        $row['time']        = $this->hydrateValue('time', $row['time']);
         $row['balance']     = $this->hydrator->create($row['balance'],  Money::class);
         $row['customer']    = $this->hydrator->create($row['customer'], CustomerInterface::class);
-        $row['month']       = $this->hydrator->create($row['month'],    DateTimeImmutable::class);
+        $row['month']        = $this->hydrateValue('month', $row['month']);
         $row['total']       = $this->hydrator->create($row['total'],    Money::class);
         $row['payment']     = $this->hydrator->create($row['payment'],  Money::class);
         $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
@@ -75,16 +84,16 @@ class StatementHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object $object
+     * @param object|Statement $object
      */
     public function extract($object): array
     {
         return array_filter([
             'customer'      => $this->hydrator->extract($object->getCustomer()),
             'period'        => $object->getPeriod(),
-            'time'          => $this->hydrator->extract($object->getTime()),
+            'time'          => $this->extractValue('time', $object->getTime()),
             'balance'       => $this->hydrator->extract($object->getBalace()),
-            'month'         => $this->hydrator->extract($object->getMonth()),
+            'month'         => $this->extractValue('month', $object->getMonth()),
             'total'         => $this->hydrator->extract($object->getTotal()),
             'payment'       => $this->hydrator->extract($object->getPayment()),
             'amount'        => $this->hydrator->extract($object->getAmount()),

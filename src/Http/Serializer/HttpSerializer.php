@@ -5,8 +5,8 @@ namespace hiqdev\billing\hiapi\Http\Serializer;
 
 use Closure;
 use yii\web\User;
-use Zend\Hydrator\ExtractionInterface;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\ExtractionInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 /**
  * Class HttpSerializer implements ExtractionInterface and should be used

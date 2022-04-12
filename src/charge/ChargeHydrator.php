@@ -93,7 +93,7 @@ class ChargeHydrator extends GeneratedHydrator
      * @throws \ReflectionException
      * @return object
      */
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         return parent::createEmptyInstance(Charge::class, $data);
     }

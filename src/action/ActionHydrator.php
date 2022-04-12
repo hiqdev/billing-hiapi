@@ -19,6 +19,9 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 
 /**
  * Action Hydrator.
@@ -27,6 +30,11 @@ use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
  */
 class ActionHydrator extends GeneratedHydrator
 {
+    public function __construct()
+    {
+        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+    }
+
     /** {@inheritdoc} */
     public function hydrate(array $data, $object): object
     {
@@ -34,7 +42,7 @@ class ActionHydrator extends GeneratedHydrator
         $data['target']     = $this->hydrator->create($data['target'] ?? null, Target::class);
         $data['quantity']   = $this->hydrator->create($data['quantity'], Quantity::class);
         $data['customer']   = $this->hydrator->create($data['customer'], Customer::class);
-        $data['time']       = $this->hydrator->create($data['time'], DateTimeImmutable::class);
+        $data['time']       = $this->hydrateValue('time', $data['time']);
         if (isset($data['sale'])) {
             $data['sale']   = $this->hydrator->create($data['sale'], Sale::class);
         }
@@ -50,7 +58,7 @@ class ActionHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object
+     * @param Action $object
      */
     public function extract($object): array
     {
@@ -60,7 +68,7 @@ class ActionHydrator extends GeneratedHydrator
             'target'        => $this->hydrator->extract($object->getTarget()),
             'quantity'      => $this->hydrator->extract($object->getQuantity()),
             'customer'      => $this->hydrator->extract($object->getCustomer()),
-            'time'          => $this->hydrator->extract($object->getTime()),
+            'time'          => $this->extractValue('time', $object->getTime()),
             'sale'          => $object->getSale() ? $this->hydrator->extract($object->getSale()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
@@ -71,7 +79,7 @@ class ActionHydrator extends GeneratedHydrator
         return $result;
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         return parent::createEmptyInstance(Action::class, $data);
     }

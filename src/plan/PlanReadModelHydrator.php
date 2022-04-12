@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace hiqdev\billing\hiapi\plan;
 
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 /**
  * Class PlanReadModelHydrator hydrates {@see PlanReadModel}
@@ -15,10 +15,8 @@ class PlanReadModelHydrator extends GeneratedHydrator
 {
     private PlanHydrator $planHydrator;
 
-    public function __construct(HydratorInterface $hydrator, PlanHydrator $planHydrator)
+    public function __construct(PlanHydrator $planHydrator)
     {
-        parent::__construct($hydrator);
-
         $this->planHydrator = $planHydrator;
     }
 
@@ -40,7 +38,7 @@ class PlanReadModelHydrator extends GeneratedHydrator
         return parent::hydrate($additionalData, $plan);
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         return parent::createEmptyInstance($className, $data);
     }
