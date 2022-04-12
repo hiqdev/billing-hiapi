@@ -22,7 +22,7 @@ use hiqdev\php\billing\type\TypeInterface;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\QuantityInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 class PaidCommand extends BaseCommand implements PaidCommandInterface
 {

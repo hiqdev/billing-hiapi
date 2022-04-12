@@ -71,7 +71,7 @@ class StatementBillHydrator extends BillHydrator
         }, ARRAY_FILTER_USE_BOTH);
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if ($className === StatementBillInterface::class) {
             $className = StatementBill::class;

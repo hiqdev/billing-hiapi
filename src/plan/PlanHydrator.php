@@ -93,7 +93,7 @@ class PlanHydrator extends GeneratedHydrator
      * @throws \ReflectionException
      * @return object
      */
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if (isset($data['is_grouping']) && $data['is_grouping'] === true) {
             $className = GroupingPlan::class;

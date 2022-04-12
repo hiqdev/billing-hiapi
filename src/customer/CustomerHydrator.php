@@ -47,7 +47,7 @@ class CustomerHydrator extends GeneratedHydrator
         ];
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if ($className === CustomerInterface::class) {
             $className = Customer::class;

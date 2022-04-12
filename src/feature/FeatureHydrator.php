@@ -15,12 +15,22 @@ use DateTimeImmutable;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
+use Laminas\Hydrator\Strategy\NullableStrategy;
 
 /**
  * Class FeatureHydrator.
  */
 class FeatureHydrator extends GeneratedHydrator
 {
+    public function __construct()
+    {
+        $this->addStrategy('starts', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        $this->addStrategy('expires', new NullableStrategy(new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy())));
+    }
+
     /**
      * {@inheritdoc}
      * @param object|Feature $object
@@ -29,9 +39,9 @@ class FeatureHydrator extends GeneratedHydrator
     {
         $data['target'] = $this->hydrator->create($data['target'], Target::class);
         $data['type'] = $this->hydrator->create($data['type'], Type::class);
-        $data['starts'] = $this->hydrator->create($data['starts'], DateTimeImmutable::class);
+        $data['starts'] = $this->hydrateValue('starts', $data['starts']);
         if (!empty($data['expires'])) {
-            $data['expires'] = $this->hydrator->create($data['expires'], DateTimeImmutable::class);
+            $data['expires'] = $this->hydrateValue('expires', $data['expires']);
         }
 
         return parent::hydrate($data, $object);
@@ -46,8 +56,8 @@ class FeatureHydrator extends GeneratedHydrator
         return [
             'id'   => $object->getId(),
             'type' => $this->hydrator->extract($object->type()),
-            'starts' => $object->starts() ? $object->starts()->format(DATE_ATOM) : null,
-            'expires' => $object->expires() ? $object->expires()->format(DATE_ATOM) : null,
+            'starts' => $this->extractValue('starts', $object->starts()),
+            'expires' => $this->extractValue('expires', $object->expires()),
             'target' => $this->hydrator->extract($object->target()),
         ];
     }

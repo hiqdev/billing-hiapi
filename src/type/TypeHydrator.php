@@ -35,7 +35,7 @@ class TypeHydrator extends GeneratedHydrator
         return $result;
     }
 
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if ($className === TypeInterface::class) {
             $className = Type::class;

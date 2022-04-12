@@ -14,7 +14,7 @@ namespace hiqdev\billing\hiapi\action\CheckCredit;
 use hiqdev\billing\hiapi\action\Calculate\PaidCommandInterface;
 use hiqdev\billing\hiapi\tools\CreditCheckerInterface;
 use League\Tactician\Middleware;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 class CheckCreditMiddleware implements Middleware
 {

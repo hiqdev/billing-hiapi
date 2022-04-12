@@ -19,10 +19,10 @@ use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
+use Laminas\Hydrator\HydratorInterface;
 use Money\Currency;
 use Money\Money;
 use yii\helpers\Json;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Class PriceHydrator.
@@ -36,11 +36,8 @@ class PriceHydrator extends GeneratedHydrator
      */
     protected $priceFactory;
 
-    public function __construct(
-        HydratorInterface $hydrator,
-        PriceFactoryInterface $priceFactory
-    ) {
-        parent::__construct($hydrator);
+    public function __construct(PriceFactoryInterface $priceFactory)
+    {
         $this->priceFactory = $priceFactory;
     }
 
@@ -99,7 +96,7 @@ class PriceHydrator extends GeneratedHydrator
      * @throws \ReflectionException
      * @return object
      */
-    public function createEmptyInstance(string $className, array $data = [])
+    public function createEmptyInstance(string $className, array $data = []): object
     {
         if (isset($data['data']) && !is_array($data['data'])) {
             $additionalData = Json::decode($data['data']);
