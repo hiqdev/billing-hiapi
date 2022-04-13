@@ -62,29 +62,36 @@ class BillHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
+     * @param array $data
      * @param object|Bill $object
+     * @return object
+     * @throws \Exception
      */
-    public function hydrate(array $row, $object): object
+    public function hydrate(array $data, $object): object
     {
         foreach ($this->requiredAttributes as $attr => $class) {
-            $row[$attr] = $this->hydrator->create($row[$attr], $class);
+            if ($attr === 'time') {
+                $data[$attr] = $this->hydrateValue($attr, $data[$attr]);
+            } else {
+                $data[$attr] = $this->hydrator->create($data[$attr], $class);
+            }
         }
 
         foreach ($this->optionalAttributes as $attr => $class) {
-            if (isset($row[$attr])) {
-                if (is_array($row[$attr]) && $this->isArrayDeeplyEmpty($row[$attr])) {
-                    $row[$attr] = null;
+            if (isset($data[$attr])) {
+                if (is_array($data[$attr]) && $this->isArrayDeeplyEmpty($data[$attr])) {
+                    $data[$attr] = null;
                 } else {
-                    $row[$attr] = $this->hydrator->create($row[$attr], $class);
+                    $data[$attr] = $this->hydrator->create($data[$attr], $class);
                 }
             }
         }
 
-        $raw_charges = $row['charges'] ?? null;
-        unset($row['charges']);
+        $raw_charges = $data['charges'] ?? null;
+        unset($data['charges']);
 
         /** @var Bill $bill */
-        $bill = parent::hydrate($row, $object);
+        $bill = parent::hydrate($data, $object);
 
         if (\is_array($raw_charges)) {
             $charges = [];
