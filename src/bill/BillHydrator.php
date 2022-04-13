@@ -12,6 +12,7 @@ namespace hiqdev\billing\hiapi\bill;
 
 use DateTimeImmutable;
 use hiqdev\billing\hiapi\Http\Serializer\HttpSerializer;
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillRequisite;
@@ -23,9 +24,6 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Money\Money;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
@@ -58,7 +56,8 @@ class BillHydrator extends GeneratedHydrator
     {
         $this->httpSerializer = $httpSerializer;
 
-        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        // TODO: make it work
+        $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
     }
 
     /**

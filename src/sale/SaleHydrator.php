@@ -10,15 +10,13 @@
 
 namespace hiqdev\billing\hiapi\sale;
 
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\plan\PlanInterface;
 use hiqdev\php\billing\sale\Sale;
 use hiqdev\php\billing\sale\SaleInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Laminas\Hydrator\Strategy\NullableStrategy;
 
 /**
@@ -30,10 +28,8 @@ class SaleHydrator extends GeneratedHydrator
 {
     public function __construct()
     {
-        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
-        $this->addStrategy('closeTime', new NullableStrategy(
-            new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy())
-        ));
+        $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
+        $this->addStrategy('closeTime', new NullableStrategy(DateTimeImmutableFormatterStrategyHelper::create()));
     }
 
     public function hydrate(array $data, $object): object

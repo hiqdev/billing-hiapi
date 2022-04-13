@@ -10,7 +10,7 @@
 
 namespace hiqdev\billing\hiapi\action;
 
-use DateTimeImmutable;
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\php\billing\action\Action;
 use hiqdev\php\billing\action\ActionState;
 use hiqdev\php\billing\customer\Customer;
@@ -19,9 +19,6 @@ use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 
 /**
  * Action Hydrator.
@@ -32,7 +29,7 @@ class ActionHydrator extends GeneratedHydrator
 {
     public function __construct()
     {
-        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
     }
 
     /** {@inheritdoc} */

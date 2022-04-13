@@ -3,21 +3,18 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\usage;
 
-use DateTimeImmutable;
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\units\Quantity;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 
 class UsageHydrator extends GeneratedHydrator
 {
     public function __construct()
     {
-        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
     }
 
     /**

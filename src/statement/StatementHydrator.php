@@ -12,15 +12,12 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\statement;
 
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\customer\CustomerInterface;
 use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\php\billing\statement\Statement;
 use hiqdev\php\billing\plan\PlanInterface;
-use DateTimeImmutable;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Money\Money;
 
 /**
@@ -32,8 +29,8 @@ class StatementHydrator extends GeneratedHydrator
 {
     public function __construct()
     {
-        $this->addStrategy('time', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
-        $this->addStrategy('month', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
+        $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
+        $this->addStrategy('month', DateTimeImmutableFormatterStrategyHelper::create());
     }
 
     /**

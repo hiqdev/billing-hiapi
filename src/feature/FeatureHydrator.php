@@ -11,13 +11,10 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\feature;
 
-use DateTimeImmutable;
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
-use Laminas\Hydrator\HydratorInterface;
-use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
-use Laminas\Hydrator\Strategy\DateTimeImmutableFormatterStrategy;
 use Laminas\Hydrator\Strategy\NullableStrategy;
 
 /**
@@ -27,8 +24,8 @@ class FeatureHydrator extends GeneratedHydrator
 {
     public function __construct()
     {
-        $this->addStrategy('starts', new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy()));
-        $this->addStrategy('expires', new NullableStrategy(new DateTimeImmutableFormatterStrategy(new DateTimeFormatterStrategy())));
+        $this->addStrategy('starts', DateTimeImmutableFormatterStrategyHelper::create());
+        $this->addStrategy('expires', new NullableStrategy(DateTimeImmutableFormatterStrategyHelper::create()));
     }
 
     /**
