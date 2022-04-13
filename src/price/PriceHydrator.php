@@ -10,16 +10,18 @@
 
 namespace hiqdev\billing\hiapi\price;
 
-use hiapi\legacy\lib\deps\arr;
-use hiqdev\php\billing\formula\FormulaInterface;
+use hiqdev\billing\hiapi\formula\FormulaHydrationStrategy;
 use hiqdev\php\billing\plan\Plan;
+use hiqdev\php\billing\price\AbstractPrice;
 use hiqdev\php\billing\price\PriceFactoryInterface;
+use hiqdev\php\billing\price\PriceInterface;
+use hiqdev\php\billing\price\SinglePrice;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
 use hiqdev\php\units\Unit;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
-use Laminas\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Strategy\NullableStrategy;
 use Money\Currency;
 use Money\Money;
 use yii\helpers\Json;
@@ -36,14 +38,16 @@ class PriceHydrator extends GeneratedHydrator
      */
     protected $priceFactory;
 
-    public function __construct(PriceFactoryInterface $priceFactory)
+    public function __construct(PriceFactoryInterface $priceFactory, FormulaHydrationStrategy $formulaHydrationStrategy)
     {
         $this->priceFactory = $priceFactory;
+
+        $this->addStrategy('modifier', new NullableStrategy(clone $formulaHydrationStrategy));
     }
 
     /**
      * {@inheritdoc}
-     * @param object|Plan $object
+     * @param object|PriceInterface|AbstractPrice $object
      */
     public function hydrate(array $row, $object)
     {
@@ -67,9 +71,7 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
-        if (!empty($data['formula'])) {
-            $row['modifier'] = $this->hydrator->hydrate([$data['formula']], FormulaInterface::class);
-        }
+        $row['modifier'] = $this->hydrateValue('modifier', $data['formula'] ?? null);
 
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
         $row['rate'] = $data['rate'] ?? null;
@@ -80,7 +82,7 @@ class PriceHydrator extends GeneratedHydrator
 
     /**
      * {@inheritdoc}
-     * @param object|Price $object
+     * @param object|PriceInterface|SinglePrice $object
      */
     public function extract($object): array
     {
@@ -102,11 +104,11 @@ class PriceHydrator extends GeneratedHydrator
             $additionalData = Json::decode($data['data']);
         }
 
-        $className = $this->priceFactory->findClassForTypes([
+        $class = $this->priceFactory->findClassForTypes([
             $additionalData['class'] ?? null,
             $data['type']['name'],
         ]);
 
-        return parent::createEmptyInstance($className, $data);
+        return parent::createEmptyInstance($class, $data);
     }
 }

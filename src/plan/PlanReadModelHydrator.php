@@ -20,8 +20,16 @@ class PlanReadModelHydrator extends GeneratedHydrator
         $this->planHydrator = $planHydrator;
     }
 
+    private function ensurePlanHydratorHasAHydrator(): void
+    {
+        if ($this->planHydrator->getHydrator() === null) {
+            $this->planHydrator->setHydrator($this->hydrator);
+        }
+    }
+
     public function hydrate(array $data, $object): object
     {
+        $this->ensurePlanHydratorHasAHydrator();
         $plan = $this->planHydrator->hydrate($data, $object);
 
         $additionalData = [];

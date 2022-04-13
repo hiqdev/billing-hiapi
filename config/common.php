@@ -8,6 +8,10 @@
  * @copyright Copyright (c) 2017-2020, HiQDev (http://hiqdev.com/)
  */
 
+/**
+ * @var array $params
+ */
+
 $singletons = [
     \hiqdev\billing\hiapi\Http\Serializer\HttpSerializer::class => \hiqdev\billing\hiapi\Http\Serializer\HttpSerializer::class,
     \hiqdev\DataMapper\Repository\EntityManagerInterface::class => [
@@ -19,7 +23,6 @@ $singletons = [
         'hydrators' => [
             \hiqdev\php\billing\customer\Customer::class        => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
             \hiqdev\php\billing\customer\CustomerInterface::class => \hiqdev\billing\hiapi\customer\CustomerHydrator::class,
-            \hiqdev\php\billing\formula\FormulaInterface::class => \hiqdev\billing\hiapi\formula\FormulaHydrator::class,
             \hiqdev\php\billing\action\Action::class            => \hiqdev\billing\hiapi\action\ActionHydrator::class,
             \hiqdev\php\billing\action\ActionInterface::class   => \hiqdev\billing\hiapi\action\ActionHydrator::class,
             \hiqdev\php\billing\action\ActionState::class       => \hiqdev\billing\hiapi\action\ActionStateHydrator::class,
