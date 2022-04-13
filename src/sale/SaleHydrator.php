@@ -47,7 +47,7 @@ class SaleHydrator extends GeneratedHydrator
         }
 
         $data['time'] = $this->hydrateValue('time', $data['time']);
-        $data['closeTime'] = $this->hydrateValue('closeTime', $data['closeTime']);
+        $data['closeTime'] = $this->hydrateValue('closeTime', $data['closeTime'] ?? null);
 
         return parent::hydrate($data, $object);
     }
