@@ -10,6 +10,8 @@
 
 namespace hiqdev\billing\hiapi\statement;
 
+use hiqdev\billing\hiapi\Http\Serializer\HttpSerializer;
+use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\statement\StatementBill;
 use hiqdev\php\billing\statement\StatementBillInterface;
@@ -53,6 +55,14 @@ class StatementBillHydrator extends BillHydrator
         'tariff_type' => Type::class,
     ];
 
+    public function __construct(HttpSerializer $httpSerializer)
+    {
+        parent::__construct($httpSerializer);
+
+        $this->addStrategy('month', DateTimeImmutableFormatterStrategyHelper::create());
+        $this->attributesHandledWithStrategy['month'] = true;
+    }
+
     /**
      * {@inheritdoc}
      * @param object|StatementBill $object
@@ -60,7 +70,7 @@ class StatementBillHydrator extends BillHydrator
     public function extract($object): array
     {
         return array_filter(array_merge(parent::extract($object), [
-            'month'         => $this->hydrator->extract($object->getMonth()),
+            'month'         => $this->extractValue('month', $object->getMonth()),
             'from'          => $object->getFrom(),
             'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
             'overuse'       => $object->getOveruse() ? $this->hydrator->extract($object->getOveruse()) : null,

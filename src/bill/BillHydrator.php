@@ -44,6 +44,11 @@ class BillHydrator extends GeneratedHydrator
         'customer' => Customer::class,
     ];
 
+    /** @var array<string, bool> */
+    protected array $attributesHandledWithStrategy = [
+        'time' => true,
+    ];
+
     protected array $optionalAttributes = [
         'target' => Target::class,
         'plan' => Plan::class,
@@ -56,7 +61,6 @@ class BillHydrator extends GeneratedHydrator
     {
         $this->httpSerializer = $httpSerializer;
 
-        // TODO: make it work
         $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
     }
 
@@ -70,7 +74,7 @@ class BillHydrator extends GeneratedHydrator
     public function hydrate(array $data, $object): object
     {
         foreach ($this->requiredAttributes as $attr => $class) {
-            if ($attr === 'time') {
+            if (isset($this->attributesHandledWithStrategy[$attr])) {
                 $data[$attr] = $this->hydrateValue($attr, $data[$attr]);
             } else {
                 $data[$attr] = $this->hydrator->create($data[$attr], $class);
@@ -81,6 +85,11 @@ class BillHydrator extends GeneratedHydrator
             if (isset($data[$attr])) {
                 if (is_array($data[$attr]) && $this->isArrayDeeplyEmpty($data[$attr])) {
                     $data[$attr] = null;
+                    continue;
+                }
+
+                if (isset($this->attributesHandledWithStrategy[$attr])) {
+                    $data[$attr] = $this->hydrateValue($attr, $data[$attr]);
                 } else {
                     $data[$attr] = $this->hydrator->create($data[$attr], $class);
                 }
