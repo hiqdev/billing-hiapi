@@ -12,19 +12,16 @@ namespace hiqdev\billing\hiapi\statement;
 
 use hiqdev\billing\hiapi\Http\Serializer\HttpSerializer;
 use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
-use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\statement\StatementBill;
 use hiqdev\php\billing\statement\StatementBillInterface;
 use hiqdev\billing\hiapi\bill\BillHydrator;
 use hiqdev\php\billing\bill\BillRequisite;
 use hiqdev\php\billing\bill\BillState;
-use hiqdev\php\billing\charge\ChargeInterface;
 use hiqdev\php\billing\customer\Customer;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\target\Target;
 use hiqdev\php\billing\type\Type;
 use hiqdev\php\units\Quantity;
-use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use DateTimeImmutable;
 use Money\Money;
 
