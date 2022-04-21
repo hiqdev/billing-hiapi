@@ -39,7 +39,7 @@ class ActionHydrator extends GeneratedHydrator
         $data['target']     = $this->hydrator->create($data['target'] ?? null, Target::class);
         $data['quantity']   = $this->hydrator->create($data['quantity'], Quantity::class);
         $data['customer']   = $this->hydrator->create($data['customer'], Customer::class);
-        $data['time']       = $this->hydrateValue('time', $data['time']);
+        $data['time']       = $this->hydrateValue('time', $data['time'] ?? 'now');
         if (isset($data['sale'])) {
             $data['sale']   = $this->hydrator->create($data['sale'], Sale::class);
         }
