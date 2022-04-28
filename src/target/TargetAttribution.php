@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\target;
 
+use hiqdev\DataMapper\Attribute\UuidAttribute;
 use hiqdev\DataMapper\Attribution\AbstractAttribution;
 use hiqdev\DataMapper\Attribute\IntegerAttribute;
 use hiqdev\DataMapper\Attribute\StringAttribute;
@@ -23,7 +24,7 @@ class TargetAttribution extends AbstractAttribution
             'type'      => StringAttribute::class,
             'name'      => StringAttribute::class,
             'label'     => StringAttribute::class,
-            'remoteid'  => StringAttribute::class,
+            'remoteid'  => UuidAttribute::class,
         ];
     }
 

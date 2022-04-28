@@ -6,6 +6,7 @@ namespace hiqdev\billing\hiapi\target\Create;
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
+use hiapi\validators\UuidValidator;
 use hiqdev\php\billing\customer\Customer;
 
 final class Command extends BaseCommand
@@ -36,10 +37,12 @@ final class Command extends BaseCommand
             [['customer_id'], IdValidator::class],
 
             [['name'], 'trim'],
+            [['name'], 'filter', 'filter' => 'mb_strtolower'],
 
             [['type'], 'trim'],
 
             [['remoteid'], 'trim'],
+            [['remoteid'], UuidValidator::class],
 
             [['name', 'type', 'remoteid'], 'required'],
         ];

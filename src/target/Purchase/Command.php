@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\target\Purchase;
 use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
 use hiapi\validators\UsernameValidator;
+use hiapi\validators\UuidValidator;
 use hiqdev\DataMapper\Validator\DateTimeValidator;
 use Throwable;
 use yii\validators\InlineValidator;
@@ -53,11 +54,13 @@ class Command extends BaseCommand
             [['plan_id'], IdValidator::class],
 
             [['name'], 'trim'],
+            [['name'], 'filter', 'filter' => 'mb_strtolower'],
 
             [['type'], 'trim'],
             [['type'], 'required'],
 
             [['remoteid'], 'trim'],
+            [['remoteid'], UuidValidator::class],
 
             [['time'], DateTimeValidator::class],
 

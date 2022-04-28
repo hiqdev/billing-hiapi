@@ -279,7 +279,14 @@ class ApiBasedBuilder implements BuilderInterface
         $this->makeAsCustomer('TargetCreate', [
             'name' => $target->getName(),
             'type' => $target->getType(),
-            'remoteid' => random_int(111111, 999999),
+            'remoteid' => sprintf(
+                '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0x0fff) | 0x4000,
+                mt_rand(0, 0x3fff) | 0x8000,
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            ),
         ]);
     }
 
