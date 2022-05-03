@@ -42,7 +42,7 @@ class PriceHydrator extends GeneratedHydrator
     {
         $this->priceFactory = $priceFactory;
 
-        $this->addStrategy('modifier', new NullableStrategy(clone $formulaHydrationStrategy));
+        $this->addStrategy('modifier', new NullableStrategy(clone $formulaHydrationStrategy, true));
     }
 
     /**
@@ -71,7 +71,7 @@ class PriceHydrator extends GeneratedHydrator
         if (isset($row['data'])) {
             $data = is_array($row['data']) ? $row['data'] : Json::decode($row['data']);
         }
-        $row['modifier'] = $this->hydrateValue('modifier', $data['formula'] ?? null);
+        $row['modifier'] = $this->hydrateValue('modifier', trim($data['formula'] ?? null));
 
         $row['sums'] = empty($data['sums']) ? [] : $data['sums'];
         $row['rate'] = $data['rate'] ?? null;
