@@ -14,6 +14,7 @@ use hiapi\exceptions\domain\RequiredInputException;
 use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\plan\Plan;
 use hiqdev\php\billing\sale\Sale;
+use DomainException;
 
 class SaleCloseAction
 {
@@ -33,9 +34,12 @@ class SaleCloseAction
                 null,
                 $command->target,
                 $command->customer,
-                new Plan($command->plan_id, null)
+                new Plan($command->plan->getId(), null)
             )
         );
+        if (!$saleId) {
+            throw new DomainException("Sale does not exists");
+        }
 
         $sale = $this->repo->findById($saleId);
         $sale->close($command->time);
