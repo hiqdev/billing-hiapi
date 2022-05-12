@@ -48,7 +48,7 @@ class StatementHydrator extends GeneratedHydrator
         $row['amount']      = $this->hydrator->create($row['amount'],   Money::class);
 
         $raw_bills = $row['bills'];
-        $raw_plans = $row['plans'];
+        $raw_plans = $row['plans'] ?? [];
         unset($row['bills'], $row['plans']);
 
         /** @var Statement $statement */
