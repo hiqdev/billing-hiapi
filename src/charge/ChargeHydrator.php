@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\charge;
 
+use hiqdev\billing\hiapi\Hydrator\Strategy\MoneyStrategy;
 use function count;
 use function is_countable;
 use hiqdev\php\billing\action\Action;
@@ -31,6 +32,11 @@ use Money\Money;
  */
 class ChargeHydrator extends GeneratedHydrator
 {
+    public function __construct()
+    {
+        $this->addStrategy('sum', new MoneyStrategy());
+    }
+
     /** {@inheritdoc} */
     public function hydrate(array $data, $object): object
     {
@@ -38,7 +44,7 @@ class ChargeHydrator extends GeneratedHydrator
         $data['target'] = $this->hydrator->create($data['target'], Target::class);
         $data['action'] = $this->hydrator->create($data['action'], Action::class);
         $data['usage']  = $this->hydrator->create($data['usage'], Quantity::class);
-        $data['sum']    = $this->hydrator->create($data['sum'], Money::class);
+        $data['sum']    = $this->getStrategy('sum')->hydrate($data['sum']);
         if (isset($data['price'])) {
             $data['price'] = $this->hydrator->create($data['price'], PriceInterface::class);
         }
@@ -78,7 +84,7 @@ class ChargeHydrator extends GeneratedHydrator
             'action'        => $this->hydrator->extract($object->getAction()),
             'price'         => $object->getPrice() ? $this->hydrator->extract($object->getPrice()) : null,
             'usage'         => $this->hydrator->extract($object->getUsage()),
-            'sum'           => $this->hydrator->extract($object->getSum()),
+            'sum'           => $this->getStrategy('sum')->extract($object->getSum()),
             'bill'          => $object->getBill() ? $this->hydrator->extract($object->getBill()) : null,
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
             'comment'       => $object->getComment(),
