@@ -13,6 +13,7 @@ namespace hiqdev\billing\hiapi\bill;
 use DateTimeImmutable;
 use hiqdev\billing\hiapi\Http\Serializer\HttpSerializer;
 use hiqdev\billing\hiapi\Hydrator\Helper\DateTimeImmutableFormatterStrategyHelper;
+use hiqdev\billing\hiapi\Hydrator\Strategy\MoneyStrategy;
 use hiqdev\php\billing\bill\Bill;
 use hiqdev\php\billing\bill\BillInterface;
 use hiqdev\php\billing\bill\BillRequisite;
@@ -47,6 +48,7 @@ class BillHydrator extends GeneratedHydrator
     /** @var array<string, bool> */
     protected array $attributesHandledWithStrategy = [
         'time' => true,
+        'sum' => true,
     ];
 
     protected array $optionalAttributes = [
@@ -62,6 +64,7 @@ class BillHydrator extends GeneratedHydrator
         $this->httpSerializer = $httpSerializer;
 
         $this->addStrategy('time', DateTimeImmutableFormatterStrategyHelper::create());
+        $this->addStrategy('sum', new MoneyStrategy());
     }
 
     /**

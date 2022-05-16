@@ -10,6 +10,7 @@
 
 namespace hiqdev\billing\hiapi\vo;
 
+use hiqdev\billing\hiapi\Hydrator\Strategy\MoneyStrategy;
 use hiqdev\DataMapper\Hydrator\GeneratedHydrator;
 use Money\Currency;
 use Money\Money;
@@ -18,6 +19,7 @@ use Money\Money;
  * Class MoneyHydrator.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
+ * @deprecated Use {@see MoneyStrategy} instead
  */
 class MoneyHydrator extends GeneratedHydrator
 {
