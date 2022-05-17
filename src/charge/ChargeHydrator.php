@@ -44,7 +44,7 @@ class ChargeHydrator extends GeneratedHydrator
         $data['target'] = $this->hydrator->create($data['target'], Target::class);
         $data['action'] = $this->hydrator->create($data['action'], Action::class);
         $data['usage']  = $this->hydrator->create($data['usage'], Quantity::class);
-        $data['sum']    = $this->getStrategy('sum')->hydrate($data['sum']);
+        $data['sum']    = $this->getStrategy('sum')->hydrate($data['sum'], null);
         if (isset($data['price'])) {
             $data['price'] = $this->hydrator->create($data['price'], PriceInterface::class);
         }
