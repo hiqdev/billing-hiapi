@@ -58,15 +58,16 @@ class Action
     private PermissionCheckerInterface $permissionChecker;
 
     public function __construct(
+        ConnectionInterface $connection,
         TargetRepositoryInterface $targetRepo,
         HistoryAndFutureSaleRepository $saleRepo,
         PlanForkerInterface $planForker,
-        ConnectionInterface $connection,
         LoggerInterface $log,
         CurrentDateTimeProviderInterface $currentDateTimeProvider,
         User $user,
         PlanChangeStrategyProviderInterface $strategyProvider,
-        PermissionCheckerInterface $permissionChecker
+        PermissionCheckerInterface $permissionChecker,
+        public ActiveSaleFinder $activeSaleFinder
     ) {
         $this->targetRepo = $targetRepo;
         $this->saleRepo = $saleRepo;
@@ -101,12 +102,9 @@ class Action
         if ($target !== null) {
             return $target;
         }
-        $target = $this->tryToChangeScheduledPlanChange($activeSale, $command->time, $command->plan);
-        if ($target !== null) {
-            return $target;
-        }
+        $target = $this->tryToChangeScheduledPlanChange($activeSale, $customer, $command->time, $command->plan);
 
-        return $this->schedulePlanChange($activeSale, $command->time, $command->plan);
+        return $target ?? $this->schedulePlanChange($activeSale, $customer, $command->time, $command->plan);
     }
 
     /**
@@ -120,7 +118,7 @@ class Action
      * @param null|SaleInterface $previousSale
      * @param DateTimeImmutable $effectiveDate
      * @param PlanInterface $newPlan
-     * @return TargetInterface
+     * @return ?TargetInterface
      */
     private function tryToCancelScheduledPlanChange(
         SaleInterface $activeSale,
@@ -134,7 +132,7 @@ class Action
             return null;
         }
 
-        if ($previousSale->getPlan()->getId() !== $newPlan->getId()) {
+        if ($previousSale->getPlan()?->getId() !== $newPlan->getId()) {
             return null;
         }
 
@@ -144,15 +142,20 @@ class Action
         return $activeSale->getTarget();
     }
 
-    private function schedulePlanChange(SaleInterface $activeSale, DateTimeImmutable $effectiveDate, PlanInterface $newPlan): ?TargetInterface
+    private function schedulePlanChange(
+        SaleInterface $activeSale,
+        CustomerInterface $customer,
+        DateTimeImmutable $effectiveDate,
+        PlanInterface $newPlan
+    ): ?TargetInterface
     {
         $this->strategy->ensureSaleCanBeClosedForChangeAtTime($activeSale, $effectiveDate);
         $activeSale->close($effectiveDate);
 
         try {
-            $sale = $this->connection->transaction(function () use ($activeSale, $newPlan, $effectiveDate) {
+            $sale = $this->connection->transaction(function () use ($activeSale, $customer, $newPlan, $effectiveDate) {
                 $plan = $this->planForker->forkPlanIfRequired($newPlan, $activeSale->getCustomer());
-                $sale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $plan, $effectiveDate);
+                $sale = new Sale(null, $activeSale->getTarget(), $customer, $plan, $effectiveDate);
                 $this->saleRepo->save($activeSale);
                 $this->saleRepo->save($sale);
 
@@ -171,6 +174,7 @@ class Action
 
     private function tryToChangeScheduledPlanChange(
         SaleInterface $activeSale,
+        CustomerInterface $customer,
         DateTimeImmutable $effectiveDate,
         ?PlanInterface $newPlan
     ): ?TargetInterface
@@ -196,7 +200,9 @@ class Action
         if ($target === false) {
             throw new ConstraintException('Target must exist to change its plan');
         }
-        $this->ensureBelongs($target, $command->customer);
+        if ($command->check_belonging === true) {
+            $this->ensureBelongs($target, $command->customer);
+        }
 
         return $target;
     }
@@ -220,18 +226,7 @@ class Action
      */
     private function findActiveSale(TargetInterface $target, Customer $customer, DateTimeImmutable $time): ?SaleInterface
     {
-        $spec = (new Specification())->where([
-            'seller-id' => $customer->getSeller()->getId(),
-            'target-id' => $target->getId(),
-        ]);
-
-        /** @var SaleInterface|false $sale */
-        $sale = $this->saleRepo->findOneAsOfDate($spec, $time);
-        if ($sale === false) {
-            return null;
-        }
-
-        return $sale;
+        return $this->activeSaleFinder->__invoke($target, $customer, $time);
     }
 
     private function truncateToMonth(DateTimeImmutable $time): DateTimeImmutable
