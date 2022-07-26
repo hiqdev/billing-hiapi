@@ -50,6 +50,11 @@ class Command extends BaseCommand
      */
     public $wall_time;
 
+    /**
+     * @var bool whether to skip the target check belonging to the customer.
+     */
+    public bool $check_belonging = true;
+
     public function rules(): array
     {
         return [
@@ -70,6 +75,8 @@ class Command extends BaseCommand
 
             [['time'], DateTimeValidator::class],
             [['wall_time'], DateTimeValidator::class],
+
+            [['check_belonging'], 'boolean'],
         ];
     }
 }
