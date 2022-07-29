@@ -173,15 +173,16 @@ class Action
         SaleInterface $activeSale,
         DateTimeImmutable $effectiveDate,
         ?PlanInterface $newPlan
-    ): ?TargetInterface {
-        if ($activeSale->getTime()->format(DATE_ATOM) !== $effectiveDate->format(DATE_ATOM)) {
-            return null;
+    ): ?TargetInterface
+    {
+        if ($activeSale->getTime()->format(DATE_ATOM) >= $effectiveDate->format(DATE_ATOM)) {
+            $newSale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $newPlan, $effectiveDate);
+            $this->replaceSaleInTransaction($activeSale, $newSale, 'Failed to change scheduled plan change');
+
+            return $newSale->getTarget();
         }
 
-        $newSale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $newPlan, $effectiveDate);
-        $this->replaceSaleInTransaction($activeSale, $newSale, 'Failed to change scheduled plan change');
-
-        return $newSale->getTarget();
+        return null;
     }
 
     private function getTarget(Command $command): TargetInterface
