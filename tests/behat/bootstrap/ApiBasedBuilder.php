@@ -243,12 +243,16 @@ class ApiBasedBuilder implements BuilderInterface
     public function findBills(array $params): array
     {
         $target = $this->factory->get('target', $params['target']);
+        $targetTypes = $target->getType();
+        if ($targetTypes === 'domain') {
+            $targetTypes = ['domain','regdomain'];
+        }
         $rows = $this->makeAsCustomer('BillsSearch', [
             'with' => ['charges'],
             'where' => [
                 'customer-login' => 'hipanel_test_user',  /// XXX to be removed!
                 'type-name' => $params['type'],
-                'target-type' => $target->getType(),
+                'target-type' => $targetTypes,
                 'target-name' => $target->getName(),
                 'time' => $params['time'] ?? null,
             ],
