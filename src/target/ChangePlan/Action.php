@@ -67,7 +67,7 @@ class Action
         User $user,
         PlanChangeStrategyProviderInterface $strategyProvider,
         PermissionCheckerInterface $permissionChecker,
-        public ActiveSaleFinder $activeSaleFinder
+        private ActiveSaleFinder $activeSaleFinder
     ) {
         $this->targetRepo = $targetRepo;
         $this->saleRepo = $saleRepo;
@@ -105,6 +105,14 @@ class Action
         $target = $this->tryToChangeScheduledPlanChange($activeSale, $customer, $command->time, $command->plan);
 
         return $target ?? $this->schedulePlanChange($activeSale, $customer, $command->time, $command->plan);
+    }
+
+    public function withActiveSaleFinder(ActiveSaleFinder $activeSaleFinder): self
+    {
+        $new = clone $this;
+        $new->activeSaleFinder = $activeSaleFinder;
+
+        return $new;
     }
 
     /**
