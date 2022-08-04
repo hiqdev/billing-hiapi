@@ -29,14 +29,13 @@ class SaleCloseAction
     {
         $this->checkRequiredInput($command);
 
-        $saleId = $this->repo->findId(
-            new Sale(
-                null,
-                $command->target,
-                $command->customer,
-                new Plan($command->plan->getId(), null)
-            )
+        $sale = new Sale(
+            null,
+            $command->target,
+            $command->customer,
+            new Plan($command->plan?->getId(), null)
         );
+        $saleId = $this->repo->findId($sale);
         if (!$saleId) {
             throw new DomainException("Sale does not exists");
         }
