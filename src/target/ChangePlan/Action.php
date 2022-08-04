@@ -208,7 +208,7 @@ class Action
         if ($target === false) {
             throw new ConstraintException('Target must exist to change its plan');
         }
-        if ($command->check_belonging === true) {
+        if ($command->checkBelonging()) {
             $this->ensureBelongs($target, $command->customer);
         }
 
