@@ -99,7 +99,8 @@ class ApiBasedBuilder implements BuilderInterface
 
     public function recreatePlan(string $name): void
     {
-        if (!empty(static::$plans[$name]['id'])) {
+        $plan = static::$plans[$name] ?? [];
+        if (!empty($plan['id']) && $plan['type'] !== 'server') {
             return;
         }
         $this->deletePlan($name);
