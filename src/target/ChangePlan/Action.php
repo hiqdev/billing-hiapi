@@ -182,12 +182,16 @@ class Action
 
     private function tryToChangeScheduledPlanChange(
         SaleInterface $activeSale,
-        CustomerInterface $customer,
+        CustomerInterface $newCustomer,
         DateTimeImmutable $effectiveDate,
         ?PlanInterface $newPlan
     ): ?TargetInterface
     {
-        if ($activeSale->getTime()->format(DATE_ATOM) >= $effectiveDate->format(DATE_ATOM)) {
+        $activeSaleTimeBiggerThenEffectiveTime = $activeSale->getTime()->format(DATE_ATOM) >= $effectiveDate->format(DATE_ATOM);
+        $newPlanAndCustomerSameAsActiveSalePlanAndCustomer = $activeSale->getPlan()?->getId() === $newPlan?->getId()
+            && $activeSale->getCustomer()->getId() === $newCustomer->getId();
+
+        if ($activeSaleTimeBiggerThenEffectiveTime || $newPlanAndCustomerSameAsActiveSalePlanAndCustomer) {
             $newSale = new Sale(null, $activeSale->getTarget(), $activeSale->getCustomer(), $newPlan, $effectiveDate);
             $this->replaceSaleInTransaction($activeSale, $newSale, 'Failed to change scheduled plan change');
 
