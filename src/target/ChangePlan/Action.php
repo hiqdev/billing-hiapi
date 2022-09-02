@@ -90,7 +90,7 @@ class Action
 
         $activeSale = $this->findActiveSale($target, $customer, $command->time);
         if ($activeSale === null) {
-            throw new InvariantException('Plan can\'t be changed: the is no active sale at the passed date');
+            throw new InvariantException('Plan can\'t be changed: there is no active sale for the given date');
         }
         $this->strategy = $this->strategyProvider->getBySale($activeSale);
 
