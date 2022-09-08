@@ -54,7 +54,7 @@ class ApiClient
             throw new Exception('API returned not array: ' . $res);
         }
         if (!empty($res['_error'])) {
-            //var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $payload, $performer, $res);die;
+            // var_dump(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__, $command, $performer, $this->lastQuery, $res);die;
             $error = is_array($res['_error']) ? reset($res['_error']) : (string)$res['_error'];
             throw new Exception("API returned error: $error");
         }
@@ -64,23 +64,17 @@ class ApiClient
 
     private function buildRequest(string $command, array $body = [], ?string $performer = null): RequestInterface
     {
-        $auth_login = $performer;
-        $auth_password = 'random';
+        $body['auth_login'] = $performer;
+        $body['auth_password'] = 'random';
+        $this->lastQuery = $this->connection->baseUri . $command . '?' . http_build_query($body);
 
         return $this->connection->callWithDisabledAuth(
-            function () use ($command, $body, $auth_login, $auth_password) {
+            function () use ($command, $body) {
                 $request = $this->connection
                     ->createCommand()
                     ->db
                     ->getQueryBuilder()
-                    ->perform(
-                        $command,
-                        null,
-                        array_merge($body, [
-                            'auth_login' => $auth_login,
-                            'auth_password' => $auth_password,
-                        ])
-                    );
+                    ->perform($command, null, $body);
                 $request->build();
                 $request->addHeader('Cookie', 'XDEBUG_SESSION=XDEBUG_ECLIPSE');
 
