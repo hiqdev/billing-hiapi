@@ -138,14 +138,17 @@ class ApiBasedBuilder implements BuilderInterface
     public function deletePlan(string $name): void
     {
         $plan = static::$plans[$name];
-        $found = $this->makeAsReseller('plans-search', ['name' => $name, 'limit' => 1]);
+        $found = $this->makeAsReseller('tariffs-search', [
+            'name' => $name,
+            'show_deleted' => 1,
+            'limit' => 1,
+        ]);
         $old = reset($found);
         if (empty($old)) {
             return;
         }
-        $plan['id'] = $old['id'];
-        $this->makeAsReseller('tariff-delete', $plan);
-        $this->makeAsReseller('tariff-delete', $plan);
+        $this->makeAsReseller('tariff-delete', ['id' => $old['id']]);
+        $this->makeAsReseller('tariff-delete', ['id' => $old['id']]);
     }
 
     public function createPlan(string $name): array
