@@ -12,8 +12,15 @@ declare(strict_types=1);
 
 namespace hiqdev\billing\hiapi\plan;
 
+use hiqdev\billing\mrdp\Plan\AvailableForConditionBuilder;
 use hiqdev\DataMapper\Query\Field\FieldInterface;
 
+/**
+ * Class AvailableFor
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ * @see AvailableForConditionBuilder
+ */
 final class AvailableFor implements FieldInterface
 {
     public const SELLER = 0;
