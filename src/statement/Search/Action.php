@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,6 +15,8 @@ namespace hiqdev\billing\hiapi\statement\Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Auth\AuthRule;
+use hiqdev\php\billing\statement\Statement;
+use hiqdev\php\billing\statement\StatementBill;
 use hiqdev\php\billing\statement\StatementRepositoryInterface;
 
 class Action
@@ -27,7 +30,20 @@ class Action
 
     public function __invoke(Command $command): ArrayCollection
     {
-        $res = $this->repo->findAll($this->prepareSpecification($command));
+        $spec = $this->prepareSpecification($command);
+        /** @var Statement[] $res */
+        $res = $this->repo->findAll($spec);
+
+        // There is no way to propagate filter to the joined relation.
+        // When filter by total currency is used, post-process found bills to remove those with wrong currency.
+        if ($spec->where['total-currency'] ?? null) {
+            foreach ($res as $item) {
+                $item->setBills(array_values(array_filter($item->getBills(),
+                    static fn(StatementBill $bill) =>
+                        $bill->getSum()->getCurrency()->getCode() === strtoupper($spec->where['total-currency'])
+                )));
+            }
+        }
 
         return new ArrayCollection($res);
     }
