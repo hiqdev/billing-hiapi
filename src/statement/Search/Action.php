@@ -34,17 +34,6 @@ class Action
         /** @var Statement[] $res */
         $res = $this->repo->findAll($spec);
 
-        // There is no way to propagate filter to the joined relation.
-        // When filter by total currency is used, post-process found bills to remove those with wrong currency.
-        if ($spec->where['total-currency'] ?? null) {
-            foreach ($res as $item) {
-                $item->setBills(array_values(array_filter($item->getBills(),
-                    static fn(StatementBill $bill) =>
-                        $bill->getSum()->getCurrency()->getCode() === strtoupper($spec->where['total-currency'])
-                )));
-            }
-        }
-
         return new ArrayCollection($res);
     }
 
