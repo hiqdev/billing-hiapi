@@ -30,6 +30,7 @@ use hiqdev\php\billing\target\TargetWasCreated;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\billing\usage\UsageRecorderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use DateTimeImmutable;
 
 class Action
 {
@@ -103,12 +104,12 @@ class Action
         if ($target === false) {
             return $this->createTarget($command);
         }
-        $this->ensureBelongs($target, $command->customer);
+        $this->ensureBelongs($target, $command->customer, $command->time);
 
         return $target;
     }
 
-    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer): void
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, DateTimeImmutable $time = null): void
     {
         $sales = $this->saleRepo->findAll((new Specification)->where([
             'seller-id' => $customer->getSeller()->getId(),
@@ -161,5 +162,26 @@ class Action
                 new Usage($sale->getTarget(), $sale->getTime(), $use->type, $use->quantity)
             );
         }
+    }
+
+    private function getActiveSales(TargetInterface $target, CustomerInterface $customer, DateTimeImmutable $time = null): ?array
+    {
+        $_sales = $this->saleRepo->findAll((new Specification)->where(array_filter([
+            'seller-id' => $customer->getSeller()->getId(),
+            'target-id' => $target->getId(),
+        ])));
+        if ($time === null || empty($_sales)) {
+            return $_sales;
+        }
+
+        foreach ($_sales as $sale) {
+            if ($sale->getCloseTime() !== null && $sale->getCloseTime() <= $time) {
+                continue;
+            }
+
+            $sales[] = $sale;
+        }
+
+        return $sales;
     }
 }
