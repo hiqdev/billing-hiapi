@@ -225,7 +225,6 @@ class Action
             'seller-id' => $customer->getSeller()->getId(),
             'target-id' => $target->getId(),
         ])), $time);
-
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
             throw new NotAuthorizedException('The target belongs to other client');
         }
@@ -281,5 +280,4 @@ class Action
             throw new RuntimeException($errorMessage);
         }
     }
-
 }
