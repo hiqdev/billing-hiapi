@@ -109,12 +109,12 @@ class Action
         return $target;
     }
 
-    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, DateTimeImmutable $time = null): void
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, ?DateTimeImmutable $time = null): void
     {
-        $sales = $this->saleRepo->findAll((new Specification)->where([
+        $sales = $this->saleRepo->findAllActive((new Specification)->where([
             'seller-id' => $customer->getSeller()->getId(),
             'target-id' => $target->getId(),
-        ]));
+        ]), $time);
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
             throw new NotAuthorizedException('The target belongs to other client');
         }
@@ -164,24 +164,4 @@ class Action
         }
     }
 
-    private function getActiveSales(TargetInterface $target, CustomerInterface $customer, DateTimeImmutable $time = null): ?array
-    {
-        $_sales = $this->saleRepo->findAll((new Specification)->where(array_filter([
-            'seller-id' => $customer->getSeller()->getId(),
-            'target-id' => $target->getId(),
-        ])));
-        if ($time === null || empty($_sales)) {
-            return $_sales;
-        }
-
-        foreach ($_sales as $sale) {
-            if ($sale->getCloseTime() !== null && $sale->getCloseTime() <= $time) {
-                continue;
-            }
-
-            $sales[] = $sale;
-        }
-
-        return $sales;
-    }
 }
