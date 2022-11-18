@@ -213,18 +213,18 @@ class Action
             throw new ConstraintException('Target must exist to change its plan');
         }
         if ($command->checkBelonging()) {
-            $this->ensureBelongs($target, $command->customer);
+            $this->ensureBelongs($target, $command->customer, $command->time);
         }
 
         return $target;
     }
 
-    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer): void
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, ?DateTimeImmutable $time = null): void
     {
-        $sales = $this->saleRepo->findAll((new Specification)->where([
+        $sales = $this->saleRepo->findAllActive((new Specification)->where(array_filter([
             'seller-id' => $customer->getSeller()->getId(),
             'target-id' => $target->getId(),
-        ]));
+        ])), $time);
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
             throw new NotAuthorizedException('The target belongs to other client');
         }

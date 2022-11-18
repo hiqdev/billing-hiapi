@@ -30,6 +30,7 @@ use hiqdev\php\billing\target\TargetWasCreated;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\billing\usage\UsageRecorderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use DateTimeImmutable;
 
 class Action
 {
@@ -103,17 +104,17 @@ class Action
         if ($target === false) {
             return $this->createTarget($command);
         }
-        $this->ensureBelongs($target, $command->customer);
+        $this->ensureBelongs($target, $command->customer, $command->time);
 
         return $target;
     }
 
-    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer): void
+    private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, ?DateTimeImmutable $time = null): void
     {
-        $sales = $this->saleRepo->findAll((new Specification)->where([
+        $sales = $this->saleRepo->findAllActive((new Specification)->where([
             'seller-id' => $customer->getSeller()->getId(),
             'target-id' => $target->getId(),
-        ]));
+        ]), $time);
         if (!empty($sales) && reset($sales)->getCustomer()->getId() !== $customer->getId()) {
             throw new NotAuthorizedException('The target belongs to other client');
         }
