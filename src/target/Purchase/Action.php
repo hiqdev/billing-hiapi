@@ -34,6 +34,8 @@ use DateTimeImmutable;
 
 class Action
 {
+    const STATE_DELETED = 'deleted';
+
     protected bool $targetWasCreated = false;
     private TargetRepositoryInterface $targetRepo;
     private TargetFactoryInterface $targetFactory;
@@ -89,8 +91,17 @@ class Action
         $spec = (new Specification)->where([
             'type' => $command->type,
             'name' => $command->name,
+            'customer_id' => $command->customer->getId(),
         ]);
         $target = $this->targetRepo->findOne($spec);
+
+        if ($target !== false) {
+            try {
+                $this->ensureActive($target, $command->customer);
+            } catch (NotAuthorizedException $e) {
+                $target = false;
+            }
+        }
 
         if ($target === false) {
             $spec = (new Specification)->where([
@@ -104,9 +115,21 @@ class Action
         if ($target === false) {
             return $this->createTarget($command);
         }
+
         $this->ensureBelongs($target, $command->customer, $command->time);
 
         return $target;
+    }
+
+    private function ensureActive(TargetInterface $target, CustomerInterface $customer): void
+    {
+        if ($target->customer->getId() !== $customer->getId()) {
+            throw new NotAuthorizedException('The target belongs to other client');
+        }
+
+        if ($target->getState() === self::STATE_DELETED) {
+            throw new NotAuthorizedException('The target was deleted');
+        }
     }
 
     private function ensureBelongs(TargetInterface $target, CustomerInterface $customer, ?DateTimeImmutable $time = null): void

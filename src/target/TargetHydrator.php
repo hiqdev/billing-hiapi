@@ -44,6 +44,7 @@ class TargetHydrator extends GeneratedHydrator
             'type'          => $this->extractNone($object->getType()),
             'name'          => $object->getName(),
             'label'         => $object->getLabel(),
+            'state'         => $this->extractNone($object->getState()),
         ];
 
         if ($data instanceof RemoteTarget) {

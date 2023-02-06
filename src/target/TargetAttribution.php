@@ -24,6 +24,7 @@ class TargetAttribution extends AbstractAttribution
             'name'      => StringAttribute::class,
             'label'     => StringAttribute::class,
             'remoteid'  => StringAttribute::class,
+            'state'     => StringAttribute::class,
         ];
     }
 
