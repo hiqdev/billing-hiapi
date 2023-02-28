@@ -69,6 +69,7 @@ class ActionHydrator extends GeneratedHydrator
             'sale'          => $object->getSale() ? $this->hydrator->extract($object->getSale()) : null,
             'parent'        => $object->getParent() ? $this->hydrator->extract($object->getParent()) : null,
             'state'         => $object->getState() ? $this->hydrator->extract($object->getState()) : null,
+            'usage_interval'=> $this->hydrator->extract($object->getUsageInterval()),
         ], static function ($value): bool {
             return $value !== null;
         }, ARRAY_FILTER_USE_BOTH);
