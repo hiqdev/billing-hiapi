@@ -105,7 +105,7 @@ class Action
             return $this->createTarget($command);
         }
         if ($target->isDeleted()) {
-            $this->targetRepo->markAsDeleted($target);
+            $this->targetRepo->renameToDeleted($target);
             return $this->createTarget($command);
         }
         $this->ensureBelongs($target, $command->customer, $command->time);
