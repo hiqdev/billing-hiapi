@@ -104,6 +104,10 @@ class Action
         if ($target === false) {
             return $this->createTarget($command);
         }
+        if ($target->isDeleted()) {
+            $this->targetRepo->markAsDeleted($target);
+            return $this->createTarget($command);
+        }
         $this->ensureBelongs($target, $command->customer, $command->time);
 
         return $target;

@@ -42,6 +42,7 @@ class TargetHydrator extends GeneratedHydrator
         $data = [
             'id'            => $this->extractNone($object->getId()),
             'type'          => $this->extractNone($object->getType()),
+            'state'         => $this->extractNone($object->getState()),
             'name'          => $object->getName(),
             'label'         => $object->getLabel(),
         ];
