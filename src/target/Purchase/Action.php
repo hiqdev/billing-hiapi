@@ -26,6 +26,7 @@ use hiqdev\php\billing\sale\SaleRepositoryInterface;
 use hiqdev\php\billing\target\TargetFactoryInterface;
 use hiqdev\php\billing\target\TargetInterface;
 use hiqdev\php\billing\target\TargetRepositoryInterface;
+use hiqdev\php\billing\target\TargetState;
 use hiqdev\php\billing\target\TargetWasCreated;
 use hiqdev\php\billing\usage\Usage;
 use hiqdev\php\billing\usage\UsageRecorderInterface;
@@ -104,7 +105,7 @@ class Action
         if ($target === false) {
             return $this->createTarget($command);
         }
-        if ($target->isDeleted()) {
+        if (TargetState::isDeleted($target)) {
             $this->targetRepo->renameToDeleted($target);
             return $this->createTarget($command);
         }
