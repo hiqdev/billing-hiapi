@@ -21,6 +21,7 @@ class TargetAttribution extends AbstractAttribution
         return [
             'id'        => IntegerAttribute::class,
             'type'      => StringAttribute::class,
+            'state'     => StringAttribute::class,
             'name'      => StringAttribute::class,
             'label'     => StringAttribute::class,
             'remoteid'  => StringAttribute::class,
